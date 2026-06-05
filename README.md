@@ -164,7 +164,7 @@ SigninLogs
 | project TimeGenerated, ResultType, ResultSignature, ResultDescription, Location, LocationDetails, AuthenticationRequirement
 | order by TimeGenerated desc
 ```
-<img width="1919" height="821" alt="Image" src="https://github.com/user-attachments/assets/31f86f8b-cae2-49e5-a7d9-96eb42252683" />
+<img width="1919" height="821" alt="Image" src="https://github.com/user-attachments/assets/222db846-4d8c-415c-8e59-bbaad8a8801a" />
 
 ### 💡 Why it matters
 - Azure AD already accepted the username/password.
