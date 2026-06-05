@@ -145,206 +145,6 @@ compromise was discovered only through proactive, hypothesis-driven
 threat hunting anchored to the original LinkedIn post.
 
 ---
-
-## 🧬 MITRE ATT&CK Summary
-
-| Flag | Technique Category | MITRE ID | Priority |
-|-----:|-------------------|----------|----------|
-| 1 | | T1593 | Search Open Websites/Domains | Reconnaissance | 🟡 Medium |
-| T1593.001 | Search Open Websites/Domains: Social Media | Reconnaissance | 🟠 High |
-| T1594 | Search Victim-Owned Websites | Reconnaissance | 🟡 Medium |
-| T1589 | Gather Victim Identity Information | Reconnaissance | 🟠 High |
-| T1591 | Gather Victim Org Information | Reconnaissance | 🟡 Medium | 
-| 2 | | T1580 | Cloud Infrastructure Discovery | Discovery | 🟠 High |
-| T1593 | Search Open Websites/Domains | Reconnaissance | 🟠 High |
-| T1590 | Gather Victim Network Information | Reconnaissance | 🟡 Medium |
-| T1591 | Gather Victim Org Information | Reconnaissance | 🟡 Medium |
-| 3 | | T1590.005 | Gather Victim Network Information: IP Addresses | Reconnaissance | 🔴 Critical |
-| T1593 | Search Open Websites/Domains | Reconnaissance | 🟠 High |
-| T1590 | Gather Victim Network Information | Reconnaissance | 🟠 High |
-| T1595.001 | Active Scanning: Scanning IP Blocks | Reconnaissance | 🟡 Medium |
-| 4 | | T1590.005 | Gather Victim Network Information: IP Addresses | Reconnaissance | 🔴 Critical |
-| T1590 | Gather Victim Network Information | Reconnaissance | 🟠 High |
-| T1595 | Active Scanning | Reconnaissance | 🟠 High |
-| T1133 | External Remote Services | Initial Access | 🔴 Critical |
-| 5 | | T1593.001 | Search Open Websites/Domains: Social Media | Reconnaissance | 🔴 Critical |
-| T1589.002 | Gather Victim Identity Information: Email Addresses | Reconnaissance | 🟠 High |
-| T1591.004 | Gather Victim Org Information: Identify Roles | Reconnaissance | 🟠 High |
-| T1590.005 | Gather Victim Network Information: IP Addresses | Reconnaissance | 🔴 Critical |
-| 6 | | T1595.001 | Active Scanning: Scanning IP Blocks | Reconnaissance | 🔴 Critical 
-| T1595 | Active Scanning | Reconnaissance | 🔴 Critical 
-| T1590.005 | Gather Victim Network Information: IP Addresses | Reconnaissance | 🟠 High 
-| T1133 | External Remote Services | Initial Access | 🔴 Critical |
-| 7 | | T1595.001 | Active Scanning: Scanning IP Blocks | Reconnaissance | 🔴 Critical |
-| T1110.001 | Brute Force: Password Guessing | Credential Access | 🔴 Critical |
-| T1110 | Brute Force | Credential Access | 🔴 Critical 
-| T1133 | External Remote Services | Initial Access | 🔴 Critical 
-| T1021.001 | Remote Services: Remote Desktop Protocol | Lateral Movement | 🔴 Critical 
-| 8 | | T1595.001 | Active Scanning: Scanning IP Blocks | Reconnaissance | 🔴 Critical |
-| T1595 | Active Scanning | Reconnaissance | 🔴 Critical | 
-| T1110 | Brute Force | Credential Access | 🔴 Critical | 
-| T1133 | External Remote Services | Initial Access | 🔴 Critical |
-| 9 | | T1595.001 | Active Scanning: Scanning IP Blocks | Reconnaissance | 🔴 Critical |
-| T1595 | Active Scanning | Reconnaissance | 🔴 Critical |
-| T1590.005 | Gather Victim Network Information: IP Addresses | Reconnaissance | 🟠 High |
-| T1110 | Brute Force | Credential Access | 🔴 Critical |
-| T1133 | External Remote Services | Initial Access | 🔴 Critical |
-| 10 | | T1595.001 | Active Scanning: Scanning IP Blocks | Reconnaissance | 🔴 Critical | 
-| T1595 | Active Scanning | Reconnaissance | 🔴 Critical |
-| T1110.001 | Brute Force: Password Guessing | Credential Access | 🔴 Critical | 
-| T1110 | Brute Force | Credential Access | 🔴 Critical | 
-| T1133 | External Remote Services | Initial Access | 🔴 Critical |
-| 11 | | T1595.001 | Active Scanning: Scanning IP Blocks | Reconnaissance | 🔴 Critical |
-| T1595 | Active Scanning | Reconnaissance | 🔴 Critical |
-| T1590.005 | Gather Victim Network Information: IP Addresses | Reconnaissance | 🟠 High |
-| T1583.003 | Acquire Infrastructure: Virtual Private Server | Resource Development | 🟠 High |
-| T1090 | Proxy | Defense Evasion | 🟠 High |
-| 12 | | T1110.001 | Brute Force: Password Guessing | Credential Access | 🔴 Critical | 
-| T1110.003 | Brute Force: Password Spraying | Credential Access | 🔴 Critical | 
-| T1110 | Brute Force | Credential Access | 🔴 Critical | 
-| T1078 | Valid Accounts | Defense Evasion / Initial Access | 🔴 Critical | 
-| T1133 | External Remote Services | Initial Access | 🔴 Critical |
-| T1021.001 | Remote Services: Remote Desktop Protocol | Lateral Movement |
-| 13 | | T1110.001 | Brute Force: Password Guessing | Credential Access | 🔴 Critical | 
-| T1110.003 | Brute Force: Password Spraying | Credential Access | 🔴 Critical |
-| T1110 | Brute Force | Credential Access | 🔴 Critical | 
-| T1078 | Valid Accounts | Defense Evasion / Initial Access | 🔴 Critical | 
-| T1133 | External Remote Services | Initial Access | 🔴 Critical |
-| T1021.001 | Remote Services: Remote Desktop Protocol | Lateral Movement | 🔴 Critical |
-| 14 | | T1110.001 | Brute Force: Password Guessing | Credential Access | 🔴 Critical |
-| T1110.003 | Brute Force: Password Spraying | Credential Access | 🔴 Critical |
-| T1110 | Brute Force | Credential Access | 🔴 Critical |
-| T1078 | Valid Accounts | Defense Evasion / Initial Access | 🔴 Critical |
-| T1133 | External Remote Services | Initial Access | 🔴 Critical |
-| 15 | | T1110.001 | Brute Force: Password Guessing | Credential Access | 🔴 Critical |
-| T1110.003 | Brute Force: Password Spraying | Credential Access | 🔴 Critical |
-| T1110 | Brute Force | Credential Access | 🔴 Critical |
-| T1078.003 | Valid Accounts: Local Accounts | Initial Access | 🔴 Critical |
-| T1133 | External Remote Services | Initial Access | 🔴 Critical |
-| 16 | | T1110.001 | Brute Force: Password Guessing | Credential Access | 🔴 Critical |
-| T1110 | Brute Force | Credential Access | 🔴 Critical | 
-| T1090 | Proxy | Defense Evasion | 🟠 High |
-| T1090.003 | Proxy: Multi-hop Proxy | Defense Evasion | 🟠 High |
-| T1583.003 | Acquire Infrastructure: Virtual Private Server | Resource Development | 🟠 High |
-| T1078 | Valid Accounts | Initial Access | 🔴 Critical |
-| 17 | | T1078 | Valid Accounts | Defense Evasion / Initial Access | 🔴 Critical |
-| T1078.003 | Valid Accounts: Local Accounts | Initial Access | 🔴 Critical |
-| T1133 | External Remote Services | Initial Access | 🔴 Critical |
-| T1021.001 | Remote Services: Remote Desktop Protocol | Lateral Movement | 🔴 Critical |
-| T1090.003 | Proxy: Multi-hop Proxy | Defense Evasion | 🟠 High |
-| 18 | | T1078 | Valid Accounts | Defense Evasion / Initial Access | 🔴 Critical |
-| T1078.003 | Valid Accounts: Local Accounts | Initial Access | 🔴 Critical |
-| T1133 | External Remote Services | Initial Access | 🔴 Critical |
-| T1021.001 | Remote Services: Remote Desktop Protocol | Lateral Movement | 🔴 Critical |
-| T1090.003 | Proxy: Multi-hop Proxy | Defense Evasion | 🟠 High |
-| T1583.003 | Acquire Infrastructure: Virtual Private Server | Resource Development |
-| 19 | | T1078 | Valid Accounts | Defense Evasion / Initial Access | 🔴 Critical |
-| T1078.003 | Valid Accounts: Local Accounts | Initial Access | 🔴 Critical |
-| T1133 | External Remote Services | Initial Access | 🔴 Critical |
-| T1021.001 | Remote Services: Remote Desktop Protocol | Lateral Movement | 🔴 Critical |
-| T1583.003 | Acquire Infrastructure: Virtual Private Server | Resource Development | 🟠 High |
-| T1090 | Proxy | Defense Evasion | 🟠 High |
-| 20 | | T1078.003 | Valid Accounts: Local Accounts | Initial Access | 🔴 Critical |
-| T1078 | Valid Accounts | Defense Evasion / Initial Access | 🔴 Critical |
-| T1110.001 | Brute Force: Password Guessing | Credential Access | 🔴 Critical |
-| T1021.001 | Remote Services: Remote Desktop Protocol | Lateral Movement | 🔴 Critical |
-| T1133 | External Remote Services | Initial Access | 🔴 Critical |
-| T1098 | Account Manipulation | Persistence | 🟠 High |
-| 21 | | T1078.003 | Valid Accounts: Local Accounts | Initial Access | 🔴 Critical |
-| T1078 | Valid Accounts | Defense Evasion / Persistence | 🔴 Critical |
-| T1021.001 | Remote Services: Remote Desktop Protocol | Lateral Movement | 🔴 Critical |
-| T1133 | External Remote Services | Initial Access | 🔴 Critical |
-| T1583.003 | Acquire Infrastructure: Virtual Private Server | Resource Development | 🟠 High |
-| T1090 | Proxy | Defense Evasion | 🟠 High |
-| 22 | | T1078.003 | Valid Accounts: Local Accounts | Initial Access | 🔴 Critical |
-| T1078 | Valid Accounts | Defense Evasion / Initial Access | 🔴 Critical |
-| T1133 | External Remote Services | Initial Access | 🔴 Critical |
-| T1021.001 | Remote Services: Remote Desktop Protocol | Lateral Movement | 🔴 Critical |
-| T1583.003 | Acquire Infrastructure: Virtual Private Server | Resource Development | 
-| 23 | | T1078.003 | Valid Accounts: Local Accounts | Initial Access | 🔴 Critical |
-| T1078 | Valid Accounts | Defense Evasion / Persistence | 🔴 Critical |
-| T1021.001 | Remote Services: Remote Desktop Protocol | Lateral Movement | 🔴 Critical |
-| T1583.003 | Acquire Infrastructure: Virtual Private Server | Resource Development | 🟠 High |
-| T1090 | Proxy | Defense Evasion | 🟠 High |
-| T1008 | Fallback Channels | Command and Control | 🟠 High |
-| 24 | | T1059.003 | Command and Scripting Interpreter: Windows Command Shell | Execution | 🔴 Critical |
-| T1059 | Command and Scripting Interpreter | Execution | 🔴 Critical |
-| T1021.001 | Remote Services: Remote Desktop Protocol | Lateral Movement | 🔴 Critical |
-| T1078.003 | Valid Accounts: Local Accounts | Defense Evasion | 🔴 Critical | 
-| 25 | | T1005 | Data from Local System | Collection | 🔴 Critical |
-| T1083 | File and Directory Discovery | Discovery | 🟠 High |
-| T1552.001 | Unsecured Credentials: Credentials in Files | Credential Access | 🔴 Critical |
-| T1213 | Data from Information Repositories | Collection | 🟠 High |
-| T1074.001 | Data Staged: Local Data Staging | Collection | 🟠 High |
-| 26 | | T1036.007 | Masquerading: Double File Extension | Defense Evasion | 🔴 Critical |
-| T1036 | Masquerading | Defense Evasion | 🔴 Critical |
-| T1027 | Obfuscated Files or Information | Defense Evasion | 🟠 High |
-| T1204.002 | User Execution: Malicious File | Execution | 🔴 Critical |
-| T1105 | Ingress Tool Transfer | Command and Control | 🔴 Critical |
-| 27 | | T1036.007 | Masquerading: Double File Extension | Defense Evasion | 🔴 Critical |
-| T1036 | Masquerading | Defense Evasion | 🔴 Critical |
-| T1027 | Obfuscated Files or Information | Defense Evasion | 🟠 High |
-| T1105 | Ingress Tool Transfer | Command and Control | 🔴 Critical |
-| T1204.002 | User Execution: Malicious File | Execution | 🔴 Critical |
-| 28 | | T1036.007 | Masquerading: Double File Extension | Defense Evasion | 🔴 Critical |
-| T1036 | Masquerading | Defense Evasion | 🔴 Critical |
-| T1105 | Ingress Tool Transfer | Command and Control | 🔴 Critical |
-| T1027 | Obfuscated Files or Information | Defense Evasion | 🟠 High |
-| T1588.001 | Obtain Capabilities: Malware | Resource Development | 🟠 High |
-| 29 | | T1036.005 | Masquerading: Match Legitimate Name or Location | Defense Evasion | 🔴 Critical |
-| T1036 | Masquerading | Defense Evasion | 🔴 Critical |
-| T1543.003 | Create or Modify System Process: Windows Service | Persistence | 🔴 Critical |
-| T1574 | Hijack Execution Flow | Persistence / Defense Evasion | 🟠 High |
-| T1027 | Obfuscated Files or Information | Defense Evasion | 🟠 High |
-| 30 | | T1059.001 | Command and Scripting: PowerShell | Execution | 🔴 Critical |
-| T1071.001 | Application Layer Protocol: Web Protocols | C2 | 🔴 Critical |
-| T1095 | Non-Application Layer Protocol | C2 | 🔴 Critical |
-| T1055 | Process Injection | Defense Evasion / Privilege Escalation | 🔴 Critical |
-| T1562.001 | Impair Defenses: Disable or Modify Tools | Defense Evasion | 🔴 Critical |
-| T1588.001 | Obtain Capabilities: Malware | Resource Development | 🟠 High | 
-| 31 | | T1562.001 | Impair Defenses: Disable or Modify Tools | Defense Evasion | 🔴 Critical | 
-| T1562 | Impair Defenses | Defense Evasion | 🔴 Critical | 
-| T1078.003 | Valid Accounts: Local Accounts | Defense Evasion | 🔴 Critical | 
-| T1059.001 | Command and Scripting: PowerShell | Execution | 🟠 High |
-| T1112 | Modify Registry | Defense Evasion | 🟠 High |
-| 32 | | T1204.002 | User Execution: Malicious File | Execution | 🔴 Critical |
-| T1204 | User Execution | Execution | 🔴 Critical |
-| T1059.003 | Command and Scripting: Windows Command Shell | Execution | 🔴 Critical |
-| T1036.005 | Masquerading: Match Legitimate Name or Location | Defense Evasion | 🔴 Critical |
-| T1105 | Ingress Tool Transfer | Command and Control | 🔴 Critical |
-| 33 | | T1059.003 | Command and Scripting: Windows Command Shell | Execution | 🔴 Critical |
-| T1547.001 | Boot or Logon Autostart: Registry Run Keys / Startup Folder | Persistence | 🔴 Critical |
-| T1053.005 | Scheduled Task/Job: Scheduled Task | Persistence | 🔴 Critical |
-| T1036.005 | Masquerading: Match Legitimate Name or Location | Defense Evasion | 🔴 Critical |
-| T1105 | Ingress Tool Transfer | Command and Control | 🔴 Critical | 
-| 34 | | T1059.003 | Command and Scripting: Windows Command Shell | Execution | 🔴 Critical |
-| T1053.005 | Scheduled Task/Job: Scheduled Task | Persistence | 🔴 Critical |
-| T1036.005 | Masquerading: Match Legitimate Name or Location | Defense Evasion | 🔴 Critical |
-| T1543.003 | Create or Modify System Process: Windows Service | Persistence | 🟠 High |
-| T1105 | Ingress Tool Transfer | Command and Control | 🔴 Critical |
-| 35 | | T1095 | Non-Application Layer Protocol | Command and Control | 🔴 Critical |
-| T1071 | Application Layer Protocol | Command and Control | 🔴 Critical |
-| T1043 | Commonly Used Port | Command and Control | 🟠 High |
-| T1583.003 | Acquire Infrastructure: Virtual Private Server | Resource Development | 🟠 High |
-| T1008 | Fallback Channels | Command and Control | 🟠 High |
-| 36 | | T1583.003 | Acquire Infrastructure: Virtual Private Server | Resource Development | 🟠 High |
-| T1583 | Acquire Infrastructure | Resource Development | 🟠 High |
-| T1095 | Non-Application Layer Protocol | Command and Control | 🔴 Critical |
-| T1090.003 | Proxy: Multi-hop Proxy | Defense Evasion | 🟠 High |
-| T1008 | Fallback Channels | Command and Control | 🟠 High |
-| 37 | | T1095 | Non-Application Layer Protocol | Command and Control | 🔴 Critical |
-| T1571 | Non-Standard Port | Command and Control | 🔴 Critical |
-| T1071 | Application Layer Protocol | Command and Control | 🟠 High | 
-| T1583.003 | Acquire Infrastructure: Virtual Private Server | Resource Development | 🟠 High |
-| T1008 | Fallback Channels | Command and Control | 🟠 High |
-| 38 | | T1036.005 | Masquerading: Match Legitimate Name or Location | Defense Evasion | 🔴 Critical |
-| T1036 | Masquerading | Defense Evasion | 🔴 Critical |
-| T1543.003 | Create or Modify System Process: Windows Service | Persistence | 🔴 Critical |
-| T1053.005 | Scheduled Task/Job: Scheduled Task | Persistence | 🔴 Critical |
-| T1574 | Hijack Execution Flow | Persistence / Defense Evasion | 🟠 High |
-| T1027 | Obfuscated Files or Information | Defense Evasion | 🟠 High |
----
-
 ## 🔍 Flag Analysis
 
 _All flags below are collapsible for readability._
@@ -6402,6 +6202,204 @@ DeviceFileEvents
 
 ---
 
+## 🧬 MITRE ATT&CK Summary
+
+| Flag | Technique Category | MITRE ID | Priority |
+|-----:|-------------------|----------|----------|
+| 1 | | T1593 | Search Open Websites/Domains | Reconnaissance | 🟡 Medium |
+| T1593.001 | Search Open Websites/Domains: Social Media | Reconnaissance | 🟠 High |
+| T1594 | Search Victim-Owned Websites | Reconnaissance | 🟡 Medium |
+| T1589 | Gather Victim Identity Information | Reconnaissance | 🟠 High |
+| T1591 | Gather Victim Org Information | Reconnaissance | 🟡 Medium | 
+| 2 | | T1580 | Cloud Infrastructure Discovery | Discovery | 🟠 High |
+| T1593 | Search Open Websites/Domains | Reconnaissance | 🟠 High |
+| T1590 | Gather Victim Network Information | Reconnaissance | 🟡 Medium |
+| T1591 | Gather Victim Org Information | Reconnaissance | 🟡 Medium |
+| 3 | | T1590.005 | Gather Victim Network Information: IP Addresses | Reconnaissance | 🔴 Critical |
+| T1593 | Search Open Websites/Domains | Reconnaissance | 🟠 High |
+| T1590 | Gather Victim Network Information | Reconnaissance | 🟠 High |
+| T1595.001 | Active Scanning: Scanning IP Blocks | Reconnaissance | 🟡 Medium |
+| 4 | | T1590.005 | Gather Victim Network Information: IP Addresses | Reconnaissance | 🔴 Critical |
+| T1590 | Gather Victim Network Information | Reconnaissance | 🟠 High |
+| T1595 | Active Scanning | Reconnaissance | 🟠 High |
+| T1133 | External Remote Services | Initial Access | 🔴 Critical |
+| 5 | | T1593.001 | Search Open Websites/Domains: Social Media | Reconnaissance | 🔴 Critical |
+| T1589.002 | Gather Victim Identity Information: Email Addresses | Reconnaissance | 🟠 High |
+| T1591.004 | Gather Victim Org Information: Identify Roles | Reconnaissance | 🟠 High |
+| T1590.005 | Gather Victim Network Information: IP Addresses | Reconnaissance | 🔴 Critical |
+| 6 | | T1595.001 | Active Scanning: Scanning IP Blocks | Reconnaissance | 🔴 Critical 
+| T1595 | Active Scanning | Reconnaissance | 🔴 Critical 
+| T1590.005 | Gather Victim Network Information: IP Addresses | Reconnaissance | 🟠 High 
+| T1133 | External Remote Services | Initial Access | 🔴 Critical |
+| 7 | | T1595.001 | Active Scanning: Scanning IP Blocks | Reconnaissance | 🔴 Critical |
+| T1110.001 | Brute Force: Password Guessing | Credential Access | 🔴 Critical |
+| T1110 | Brute Force | Credential Access | 🔴 Critical 
+| T1133 | External Remote Services | Initial Access | 🔴 Critical 
+| T1021.001 | Remote Services: Remote Desktop Protocol | Lateral Movement | 🔴 Critical 
+| 8 | | T1595.001 | Active Scanning: Scanning IP Blocks | Reconnaissance | 🔴 Critical |
+| T1595 | Active Scanning | Reconnaissance | 🔴 Critical | 
+| T1110 | Brute Force | Credential Access | 🔴 Critical | 
+| T1133 | External Remote Services | Initial Access | 🔴 Critical |
+| 9 | | T1595.001 | Active Scanning: Scanning IP Blocks | Reconnaissance | 🔴 Critical |
+| T1595 | Active Scanning | Reconnaissance | 🔴 Critical |
+| T1590.005 | Gather Victim Network Information: IP Addresses | Reconnaissance | 🟠 High |
+| T1110 | Brute Force | Credential Access | 🔴 Critical |
+| T1133 | External Remote Services | Initial Access | 🔴 Critical |
+| 10 | | T1595.001 | Active Scanning: Scanning IP Blocks | Reconnaissance | 🔴 Critical | 
+| T1595 | Active Scanning | Reconnaissance | 🔴 Critical |
+| T1110.001 | Brute Force: Password Guessing | Credential Access | 🔴 Critical | 
+| T1110 | Brute Force | Credential Access | 🔴 Critical | 
+| T1133 | External Remote Services | Initial Access | 🔴 Critical |
+| 11 | | T1595.001 | Active Scanning: Scanning IP Blocks | Reconnaissance | 🔴 Critical |
+| T1595 | Active Scanning | Reconnaissance | 🔴 Critical |
+| T1590.005 | Gather Victim Network Information: IP Addresses | Reconnaissance | 🟠 High |
+| T1583.003 | Acquire Infrastructure: Virtual Private Server | Resource Development | 🟠 High |
+| T1090 | Proxy | Defense Evasion | 🟠 High |
+| 12 | | T1110.001 | Brute Force: Password Guessing | Credential Access | 🔴 Critical | 
+| T1110.003 | Brute Force: Password Spraying | Credential Access | 🔴 Critical | 
+| T1110 | Brute Force | Credential Access | 🔴 Critical | 
+| T1078 | Valid Accounts | Defense Evasion / Initial Access | 🔴 Critical | 
+| T1133 | External Remote Services | Initial Access | 🔴 Critical |
+| T1021.001 | Remote Services: Remote Desktop Protocol | Lateral Movement |
+| 13 | | T1110.001 | Brute Force: Password Guessing | Credential Access | 🔴 Critical | 
+| T1110.003 | Brute Force: Password Spraying | Credential Access | 🔴 Critical |
+| T1110 | Brute Force | Credential Access | 🔴 Critical | 
+| T1078 | Valid Accounts | Defense Evasion / Initial Access | 🔴 Critical | 
+| T1133 | External Remote Services | Initial Access | 🔴 Critical |
+| T1021.001 | Remote Services: Remote Desktop Protocol | Lateral Movement | 🔴 Critical |
+| 14 | | T1110.001 | Brute Force: Password Guessing | Credential Access | 🔴 Critical |
+| T1110.003 | Brute Force: Password Spraying | Credential Access | 🔴 Critical |
+| T1110 | Brute Force | Credential Access | 🔴 Critical |
+| T1078 | Valid Accounts | Defense Evasion / Initial Access | 🔴 Critical |
+| T1133 | External Remote Services | Initial Access | 🔴 Critical |
+| 15 | | T1110.001 | Brute Force: Password Guessing | Credential Access | 🔴 Critical |
+| T1110.003 | Brute Force: Password Spraying | Credential Access | 🔴 Critical |
+| T1110 | Brute Force | Credential Access | 🔴 Critical |
+| T1078.003 | Valid Accounts: Local Accounts | Initial Access | 🔴 Critical |
+| T1133 | External Remote Services | Initial Access | 🔴 Critical |
+| 16 | | T1110.001 | Brute Force: Password Guessing | Credential Access | 🔴 Critical |
+| T1110 | Brute Force | Credential Access | 🔴 Critical | 
+| T1090 | Proxy | Defense Evasion | 🟠 High |
+| T1090.003 | Proxy: Multi-hop Proxy | Defense Evasion | 🟠 High |
+| T1583.003 | Acquire Infrastructure: Virtual Private Server | Resource Development | 🟠 High |
+| T1078 | Valid Accounts | Initial Access | 🔴 Critical |
+| 17 | | T1078 | Valid Accounts | Defense Evasion / Initial Access | 🔴 Critical |
+| T1078.003 | Valid Accounts: Local Accounts | Initial Access | 🔴 Critical |
+| T1133 | External Remote Services | Initial Access | 🔴 Critical |
+| T1021.001 | Remote Services: Remote Desktop Protocol | Lateral Movement | 🔴 Critical |
+| T1090.003 | Proxy: Multi-hop Proxy | Defense Evasion | 🟠 High |
+| 18 | | T1078 | Valid Accounts | Defense Evasion / Initial Access | 🔴 Critical |
+| T1078.003 | Valid Accounts: Local Accounts | Initial Access | 🔴 Critical |
+| T1133 | External Remote Services | Initial Access | 🔴 Critical |
+| T1021.001 | Remote Services: Remote Desktop Protocol | Lateral Movement | 🔴 Critical |
+| T1090.003 | Proxy: Multi-hop Proxy | Defense Evasion | 🟠 High |
+| T1583.003 | Acquire Infrastructure: Virtual Private Server | Resource Development |
+| 19 | | T1078 | Valid Accounts | Defense Evasion / Initial Access | 🔴 Critical |
+| T1078.003 | Valid Accounts: Local Accounts | Initial Access | 🔴 Critical |
+| T1133 | External Remote Services | Initial Access | 🔴 Critical |
+| T1021.001 | Remote Services: Remote Desktop Protocol | Lateral Movement | 🔴 Critical |
+| T1583.003 | Acquire Infrastructure: Virtual Private Server | Resource Development | 🟠 High |
+| T1090 | Proxy | Defense Evasion | 🟠 High |
+| 20 | | T1078.003 | Valid Accounts: Local Accounts | Initial Access | 🔴 Critical |
+| T1078 | Valid Accounts | Defense Evasion / Initial Access | 🔴 Critical |
+| T1110.001 | Brute Force: Password Guessing | Credential Access | 🔴 Critical |
+| T1021.001 | Remote Services: Remote Desktop Protocol | Lateral Movement | 🔴 Critical |
+| T1133 | External Remote Services | Initial Access | 🔴 Critical |
+| T1098 | Account Manipulation | Persistence | 🟠 High |
+| 21 | | T1078.003 | Valid Accounts: Local Accounts | Initial Access | 🔴 Critical |
+| T1078 | Valid Accounts | Defense Evasion / Persistence | 🔴 Critical |
+| T1021.001 | Remote Services: Remote Desktop Protocol | Lateral Movement | 🔴 Critical |
+| T1133 | External Remote Services | Initial Access | 🔴 Critical |
+| T1583.003 | Acquire Infrastructure: Virtual Private Server | Resource Development | 🟠 High |
+| T1090 | Proxy | Defense Evasion | 🟠 High |
+| 22 | | T1078.003 | Valid Accounts: Local Accounts | Initial Access | 🔴 Critical |
+| T1078 | Valid Accounts | Defense Evasion / Initial Access | 🔴 Critical |
+| T1133 | External Remote Services | Initial Access | 🔴 Critical |
+| T1021.001 | Remote Services: Remote Desktop Protocol | Lateral Movement | 🔴 Critical |
+| T1583.003 | Acquire Infrastructure: Virtual Private Server | Resource Development | 
+| 23 | | T1078.003 | Valid Accounts: Local Accounts | Initial Access | 🔴 Critical |
+| T1078 | Valid Accounts | Defense Evasion / Persistence | 🔴 Critical |
+| T1021.001 | Remote Services: Remote Desktop Protocol | Lateral Movement | 🔴 Critical |
+| T1583.003 | Acquire Infrastructure: Virtual Private Server | Resource Development | 🟠 High |
+| T1090 | Proxy | Defense Evasion | 🟠 High |
+| T1008 | Fallback Channels | Command and Control | 🟠 High |
+| 24 | | T1059.003 | Command and Scripting Interpreter: Windows Command Shell | Execution | 🔴 Critical |
+| T1059 | Command and Scripting Interpreter | Execution | 🔴 Critical |
+| T1021.001 | Remote Services: Remote Desktop Protocol | Lateral Movement | 🔴 Critical |
+| T1078.003 | Valid Accounts: Local Accounts | Defense Evasion | 🔴 Critical | 
+| 25 | | T1005 | Data from Local System | Collection | 🔴 Critical |
+| T1083 | File and Directory Discovery | Discovery | 🟠 High |
+| T1552.001 | Unsecured Credentials: Credentials in Files | Credential Access | 🔴 Critical |
+| T1213 | Data from Information Repositories | Collection | 🟠 High |
+| T1074.001 | Data Staged: Local Data Staging | Collection | 🟠 High |
+| 26 | | T1036.007 | Masquerading: Double File Extension | Defense Evasion | 🔴 Critical |
+| T1036 | Masquerading | Defense Evasion | 🔴 Critical |
+| T1027 | Obfuscated Files or Information | Defense Evasion | 🟠 High |
+| T1204.002 | User Execution: Malicious File | Execution | 🔴 Critical |
+| T1105 | Ingress Tool Transfer | Command and Control | 🔴 Critical |
+| 27 | | T1036.007 | Masquerading: Double File Extension | Defense Evasion | 🔴 Critical |
+| T1036 | Masquerading | Defense Evasion | 🔴 Critical |
+| T1027 | Obfuscated Files or Information | Defense Evasion | 🟠 High |
+| T1105 | Ingress Tool Transfer | Command and Control | 🔴 Critical |
+| T1204.002 | User Execution: Malicious File | Execution | 🔴 Critical |
+| 28 | | T1036.007 | Masquerading: Double File Extension | Defense Evasion | 🔴 Critical |
+| T1036 | Masquerading | Defense Evasion | 🔴 Critical |
+| T1105 | Ingress Tool Transfer | Command and Control | 🔴 Critical |
+| T1027 | Obfuscated Files or Information | Defense Evasion | 🟠 High |
+| T1588.001 | Obtain Capabilities: Malware | Resource Development | 🟠 High |
+| 29 | | T1036.005 | Masquerading: Match Legitimate Name or Location | Defense Evasion | 🔴 Critical |
+| T1036 | Masquerading | Defense Evasion | 🔴 Critical |
+| T1543.003 | Create or Modify System Process: Windows Service | Persistence | 🔴 Critical |
+| T1574 | Hijack Execution Flow | Persistence / Defense Evasion | 🟠 High |
+| T1027 | Obfuscated Files or Information | Defense Evasion | 🟠 High |
+| 30 | | T1059.001 | Command and Scripting: PowerShell | Execution | 🔴 Critical |
+| T1071.001 | Application Layer Protocol: Web Protocols | C2 | 🔴 Critical |
+| T1095 | Non-Application Layer Protocol | C2 | 🔴 Critical |
+| T1055 | Process Injection | Defense Evasion / Privilege Escalation | 🔴 Critical |
+| T1562.001 | Impair Defenses: Disable or Modify Tools | Defense Evasion | 🔴 Critical |
+| T1588.001 | Obtain Capabilities: Malware | Resource Development | 🟠 High | 
+| 31 | | T1562.001 | Impair Defenses: Disable or Modify Tools | Defense Evasion | 🔴 Critical | 
+| T1562 | Impair Defenses | Defense Evasion | 🔴 Critical | 
+| T1078.003 | Valid Accounts: Local Accounts | Defense Evasion | 🔴 Critical | 
+| T1059.001 | Command and Scripting: PowerShell | Execution | 🟠 High |
+| T1112 | Modify Registry | Defense Evasion | 🟠 High |
+| 32 | | T1204.002 | User Execution: Malicious File | Execution | 🔴 Critical |
+| T1204 | User Execution | Execution | 🔴 Critical |
+| T1059.003 | Command and Scripting: Windows Command Shell | Execution | 🔴 Critical |
+| T1036.005 | Masquerading: Match Legitimate Name or Location | Defense Evasion | 🔴 Critical |
+| T1105 | Ingress Tool Transfer | Command and Control | 🔴 Critical |
+| 33 | | T1059.003 | Command and Scripting: Windows Command Shell | Execution | 🔴 Critical |
+| T1547.001 | Boot or Logon Autostart: Registry Run Keys / Startup Folder | Persistence | 🔴 Critical |
+| T1053.005 | Scheduled Task/Job: Scheduled Task | Persistence | 🔴 Critical |
+| T1036.005 | Masquerading: Match Legitimate Name or Location | Defense Evasion | 🔴 Critical |
+| T1105 | Ingress Tool Transfer | Command and Control | 🔴 Critical | 
+| 34 | | T1059.003 | Command and Scripting: Windows Command Shell | Execution | 🔴 Critical |
+| T1053.005 | Scheduled Task/Job: Scheduled Task | Persistence | 🔴 Critical |
+| T1036.005 | Masquerading: Match Legitimate Name or Location | Defense Evasion | 🔴 Critical |
+| T1543.003 | Create or Modify System Process: Windows Service | Persistence | 🟠 High |
+| T1105 | Ingress Tool Transfer | Command and Control | 🔴 Critical |
+| 35 | | T1095 | Non-Application Layer Protocol | Command and Control | 🔴 Critical |
+| T1071 | Application Layer Protocol | Command and Control | 🔴 Critical |
+| T1043 | Commonly Used Port | Command and Control | 🟠 High |
+| T1583.003 | Acquire Infrastructure: Virtual Private Server | Resource Development | 🟠 High |
+| T1008 | Fallback Channels | Command and Control | 🟠 High |
+| 36 | | T1583.003 | Acquire Infrastructure: Virtual Private Server | Resource Development | 🟠 High |
+| T1583 | Acquire Infrastructure | Resource Development | 🟠 High |
+| T1095 | Non-Application Layer Protocol | Command and Control | 🔴 Critical |
+| T1090.003 | Proxy: Multi-hop Proxy | Defense Evasion | 🟠 High |
+| T1008 | Fallback Channels | Command and Control | 🟠 High |
+| 37 | | T1095 | Non-Application Layer Protocol | Command and Control | 🔴 Critical |
+| T1571 | Non-Standard Port | Command and Control | 🔴 Critical |
+| T1071 | Application Layer Protocol | Command and Control | 🟠 High | 
+| T1583.003 | Acquire Infrastructure: Virtual Private Server | Resource Development | 🟠 High |
+| T1008 | Fallback Channels | Command and Control | 🟠 High |
+| 38 | | T1036.005 | Masquerading: Match Legitimate Name or Location | Defense Evasion | 🔴 Critical |
+| T1036 | Masquerading | Defense Evasion | 🔴 Critical |
+| T1543.003 | Create or Modify System Process: Windows Service | Persistence | 🔴 Critical |
+| T1053.005 | Scheduled Task/Job: Scheduled Task | Persistence | 🔴 Critical |
+| T1574 | Hijack Execution Flow | Persistence / Defense Evasion | 🟠 High |
+| T1027 | Obfuscated Files or Information | Defense Evasion | 🟠 High |
+---
 
 ## 🚨 Detection Gaps & Recommendations
 ### Observed Gaps
