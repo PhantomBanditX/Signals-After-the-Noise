@@ -40,13 +40,14 @@ hunting — no security alerts fired during the entire compromise window.
   - `DeviceProcessEvents`
   - `DeviceFileEvents`
   - `DeviceEvents`
-- **Timeframe:** 09 December 2025 → 23 December 2025 UTC
+  - `SigninLogs`
+- **Timeframe:** 2025-12-13 09:00 UTC → 2025-12-13 18:00 UTC
 - **Target Host:** `azwks-phtg-02` (Windows 10 Enterprise, East US 2)
 - **Public IP:** `74.249.82.162`
 - **Threat Actor Infrastructure:** `173.244.55.0/24` (Uruguay, South America)
 
 > **Note:** The data sources listed in the original template 
-> (`SigninLogs`, `CloudAppEvents`, `EmailEvents`) are not applicable 
+> (`CloudAppEvents`, `EmailEvents`) are not applicable 
 > to this hunt. This investigation used Microsoft Defender for Endpoint 
 > (MDE) tables ingested into Microsoft Sentinel. The original template 
 > fields have been corrected to reflect the actual data sources used.
