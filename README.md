@@ -354,73 +354,24 @@ _All flags below are collapsible for readability._
 <summary id="-flag-1">🚩 <strong>Flag 1: <Technique Name></strong></summary>
 
 ### 🎯 Objective
-Identify the target organisation under investigation to anchor the threat hunt 
-and correlate infrastructure, telemetry, and OSINT findings to a single entity.
+The lead-up logged failed logons from several regions before the successful one. Easy to call it brute force and move on. Test that assumption. If the successful access was not brute force, what was the actual vector?
 
-### 📌 Finding
-The fictional company under investigation is **PHTG**. The abbreviation was 
-identified through open-source evidence analysis prior to any telemetry 
-investigation. It appeared consistently across the LinkedIn post, Azure portal 
-screenshot, VM naming conventions, and internal directory structures.
-
-### 🔍 Evidence
-
-| Field | Value |
-|------|-------|
-| Company Abbreviation | PHTG |
-| VM Name (Exhibit B) | azwks-phtg-02 |
-| Internal Path (Brief) | C:\ProgramData\PHTG\HealthCloud\ |
-| Employee (Exhibit A) | Sarah Chen — Cloud Engineer at PHTG |
-| Host | N/A — OSINT phase, no endpoint telemetry involved |
-| Timestamp | N/A — Static open-source evidence |
-| Process | N/A — No process execution involved |
-| Parent Process | N/A — No process execution involved |
-| Command Line | N/A — No process execution involved |
+```kql
+SigninLogs
+| where TimeGenerated between (todatetime('2025-12-13 09:00') .. todatetime('2025-12-13 18:00'))
+| where ResultSignature == "FAILURE"
+| project TimeGenerated, ResultType, ResultSignature, ResultDescription, Location, LocationDetails, AuthenticationRequirement
+| order by TimeGenerated desc
+```
+<img width="1919" height="821" alt="Image" src="https://github.com/user-attachments/assets/31f86f8b-cae2-49e5-a7d9-96eb42252683" />
 
 ### 💡 Why it matters
-A company's abbreviation appearing in VM naming conventions, internal directory 
-structures, and employee social media profiles constitutes an OPSEC leak. An 
-attacker correlating these signals across public sources can:
-- Identify and enumerate cloud infrastructure belonging to the target
-- Search for additional exposed assets using naming patterns (e.g. `azwks-phtg-*`)
-- Build a target profile before conducting any active scanning
+- Azure AD already accepted the username/password.
+- MFA was the only thing preventing access.
+- This is not what you would expect from a password guessing attack.
 
-In this case, the LinkedIn post by Sarah Chen inadvertently confirmed the 
-company abbreviation, the VM naming convention, and the existence of an 
-internet-exposed Azure VM — all without the attacker touching a single 
-packet.
-
-### 🔧 KQL Query Used
-N/A — This finding was derived entirely from open-source evidence (OSINT). 
-No KQL query was required. The company abbreviation was extracted directly 
-from:
-- Exhibit A: LinkedIn post (employee job title and company affiliation)
-- Exhibit B: Azure portal screenshot (VM name `azwks-phtg-02`)
-- Hunt brief: Explicit references to PHTG throughout the briefing document
-
-### 🖼️ Screenshot
-<img width="872" height="1628" alt="image" src="https://github.com/user-attachments/assets/48e73031-9641-42fe-b651-4b4226682306" />
-
-<img width="886" height="658" alt="image" src="https://github.com/user-attachments/assets/23c2f4bd-dd66-4553-848d-7de25334313b" />
-
-### 🛠️ Detection Recommendation
-
-**Hunting Tip:**  
-Organisations should conduct regular OSINT reviews of employee social media 
-profiles, particularly those in cloud engineering, DevOps, and IT roles. 
-Key controls to implement:
-
-- **Enforce a VM naming policy** that does not expose company abbreviations, 
-  environment types, or asset roles in publicly visible resource names
-- **Social media awareness training** should explicitly cover the risks of 
-  photographing workstations, cloud consoles, or infrastructure dashboards
-- **Azure Policy** can enforce naming conventions that obscure organisational 
-  identifiers in resource names
-- Periodically search LinkedIn, Twitter/X, and GitHub for company 
-  abbreviations combined with cloud provider keywords to identify unintentional 
-  exposure before threat actors do
-
-</details>
+### Conclusion
+The successful authentication was not consistent with a brute-force attack. The telemetry indicates the attacker possessed valid credentials and repeatedly attempted authentication before being challenged for MFA. Based on the evidence, the most likely access vector would be ``Password Reuse.``
 
 ---
 
