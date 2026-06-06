@@ -912,7 +912,7 @@ DeviceEvents
 - Reading LSASS memory is consistent with credential dumping activity
 
 ### Conclusion
-The ActionType that confirmed LSASS memory was read was ``ReadProcessMemoryApiCall``. This event confirmed credential-access behavior because PowerShell moved from opening LSASS to actually reading its memory.
+The ActionType ``ReadProcessMemoryApiCall`` confirmed that the operator progressed beyond handle access and successfully read memory from ``lsass.exe``. Combined with the earlier ``OpenProcessApiCall`` activity, this provides strong evidence of credential-access behavior consistent with LSASS credential dumping techniques.
 
 </details>
 
