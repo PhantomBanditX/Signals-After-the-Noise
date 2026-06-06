@@ -98,7 +98,7 @@ _All flags below are collapsible for readability._
 ---
 
 <details>
-<summary id="-flag-1">🚩 <strong>Flag 1: <Technique Name></strong></summary>
+<summary id="-flag-1">🚩 <strong>Flag 01: Password Reuse</strong></summary>
 
 ### 🎯 Objective
 The lead-up logged failed logons from several regions before the successful one. Easy to call it brute force and move on. Test that assumption. If the successful access was not brute force, what was the actual vector?
