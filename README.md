@@ -986,9 +986,7 @@ The ActionType ``ReadProcessMemoryApiCall`` confirmed that the operator progress
 
 ---
 
-<details>
-
-## 🧬 MITRE ATT&CK Summary
+### 🧬 MITRE ATT&CK Summary
 
 | Flag | Technique Category | MITRE ID | Priority |
 |-----:|-------------------|----------|----------|
