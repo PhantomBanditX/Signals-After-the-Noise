@@ -1025,186 +1025,31 @@ The ActionType ``ReadProcessMemoryApiCall`` confirmed that the operator progress
 ## 🚨 Detection Gaps & Recommendations
 ### Observed Gaps
 
-**Gap 1 — RDP Publicly Exposed to the Internet**
-Port 3389 was accessible from `0.0.0.0/0` with no NSG restriction, 
-JIT access policy, or Azure Bastion in place. This was the single 
-architectural failure that made every subsequent attack phase possible.
-
-**Gap 2 — No Account Lockout Policy**
-The `vmadminusername` account received 637 `InvalidUserNameOrPassword` 
-failures without triggering a lockout. An attacker was given unlimited 
-credential guessing attempts against a local administrator account.
-
-**Gap 3 — Weak, Predictable Account Name**
-`vmadminusername` is a default VM provisioning account name that 
-appears near the top of every credential stuffing list. No MFA 
-was enforced. Valid credentials alone were sufficient for full 
-administrative RDP access.
-
-**Gap 4 — Microsoft Defender Running in Passive Mode**
-Defender successfully quarantined the Meterpreter payload three times 
-in active mode — then the threat actor switched it to passive mode. 
-Passive mode detects but does not block. Three subsequent detections 
-produced zero blocking actions. Tamper Protection was not enabled.
-
-**Gap 5 — No File Integrity Baseline for HealthCloud**
-HealthCloud was deployed on 11 December 2025. No file inventory 
-baseline was established at rollout. When the attacker planted 
-`PHTG.exe` and `Launch.bat` in the HealthCloud directory 48 hours 
-later, there was no reference point against which to detect the 
-unauthorised additions.
-
-**Gap 6 — Sensitive Notes Stored in Plaintext on an Internet-Facing VM**
-`notes_sarah.txt` containing internal security-relevant content was 
-stored in `C:\Users\vmAdminUsername\Documents\PHTG\` on a VM 
-accessible via public RDP. An attacker with valid credentials had 
-immediate access to insider intelligence with no additional effort.
-
-**Gap 7 — No Geographic Authentication Controls**
-PHTG operates exclusively in the United States. No Conditional 
-Access policy, NSG rule, or alert existed to flag or block 
-successful RDP authentication from Uruguay or any other 
-unexpected geographic region.
-
-**Gap 8 — No Egress Filtering on Non-Standard Ports**
-The Meterpreter payload attempted to call back to 
-`173.244.55.130:4444`. Port 4444 is the Metasploit default — 
-there is no legitimate business use for outbound TCP/4444 
-from a corporate endpoint. No egress filtering rule existed 
-to block or alert on this traffic.
-
-**Gap 9 — No OPSEC Controls Around Social Media**
-The entire attack was enabled by a single LinkedIn post. No 
-social media policy, security awareness training, or OSINT 
-monitoring programme existed to prevent or detect the 
-unintentional infrastructure disclosure.
-
-**Gap 10 — Zero Alerts Fired Throughout the Entire Compromise**
-Despite 325 network scanning events, 675 authentication attempts, 
-23 successful unauthorised logons, Meterpreter payload execution, 
-Defender passive mode detections, and C2 callback attempts — 
-no automated alert fired at any stage of this intrusion.
+- Multiple persistence mechanisms (Registry Run Key, Startup Folder shortcut, and custom Event Log source registration) were successfully established before defensive action occurred.
+- The operator implemented both temporary and persistent Microsoft Defender exclusions without generating preventative controls.
+- Command-and-control communications persisted through multiple beaconing channels, increasing operational resilience.
+- LSASS access progressed from process handle acquisition to memory reads consistent with credential dumping activity.
+- Microsoft Defender generated detection events on operator artifacts but did not prevent persistence or credential-access behavior.
 
 ---
 
 ### Recommendations
 
-**R1 — Remove Public RDP Exposure Immediately**
-Implement Azure Just-In-Time VM Access or deploy Azure Bastion. 
-Remove the public IP association from `azwks-phtg-02`. Add an 
-NSG rule explicitly denying inbound TCP/3389 from `0.0.0.0/0`.
-
-**R2 — Enforce Account Lockout and MFA**
-Configure a lockout threshold of 5 invalid attempts with a 
-30-minute lockout duration. Require MFA for all accounts with 
-RDP access. Valid credentials alone must never be sufficient 
-for interactive access to an internet-facing endpoint.
-
-**R3 — Rename and Harden Privileged Accounts**
-Rename `vmadminusername` to a non-obvious, randomised value. 
-Audit all endpoints for predictable admin account naming patterns. 
-Create a honeypot account named `vmadminusername` that triggers 
-a P1 alert on any logon attempt.
-
-**R4 — Enable Defender Tamper Protection and Active Mode**
-Switch all endpoints to Defender active mode. Enable Tamper 
-Protection via Intune or Group Policy to prevent unauthorised 
-mode changes. Alert on any `AntivirusDetectionActionType` event 
-where `ReportSource` contains "passive mode."
-
-**R5 — Establish File Integrity Baselines at Deployment**
-Capture a file inventory hash baseline for every service directory 
-at the moment of deployment. Alert on any executable or batch file 
-created in `C:\ProgramData\` by a non-service account.
-
-**R6 — Implement Geographic Authentication Controls**
-Create a Sentinel Scheduled Query Rule alerting on any successful 
-`RemoteInteractive` or `Network` logon from outside the United 
-States. Treat any non-US successful authentication as a P1 incident 
-until proven otherwise.
-
-**R7 — Block Egress on Non-Standard Ports**
-Implement NSG egress rules restricting outbound connections to 
-approved ports only (80, 443, 53, 123). Block TCP/4444 outbound 
-at the firewall and NSG level. Alert on any outbound connection 
-to a non-standard port from a process in `C:\ProgramData\`.
-
-**R8 — Implement a Social Media OPSEC Programme**
-Publish a clear social media policy prohibiting photographs of 
-workstations, cloud consoles, and infrastructure management tools. 
-Conduct security awareness training with explicit examples of 
-OPSEC failures. Deploy OSINT monitoring to detect unintentional 
-company infrastructure disclosures on LinkedIn, Twitter/X, and GitHub.
-
-**R9 — Block `173.244.55.0/24` at All Network Controls**
-Add the entire /24 subnet as a deny rule on Azure NSGs, perimeter 
-firewalls, and EDR network blocklists. Add the payload SHA256 
-(`224462ce5e3304e3fd0875eeabc829810a894911e3d4091d4e60e67a2687e695`) 
-to the EDR blocklist.
-
-**R10 — Deploy a Detection Rule Library for RDP Compromise**
-Implement the following minimum Sentinel alert rules:
-- High-volume inbound connections on port 3389 from public IPs
-- Any `LogonSuccess` with `LogonType == RemoteInteractive` from a public IP
-- `LogonFailed` volume exceeding 10 per 15-minute window from a single IP
-- Successful authentication from a non-US geographic origin
-- `AntivirusDetectionActionType` with passive mode `ReportSource`
-- Outbound connection on port 4444 from any endpoint
-- Executable or batch file created in `C:\ProgramData\` by a non-system account
+- Create detections for Registry Run Key creation, Startup Folder modifications, and Event Log source registration activity.
+- Monitor for PowerShell execution using -ExecutionPolicy Bypass, encoded commands, and hidden window execution.
+- Generate alerts for Microsoft Defender exclusion additions, removals, and configuration changes.
+- Implement detections for abnormal LSASS access, including OpenProcessApiCall and ReadProcessMemoryApiCall events.
+- Monitor for recurring beaconing patterns, unusual outbound connections, and repeated health-check style communications.
+- Enable credential protection controls and restrict unnecessary access to LSASS memory.
 
 ---
 
 ## 🧾 Final Assessment
 
-This intrusion represents a fully realised, end-to-end external RDP 
-compromise enabled by a single unintentional OPSEC failure and sustained 
-by a cascade of absent defensive controls. The threat actor demonstrated 
-moderate sophistication — opportunistic rather than APT-grade — using 
-commodity tooling (Metasploit Meterpreter, default port 4444, no custom 
-malware), but showed clear operational adaptability when initial C2 
-attempts failed. The decision to relocate the payload into PHTG's own 
-HealthCloud directory, rename it `PHTG.exe`, and create `Launch.bat` as 
-a persistence launcher within 48 hours of service rollout indicates an 
-attacker with situational awareness and the patience to blend into the 
-target environment.
-
-The most significant risk finding is not the sophistication of the 
-attack — it is the complete absence of detection. Zero alerts fired 
-across the entire investigation window. The attacker had 23 confirmed 
-interactive RDP sessions, reviewed internal documentation, executed 
-a known malware family three times, and planted persistence — all 
-without triggering a single automated response. PHTG's current 
-defensive posture is inadequate for an organisation with 
-internet-facing infrastructure and sensitive operational data.
-
-Immediate priorities: remove public RDP exposure, enable Defender 
-active mode with Tamper Protection, enforce MFA on all privileged 
-accounts, and block `173.244.55.0/24` across all network controls. 
-Longer term, this investigation should serve as the case study 
-for a comprehensive security awareness programme, a Sentinel 
-detection rule library, and a zero-trust network access 
-architecture review.
-
+The investigation confirmed a successful compromise of azwks-phtg-01 through the use of valid credentials consistent with Password Reuse. Following initial access, the operator deployed HealthCloud-themed tooling, established multiple persistence mechanisms, implemented defense evasion techniques, and maintained command-and-control communications through redundant beacon channels. Analysis further confirmed credential-access activity through elevated LSASS access and successful LSASS memory reads consistent with credential dumping behavior. The findings demonstrate a multi-stage intrusion involving persistence, defense evasion, command-and-control, and credential-access techniques, providing high confidence that the operator achieved and maintained post-compromise control of the host.
 
 ---
 
-## 📎 Analyst Notes
+## References
+- [NIST SP 800-61r3](https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-61r2.pdf)
 
-- Report structured for interview and portfolio review
-- Evidence reproducible via advanced hunting in Microsoft Sentinel 
-  (`law-cyber-range` workspace) across MDE tables
-- All KQL queries tested and validated against live telemetry 
-  during the hunt window (09–23 December 2025 UTC)
-- Techniques mapped directly to MITRE ATT&CK v14
-- Python post-processing used where KQL limitations prevented 
-  direct cross-ActionType IP correlation (Flag 10)
-- GeoIP enrichment performed using the publicly available 
-  GeoIP2 IPv4 dataset via GitHub raw CSV
-- Flag 11 country count pending query execution — placeholder 
-  retained for analyst to complete
-- All IOCs documented in Flag 36/37/38 evidence tables are 
-  confirmed via telemetry and should be actioned immediately
-- This report was produced as part of the Cyber Range 
-  Hunt 03: Signals Before the Noise (External RDP Compromise, 
-  Intermediate difficulty)
----
