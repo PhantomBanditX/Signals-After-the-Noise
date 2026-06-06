@@ -20,8 +20,13 @@ A threat actor gained access to ``azwks-phtg-01`` using valid credentials obtain
 
 ## 🧭 Scope & Environment
 
-- **Environment:** Microsoft Sentinel (`law-cyber-range` workspace) — 
-  PHTG (Pacific Health Technology Group), cloud infrastructure team
+- **Environment:** Microsoft Sentinel (`law-cyber-range` workspace) 
+- **Organization:** PHTG (Pacific Health Technology Group)
+- **Investigation:** Signals After the Noise 2
+- **Timeframe:** 2025-12-13 09:00 UTC → 2025-12-13 18:00 UTC
+- **Anchor Time:** 2025-12-13 09:48 UTC
+- **Target Host:** `azwks-phtg-01`
+- **Primary Account:** `vmadminusername`
 - **Data Sources:**
   - `DeviceNetworkEvents`
   - `DeviceLogonEvents`
@@ -30,17 +35,13 @@ A threat actor gained access to ``azwks-phtg-01`` using valid credentials obtain
   - `DeviceEvents`
   - `SigninLogs`
   - `DeviceRegistryEvents`
-- **Timeframe:** 2025-12-13 09:00 UTC → 2025-12-13 18:00 UTC
-- **Target Host:** `azwks-phtg-02` (Windows 10 Enterprise, East US 2)
-- **Public IP:** `74.249.82.162`
-- **Threat Actor Infrastructure:** `173.244.55.0/24` (Uruguay, South America)
 
-> **Note:** The data sources listed in the original template 
-> (`CloudAppEvents`, `EmailEvents`) are not applicable 
-> to this hunt. This investigation used Microsoft Defender for Endpoint 
-> (MDE) tables ingested into Microsoft Sentinel. The original template 
-> fields have been corrected to reflect the actual data sources used.
-
+- **Investigation Objectives:**
+  - Determine the actual access vector
+  - Identify persistence mechanisms
+  - Analyze command-and-control activity
+  - Review defense evasion techniques
+  - Confirm credential access activity (LSASS)
 ---
 
 ## 📚 Table of Contents
