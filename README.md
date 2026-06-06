@@ -41,6 +41,7 @@ hunting — no security alerts fired during the entire compromise window.
   - `DeviceFileEvents`
   - `DeviceEvents`
   - `SigninLogs`
+  - `DeviceRegistryEvents`
 - **Timeframe:** 2025-12-13 09:00 UTC → 2025-12-13 18:00 UTC
 - **Target Host:** `azwks-phtg-02` (Windows 10 Enterprise, East US 2)
 - **Public IP:** `74.249.82.162`
