@@ -6,19 +6,7 @@
 
 ## 📌 Executive Summary
 
-A threat actor exploited an unintentional OPSEC failure — a LinkedIn post 
-by PHTG Cloud Engineer Sarah Chen — to identify and compromise an 
-internet-exposed Azure virtual machine (`azwks-phtg-02`) running Windows 10 
-Enterprise with RDP publicly accessible on port 3389. Within 24 hours of 
-the post going live, the attacker brute forced the local administrator 
-account `vmadminusername` from Uruguayan infrastructure, established 23 
-confirmed RDP sessions, delivered and executed a Meterpreter payload 
-(`Trojan:Win32/Meterpreter.RPZ!MTB`), and planted a persistence mechanism 
-inside PHTG's newly deployed HealthCloud service directory. Although all 
-C2 callback attempts to `173.244.55.130:4444` failed, the threat actor 
-retained persistent RDP access and could re-establish a live Meterpreter 
-session at any time. The incident was discovered through proactive threat 
-hunting — no security alerts fired during the entire compromise window.
+A threat actor gained access to ``azwks-phtg-01`` using valid credentials obtained through password reuse rather than brute force. After access was established, the operator deployed HealthCloud-themed tooling, implemented multiple persistence mechanisms, created redundant command-and-control channels, and applied Microsoft Defender exclusions to reduce detection. The intrusion ultimately progressed to credential access activity, where ``powershell.exe`` obtained elevated access to ``lsass.exe`` and successfully read LSASS memory. The investigation reconstructed the full attack chain and confirmed persistence, defense evasion, command-and-control, and credential dumping behaviors on the compromised host.
 
 ---
 
