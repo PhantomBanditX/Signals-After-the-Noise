@@ -24,9 +24,9 @@ hunting — no security alerts fired during the entire compromise window.
 
 ## 🎯 Hunt Objectives
 
-- Identify malicious activity across endpoints and network telemetry  
-- Correlate attacker behavior to MITRE ATT&CK techniques  
-- Document evidence, detection gaps, and response opportunities  
+- Reconstruct the operator's post-compromise activity across endpoint and network telemetry.
+- Identify persistence, command-and-control, and defense evasion techniques used to maintain access.
+- Determine whether the intrusion progressed to credential access and credential dumping activity.  
 
 ---
 
