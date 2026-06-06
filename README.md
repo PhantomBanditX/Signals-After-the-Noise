@@ -834,7 +834,7 @@ The successful authentication was not consistent with a brute-force attack. The 
 
 ### 🎯 Objective
 
-### 📌 Finding
+### 📌 Findings
 
 ```kql
 DeviceEvents
@@ -872,7 +872,7 @@ DeviceEvents
 ```
 <img width="1919" height="821" alt="Image" src="https://github.com/user-attachments/assets/32c5451d-fa8b-4a4d-89d5-38d4163ee536" />
 
-### 📌 Finding 
+### 📌 Findings 
 Analysis of LSASS access events identified two sequential DesiredAccess values requested by PowerShell. The first request used ``5136 (0x1410)``, while the second used ``2047999 (0x1F3FFF)``. The latter corresponds to PROCESS_ALL_ACCESS, granting full access to the LSASS process.
 
 ### 💡 Why it matters
@@ -891,6 +891,7 @@ The DesiredAccess value ``2047999 (0x1F3FFF)`` grants full access to LSASS. The 
 <summary id="-flag-29">🚩 <strong>Flag 29: <Technique Name></strong></summary>
 
 ### 🎯 Objective
+Confirm whether the operator successfully read memory from ``lsass.exe`` after obtaining full process access.
 
 ```kql
 DeviceEvents
@@ -902,8 +903,7 @@ DeviceEvents
 ```
 <img width="1919" height="821" alt="Image" src="https://github.com/user-attachments/assets/73007e2d-fdb1-4301-a486-85b8be06316e" />
 
-### 📌 Finding 
-
+### 📌 Findings
 Analysis of DeviceEvents identified a ``ReadProcessMemoryApiCall`` event involving ``lsass.exe`` during the investigation window. The event was initiated by ``powershell.exe`` under the ``vmadminusername`` account, confirming activity beyond simple handle access.
 
 ### 💡 Why it matters
