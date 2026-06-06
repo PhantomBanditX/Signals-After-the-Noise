@@ -96,43 +96,7 @@ A threat actor gained access to ``azwks-phtg-01`` using valid credentials obtain
 
 ## 🧠 Hunt Overview
 
-This investigation began with no alerts, no known incident, and no 
-confirmed compromise — only an OSINT trigger: a LinkedIn post by a 
-PHTG Cloud Engineer photographing her workstation during the company's 
-HealthCloud service rollout. The photo inadvertently exposed the Azure 
-portal with live VM details visible on screen, including the public IP 
-address of `azwks-phtg-02` and enough infrastructure context to anchor 
-a targeted attack.
-
-The attacker moved with speed and deliberateness. Within 24 hours of 
-the post, mass automated RDP scanning against `74.249.82.162` began — 
-225 unique source IPs from 17 countries generating 325 network events 
-against port 3389. The credential stuffing campaign that followed 
-produced 646 failed authentication attempts before succeeding — the 
-weak, predictable account name `vmadminusername` appeared in the 
-attacker's credential list, and the absence of an account lockout 
-policy allowed the campaign to run uninterrupted.
-
-The first confirmed unauthorised RDP session was established at 
-05:47:45 UTC on 12 December 2025 from `173.244.55.131` (Uruguay). 
-Over the following 48 hours, the threat actor conducted 23 successful 
-RDP sessions, reviewed internal engineer notes (`notes_sarah.txt`), 
-delivered a Meterpreter payload disguised with a double extension 
-(`Sarah_Chen_Notes.exe.Txt`), disabled Microsoft Defender's blocking 
-capability by switching it to passive mode, and executed the payload 
-three times in rapid succession. When initial C2 callbacks to 
-`173.244.55.130:4444` failed, the attacker adapted — relocating the 
-payload to `C:\ProgramData\PHTG\HealthCloud\PHTG.exe`, renaming it 
-to blend with the legitimate HealthCloud service, and creating 
-`Launch.bat` as an automated persistence launcher.
-
-The full attack chain — from social media OSINT through RDP brute 
-force, credential access, payload delivery, defence evasion, and 
-persistence — was executed by a single threat actor operating 
-exclusively from the `173.244.55.0/24` subnet in Uruguay, South 
-America. No alerts fired. No defensive controls intervened. The 
-compromise was discovered only through proactive, hypothesis-driven 
-threat hunting anchored to the original LinkedIn post.
+This investigation focused on a suspected compromise of `azwks-phtg-01` within the PHTG environment and aimed to reconstruct the operator's activity after initial access. Through analysis of authentication, process, registry, file, network, and endpoint telemetry, the hunt traced the attack from credential misuse through persistence, command-and-control communications, defense evasion, and credential access activity. The objective was to identify the operator's techniques, validate the scope of compromise, and document the complete attack chain throughout the intrusion lifecycle.
 
 ---
 ## 🔍 Flag Analysis
