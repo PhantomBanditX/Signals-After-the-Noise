@@ -912,7 +912,7 @@ DeviceEvents
 - Reading LSASS memory is consistent with credential dumping activity
 
 ### Conclusion
-The successful authentication was not consistent with a brute-force attack. The telemetry indicates the attacker possessed valid credentials and repeatedly attempted authentication before being challenged for MFA. Based on the evidence, the most likely access vector would be ``Password Reuse.``
+The ActionType that confirmed LSASS memory was read was ``ReadProcessMemoryApiCall``. This event confirmed credential-access behavior because PowerShell moved from opening LSASS to actually reading its memory.
 
 </details>
 
