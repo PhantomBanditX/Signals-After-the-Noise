@@ -186,13 +186,13 @@ The successful authentication was not consistent with a brute-force attack. The 
 
 ### 🎯 Objective
 ```kql
-SigninLogs
-| where TimeGenerated between (todatetime('2025-12-13 09:00') .. todatetime('2025-12-13 18:00'))
-| where ResultSignature == "FAILURE"
-| project TimeGenerated, ResultType, ResultSignature, ResultDescription, Location, LocationDetails, AuthenticationRequirement
-| order by TimeGenerated desc
+DeviceLogonEvents
+| where TimeGenerated >= datetime(2025-12-13T09:48:00Z)
+| where ActionType == "LogonSuccess"
+| project TimeGenerated, AccountName, RemoteIP, DeviceName, ActionType
+| sort by TimeGenerated asc
 ```
-<img width="1919" height="821" alt="Image" src="https://github.com/user-attachments/assets/222db846-4d8c-415c-8e59-bbaad8a8801a" />
+<img width="1919" height="821" alt="Image" src="https://github.com/user-attachments/assets/ee14285b-934b-4ce6-a747-67eea9018b8a" />
 
 ### 💡 Why it matters
 - Azure AD already accepted the username/password.
@@ -209,13 +209,13 @@ The successful authentication was not consistent with a brute-force attack. The 
 
 ### 🎯 Objective
 ```kql
-SigninLogs
-| where TimeGenerated between (todatetime('2025-12-13 09:00') .. todatetime('2025-12-13 18:00'))
-| where ResultSignature == "FAILURE"
-| project TimeGenerated, ResultType, ResultSignature, ResultDescription, Location, LocationDetails, AuthenticationRequirement
-| order by TimeGenerated desc
+DeviceLogonEvents
+| where TimeGenerated >= datetime(2025-12-13T09:48:00Z)
+| where RemoteIP == "10.0.0.105"
+| project TimeGenerated, AccountName, RemoteIP, DeviceName, ActionType
+| sort by TimeGenerated asc
 ```
-<img width="1919" height="821" alt="Image" src="https://github.com/user-attachments/assets/222db846-4d8c-415c-8e59-bbaad8a8801a" />
+<img width="1919" height="821" alt="Image" src="https://github.com/user-attachments/assets/27f0a4aa-bd32-4592-b38f-854364f9544e" />
 
 ### 💡 Why it matters
 - Azure AD already accepted the username/password.
