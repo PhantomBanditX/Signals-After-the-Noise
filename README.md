@@ -862,9 +862,6 @@ The successful authentication was not consistent with a brute-force attack. The 
 
 ### 🎯 Objective
 
-### 📌 Finding 
-Analysis of LSASS access events identified two sequential DesiredAccess values requested by PowerShell. The first request used ``5136 (0x1410)``, while the second used ``2047999 (0x1F3FFF)``. The latter corresponds to PROCESS_ALL_ACCESS, granting full access to the LSASS process.
-
 ```kql
 DeviceEvents
 | where DeviceName == "azwks-phtg-01"
@@ -874,6 +871,9 @@ DeviceEvents
 | sort by TimeGenerated asc
 ```
 <img width="1919" height="821" alt="Image" src="https://github.com/user-attachments/assets/32c5451d-fa8b-4a4d-89d5-38d4163ee536" />
+
+### 📌 Finding 
+Analysis of LSASS access events identified two sequential DesiredAccess values requested by PowerShell. The first request used ``5136 (0x1410)``, while the second used ``2047999 (0x1F3FFF)``. The latter corresponds to PROCESS_ALL_ACCESS, granting full access to the LSASS process.
 
 ### 💡 Why it matters
 -	LSASS stores authentication material and credentials.
@@ -892,10 +892,6 @@ The DesiredAccess value ``2047999 (0x1F3FFF)`` grants full access to LSASS. The 
 
 ### 🎯 Objective
 
-### 📌 Finding 
-
-Analysis of DeviceEvents identified a ``ReadProcessMemoryApiCall`` event involving ``lsass.exe`` during the investigation window. The event was initiated by ``powershell.exe`` under the ``vmadminusername`` account, confirming activity beyond simple handle access.
-
 ```kql
 DeviceEvents
 | where DeviceName == "azwks-phtg-01"
@@ -905,6 +901,10 @@ DeviceEvents
 | order by TimeGenerated asc
 ```
 <img width="1919" height="821" alt="Image" src="https://github.com/user-attachments/assets/73007e2d-fdb1-4301-a486-85b8be06316e" />
+
+### 📌 Finding 
+
+Analysis of DeviceEvents identified a ``ReadProcessMemoryApiCall`` event involving ``lsass.exe`` during the investigation window. The event was initiated by ``powershell.exe`` under the ``vmadminusername`` account, confirming activity beyond simple handle access.
 
 ### 💡 Why it matters
 - ``OpenProcessApiCall`` only proves that a handle to LSASS was opened.
