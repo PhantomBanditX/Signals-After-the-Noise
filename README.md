@@ -123,7 +123,6 @@ Initial review suggested a brute-force attack due to multiple failed authenticat
 ### Conclusion
 The successful authentication was not the result of a brute-force attack. The actual access vector was `Password Reuse`.
 
-
 ---
 
 </details>
@@ -144,15 +143,15 @@ DeviceLogonEvents
 <img width="1919" height="821" alt="Image" src="https://github.com/user-attachments/assets/ee14285b-934b-4ce6-a747-67eea9018b8a" />
 
 ### 📌 Findings
-Analysis of DeviceEvents identified a ``ReadProcessMemoryApiCall`` event involving ``lsass.exe`` during the investigation window. The event was initiated by ``powershell.exe`` under the ``vmadminusername`` account, confirming activity beyond simple handle access.
+Analysis of successful logon events after the compromise window revealed that the account vmadminusername successfully authenticated to `azwks-phtg-02` from source IP `173.244.55.131`. The authentication occurred shortly after the initial activity began and represents the first observed movement to a secondary host.
 
 ### 💡 Why it matters
-- ``OpenProcessApiCall`` only proves that a handle to LSASS was opened.
-- ``ReadProcessMemoryApiCall`` confirms the operator actually read memory from LSASS.
-- Reading LSASS memory is consistent with credential dumping activity.
+- Identifies the compromised account used to access another system.
+- Reveals the attacker's movement path from the source IP to the target host.
+- Confirms successful authentication through a LogonSuccess event, proving access was obtained.
 
 ### Conclusion
-The ActionType ``ReadProcessMemoryApiCall`` confirmed that the operator progressed beyond handle access and successfully read memory from ``lsass.exe``. Combined with the earlier ``OpenProcessApiCall`` activity, this provides strong evidence of credential-access behavior consistent with LSASS credential dumping techniques.
+The attacker successfully performed lateral movement using the `vmadminusername` account from `173.244.55.131` to `azwks-phtg-02`. This event established the attacker's movement path within the environment and identified the account, source system, and destination host involved in the activity.
 
 ---
 
@@ -174,19 +173,18 @@ DeviceLogonEvents
 <img width="1919" height="821" alt="Image" src="https://github.com/user-attachments/assets/27f0a4aa-bd32-4592-b38f-854364f9544e" />
 
 ### 📌 Findings
-Analysis of DeviceEvents identified a ``ReadProcessMemoryApiCall`` event involving ``lsass.exe`` during the investigation window. The event was initiated by ``powershell.exe`` under the ``vmadminusername`` account, confirming activity beyond simple handle access.
+Analysis of DeviceLogonEvents using the secondary host IP address `10.0.0.105` as the source identified no additional logon activity across the environment. No successful or failed authentication events were observed originating from the compromised host.
 
 ### 💡 Why it matters
-- ``OpenProcessApiCall`` only proves that a handle to LSASS was opened.
-- ``ReadProcessMemoryApiCall`` confirms the operator actually read memory from LSASS.
-- Reading LSASS memory is consistent with credential dumping activity.
+- Confirms the attacker did not use the secondary host to access additional systems.
+- Helps define the scope of the compromise and reduces the number of affected assets.
+- Demonstrates that negative results are valuable when validating whether lateral movement continued.
 
 ### Conclusion
-The ActionType ``ReadProcessMemoryApiCall`` confirmed that the operator progressed beyond handle access and successfully read memory from ``lsass.exe``. Combined with the earlier ``OpenProcessApiCall`` activity, this provides strong evidence of credential-access behavior consistent with LSASS credential dumping techniques.
+No evidence of onward lateral movement was observed from `10.0.0.105`. Based on the available telemetry, attacker activity appears to have stopped at the secondary host and did not progress further into the environment.
 
 
 </details>
-
 
 ---
 
@@ -206,16 +204,15 @@ DeviceProcessEvents
 <img width="1919" height="821" alt="Image" src="https://github.com/user-attachments/assets/985869c8-6145-4f68-b8ec-32fcd14ab7c2" />
 
 ### 📌 Findings
-Analysis of DeviceEvents identified a ``ReadProcessMemoryApiCall`` event involving ``lsass.exe`` during the investigation window. The event was initiated by ``powershell.exe`` under the ``vmadminusername`` account, confirming activity beyond simple handle access.
+Analysis of DeviceProcessEvents identified a PowerShell process launched by vmadminusername shortly after lateral movement activity. The command executed a script using the `-File` parameter and referenced the path `C:\Users\vmAdminUsername\Documents\PHTG_.ps1`. The process was launched with a hidden window and bypassed PowerShell execution policy restrictions.
 
 ### 💡 Why it matters
-- ``OpenProcessApiCall`` only proves that a handle to LSASS was opened.
-- ``ReadProcessMemoryApiCall`` confirms the operator actually read memory from LSASS.
-- Reading LSASS memory is consistent with credential dumping activity.
+- Identifies the first script executed directly by the attacker after gaining access.
+- Reveals the exact file path used to launch malicious activity.
+- Shows PowerShell running with ExecutionPolicy Bypass, a common technique used to evade script execution restrictions.
 
 ### Conclusion
-The ActionType ``ReadProcessMemoryApiCall`` confirmed that the operator progressed beyond handle access and successfully read memory from ``lsass.exe``. Combined with the earlier ``OpenProcessApiCall`` activity, this provides strong evidence of credential-access behavior consistent with LSASS credential dumping techniques.
-
+The first script executed by the operator was `C:\Users\vmAdminUsername\Documents\PHTG_.ps1`. This execution represents the initial attacker-controlled script activity observed following successful lateral movement and provides a key artifact for further investigation.
 
 </details>
 
@@ -237,16 +234,15 @@ DeviceProcessEvents
 <img width="1919" height="821" alt="Image" src="https://github.com/user-attachments/assets/ae3201d7-1bfb-4a79-8e84-cb6d4abb3997" />
 
 ### 📌 Findings
-Analysis of DeviceEvents identified a ``ReadProcessMemoryApiCall`` event involving ``lsass.exe`` during the investigation window. The event was initiated by ``powershell.exe`` under the ``vmadminusername`` account, confirming activity beyond simple handle access.
+At `2025-12-13 10:11:42 UTC`, the operator launched a PowerShell script using both `-WindowStyle Hidden` and `-ExecutionPolicy Bypass`. These parameters altered default PowerShell behavior by hiding the execution window and bypassing script execution policy controls.
 
 ### 💡 Why it matters
-- ``OpenProcessApiCall`` only proves that a handle to LSASS was opened.
-- ``ReadProcessMemoryApiCall`` confirms the operator actually read memory from LSASS.
-- Reading LSASS memory is consistent with credential dumping activity.
+- `-WindowStyle Hidden` prevents the PowerShell window from being visible to the user.
+- `-ExecutionPolicy Bypass` allows scripts to run regardless of local PowerShell execution restrictions.
+- Together, these flags indicate an attempt to reduce visibility and evade standard administrative safeguards.
 
 ### Conclusion
-The ActionType ``ReadProcessMemoryApiCall`` confirmed that the operator progressed beyond handle access and successfully read memory from ``lsass.exe``. Combined with the earlier ``OpenProcessApiCall`` activity, this provides strong evidence of credential-access behavior consistent with LSASS credential dumping techniques.
-
+The operator used `-WindowStyle Hidden` and `-ExecutionPolicy Bypass` when launching the initial PowerShell script. These flags demonstrate intent to conceal execution and avoid PowerShell security restrictions during post-compromise activity.
 
 </details>
 
@@ -269,17 +265,15 @@ DeviceFileEvents
 <img width="1919" height="821" alt="Image" src="https://github.com/user-attachments/assets/ee6ed265-53dd-4bbb-8396-04a5caf00b35" />
 
 ### 📌 Findings
-Analysis of DeviceEvents identified a ``ReadProcessMemoryApiCall`` event involving ``lsass.exe`` during the investigation window. The event was initiated by ``powershell.exe`` under the ``vmadminusername`` account, confirming activity beyond simple handle access.
+Analysis of DeviceFileEvents identified multiple files being created within `C:\ProgramData\PHTG\HealthCloud\` beginning at `2025-12-13 10:11:43 UTC`. The creation of executables and installation files within this directory indicates it was used as the operator's workspace for staging tools and supporting components.
 
 ### 💡 Why it matters
-- ``OpenProcessApiCall`` only proves that a handle to LSASS was opened.
-- ``ReadProcessMemoryApiCall`` confirms the operator actually read memory from LSASS.
-- Reading LSASS memory is consistent with credential dumping activity.
+- Identifies the operator's staging directory used to store tooling and supporting files.
+-	Reveals a masqueraded workspace name (HealthCloud) designed to appear legitimate.
+-	Provides a key location for further investigation of attacker tools and persistence mechanisms.
 
 ### Conclusion
-The ActionType ``ReadProcessMemoryApiCall`` confirmed that the operator progressed beyond handle access and successfully read memory from ``lsass.exe``. Combined with the earlier ``OpenProcessApiCall`` activity, this provides strong evidence of credential-access behavior consistent with LSASS credential dumping techniques.
-
-
+The operator established `C:\ProgramData\PHTG\HealthCloud\` as a working directory for tool deployment and operational activity. File creation events within this path provide evidence that it served as the primary staging location during the intrusion.
 
 </details>
 
@@ -303,15 +297,15 @@ DeviceProcessEvents
 <img width="1919" height="821" alt="Image" src="https://github.com/user-attachments/assets/4baa4832-e8bf-46ec-9609-6730a76e081d" />
 
 ### 📌 Findings
-Analysis of DeviceEvents identified a ``ReadProcessMemoryApiCall`` event involving ``lsass.exe`` during the investigation window. The event was initiated by ``powershell.exe`` under the ``vmadminusername`` account, confirming activity beyond simple handle access.
+Analysis of `attrib.exe` executions revealed repeated use of the +h (Hidden) and +s (System) flags within the HealthCloud workspace. Between `10:11:43 UTC` and `10:12:02 UTC`, the operator applied attribute modifications to two staging directories: TempCache (3 modifications) and Cache (17 modifications).
 
 ### 💡 Why it matters
-- ``OpenProcessApiCall`` only proves that a handle to LSASS was opened.
-- ``ReadProcessMemoryApiCall`` confirms the operator actually read memory from LSASS.
-- Reading LSASS memory is consistent with credential dumping activity.
+- The +h and +s flags were used to hide files and directories from normal user view.
+- Repeated attribute modifications indicate a deliberate effort to conceal attacker artifacts.
+- The significantly higher number of modifications within Cache identifies it as the primary location used for hiding operational files.
 
 ### Conclusion
-The ActionType ``ReadProcessMemoryApiCall`` confirmed that the operator progressed beyond handle access and successfully read memory from ``lsass.exe``. Combined with the earlier ``OpenProcessApiCall`` activity, this provides strong evidence of credential-access behavior consistent with LSASS credential dumping techniques.
+The operator concealed artifacts in both TempCache and Cache, applying 3 attribute modifications to TempCache and 17 attribute modifications to Cache. The Cache directory received the heavier concealment treatment and served as the primary location for hidden artifacts.
 
 </details>
 
@@ -334,16 +328,15 @@ DeviceProcessEvents
 <img width="1919" height="821" alt="Image" src="https://github.com/user-attachments/assets/f578a330-b7e0-41ab-b48c-0065a895c74a" />
 
 ### 📌 Findings
-Analysis of DeviceEvents identified a ``ReadProcessMemoryApiCall`` event involving ``lsass.exe`` during the investigation window. The event was initiated by ``powershell.exe`` under the ``vmadminusername`` account, confirming activity beyond simple handle access.
+Analysis of processes where FileName differed from ProcessVersionInfoOriginalFileName identified several legitimate Microsoft binaries. However, at `2025-12-13 10:12:17.111 UTC`, `PHTGHealthCloudSvc.exe` was observed executing from `C:\ProgramData\PHTG\HealthCloud\` while retaining an original filename of `bitsadmin.exe`. This mismatch occurred within the operator's staging directory and was inconsistent with normal Windows software behavior.
 
 ### 💡 Why it matters
-- ``OpenProcessApiCall`` only proves that a handle to LSASS was opened.
-- ``ReadProcessMemoryApiCall`` confirms the operator actually read memory from LSASS.
-- Reading LSASS memory is consistent with credential dumping activity.
+- The executable name and embedded original filename do not match, indicating potential masquerading.
+- The binary retained the metadata of bitsadmin.exe, a legitimate Windows utility commonly trusted by administrators.
+- The executable was located in the attacker-controlled HealthCloud staging directory rather than a standard Windows system location.
 
 ### Conclusion
-The ActionType ``ReadProcessMemoryApiCall`` confirmed that the operator progressed beyond handle access and successfully read memory from ``lsass.exe``. Combined with the earlier ``OpenProcessApiCall`` activity, this provides strong evidence of credential-access behavior consistent with LSASS credential dumping techniques.
-
+`PHTGHealthCloudSvc.exe` was masquerading as `bitsadmin.exe`. It was distinguished from legitimate filename mismatches by its location within the attacker-controlled HealthCloud workspace and its retention of metadata associated with a trusted Windows binary.
 
 </details>
 
@@ -365,15 +358,15 @@ DeviceRegistryEvents
 <img width="1919" height="821" alt="Image" src="https://github.com/user-attachments/assets/fee511f7-459d-4357-91b2-8acdf7f70f88" />
 
 ### 📌 Findings
-Analysis of DeviceEvents identified a ``ReadProcessMemoryApiCall`` event involving ``lsass.exe`` during the investigation window. The event was initiated by ``powershell.exe`` under the ``vmadminusername`` account, confirming activity beyond simple handle access.
+Analysis of DeviceRegistryEvents identified 280 registry modification events performed by vmadminusername on `azwks-phtg-01` after the lateral movement timestamp of `2025-12-13 09:48:40 UTC`. The volume of activity indicates significant interaction with the Windows Registry during post-compromise operations.
 
 ### 💡 Why it matters
-- ``OpenProcessApiCall`` only proves that a handle to LSASS was opened.
-- ``ReadProcessMemoryApiCall`` confirms the operator actually read memory from LSASS.
-- Reading LSASS memory is consistent with credential dumping activity.
+- Registry modifications can reveal persistence mechanisms, configuration changes, and attacker attempts to maintain access.
+- A high volume of registry activity often indicates post-compromise tooling installation or system configuration changes.
+- Quantifying registry modifications helps prioritize deeper investigation into the specific keys and values that were altered.
 
 ### Conclusion
-The ActionType ``ReadProcessMemoryApiCall`` confirmed that the operator progressed beyond handle access and successfully read memory from ``lsass.exe``. Combined with the earlier ``OpenProcessApiCall`` activity, this provides strong evidence of credential-access behavior consistent with LSASS credential dumping techniques.
+The operator generated 280 registry modification events following lateral movement to `azwks-phtg-01`. This elevated level of registry activity suggests extensive post-compromise system modification and warrants further investigation into persistence mechanisms, service creation, and configuration changes established during the intrusion.
 
 </details>
 
@@ -396,15 +389,20 @@ DeviceRegistryEvents
 <img width="1919" height="821" alt="Image" src="https://github.com/user-attachments/assets/7303e337-dd9d-47c8-b01f-589537a84752" />
 
 ### 📌 Findings
-Analysis of DeviceEvents identified a ``ReadProcessMemoryApiCall`` event involving ``lsass.exe`` during the investigation window. The event was initiated by ``powershell.exe`` under the ``vmadminusername`` account, confirming activity beyond simple handle access.
+Analysis of 280 registry events identified substantial user-context registry churn, including theme settings, MUI cache activity, and COM registration updates. At `2025-12-13 10:12:59.696 UTC`, a value named PHTGHealthCloudTray was written to:
+`HKEY_CURRENT_USER\S-1-5-21-1521579525-3948531162-803360686-500\SOFTWARE\Microsoft\Windows\CurrentVersion\Run`
+The value launched:
+`powershell.exe -NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -File "C:\ProgramData\PHTG\HealthCloud\Bin\HealthCloudTray.ps1"`
 
 ### 💡 Why it matters
-- ``OpenProcessApiCall`` only proves that a handle to LSASS was opened.
-- ``ReadProcessMemoryApiCall`` confirms the operator actually read memory from LSASS.
-- Reading LSASS memory is consistent with credential dumping activity.
+- The Run key automatically executes configured programs when the user logs in.
+- The value PHTGHealthCloudTray establishes persistence by launching a PowerShell script at logon.
+- The use of `-WindowStyle Hidden` and `-ExecutionPolicy Bypass` indicates an attempt to conceal execution and bypass PowerShell security controls..
 
 ### Conclusion
-The ActionType ``ReadProcessMemoryApiCall`` confirmed that the operator progressed beyond handle access and successfully read memory from ``lsass.exe``. Combined with the earlier ``OpenProcessApiCall`` activity, this provides strong evidence of credential-access behavior consistent with LSASS credential dumping techniques.
+The persistence mechanism was created through:
+`HKEY_CURRENT_USER\S-1-5-21-1521579525-3948531162-803360686-500\SOFTWARE\Microsoft\Windows\CurrentVersion\Run`
+At `10:12:59.696 UTC`, the attacker added the PHTGHealthCloudTray value, which automatically launched HealthCloudTray.ps1 using hidden PowerShell execution each time the user logged in.
 
 </details>
 
@@ -428,15 +426,15 @@ DeviceRegistryEvents
 <img width="1919" height="821" alt="Image" src="https://github.com/user-attachments/assets/4b610653-c153-4174-a9c6-75da14c18f09" />
 
 ### 📌 Findings
-Analysis of DeviceEvents identified a ``ReadProcessMemoryApiCall`` event involving ``lsass.exe`` during the investigation window. The event was initiated by ``powershell.exe`` under the ``vmadminusername`` account, confirming activity beyond simple handle access.
+Analysis of Run key activity after `2025-12-13 09:48:40 UTC` identified multiple values. The MicrosoftEdgeAutoLaunch entries were legitimate browser auto-start configurations. However, at `2025-12-13 10:12:59.696 UTC`, the value PHTGHealthCloudTray was added and configured to launch `HealthCloudTray.ps1` using hidden PowerShell execution with execution policy bypass.
 
 ### 💡 Why it matters
-- ``OpenProcessApiCall`` only proves that a handle to LSASS was opened.
-- ``ReadProcessMemoryApiCall`` confirms the operator actually read memory from LSASS.
-- Reading LSASS memory is consistent with credential dumping activity.
+- Identifies the exact registry value used to establish persistence.
+- Links the Run key directly to the attacker's HealthCloud tooling.
+- Shows the automatic execution of a hidden PowerShell script at user logon.
 
 ### Conclusion
-The ActionType ``ReadProcessMemoryApiCall`` confirmed that the operator progressed beyond handle access and successfully read memory from ``lsass.exe``. Combined with the earlier ``OpenProcessApiCall`` activity, this provides strong evidence of credential-access behavior consistent with LSASS credential dumping techniques.
+The operator's persistence value was PHTGHealthCloudTray. At `2025-12-13 10:12:59.696 UTC`, it was configured to automatically execute `HealthCloudTray.ps1` from the HealthCloud workspace whenever the user logged in.
 
 </details>
 
@@ -460,16 +458,17 @@ DeviceRegistryEvents
 <img width="1919" height="821" alt="Image" src="https://github.com/user-attachments/assets/d014cfc8-de7b-4d1a-9055-1e176e41853c" />
 
 ### 📌 Findings
-Analysis of DeviceEvents identified a ``ReadProcessMemoryApiCall`` event involving ``lsass.exe`` during the investigation window. The event was initiated by ``powershell.exe`` under the ``vmadminusername`` account, confirming activity beyond simple handle access.
+At `2025-12-13 10:12:59.696 UTC`, the operator configured the PHTGHealthCloudTray Run key value to launch a PowerShell command that executed `HealthCloudTray.ps1` from the HealthCloud staging directory. The command included -NoProfile, -WindowStyle Hidden, and -ExecutionPolicy Bypass, indicating an attempt to reduce visibility and circumvent PowerShell execution restrictions.
 
 ### 💡 Why it matters
-- ``OpenProcessApiCall`` only proves that a handle to LSASS was opened.
-- ``ReadProcessMemoryApiCall`` confirms the operator actually read memory from LSASS.
-- Reading LSASS memory is consistent with credential dumping activity.
+- Reveals the exact command that would execute automatically whenever the user logged in.
+- Demonstrates the use of hidden PowerShell execution and execution policy bypass techniques.
+- Directly links the persistence mechanism to the operator-controlled HealthCloud workspace.
 
 ### Conclusion
-The ActionType ``ReadProcessMemoryApiCall`` confirmed that the operator progressed beyond handle access and successfully read memory from ``lsass.exe``. Combined with the earlier ``OpenProcessApiCall`` activity, this provides strong evidence of credential-access behavior consistent with LSASS credential dumping techniques.
-
+The operator established persistence by configuring the following command to execute at user logon:
+`powershell.exe -NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -File "C:\ProgramData\PHTG\HealthCloud\Bin\HealthCloudTray.ps1"`
+This Run key entry ensured that the HealthCloudTray PowerShell script would automatically execute each time the user signed in.
 
 </details>
 
@@ -492,16 +491,15 @@ DeviceFileEvents
 <img width="1919" height="821" alt="Image" src="https://github.com/user-attachments/assets/a9bae179-0302-4bb7-860f-72f3ffefbe63" />
 
 ### 📌 Findings
-Analysis of DeviceEvents identified a ``ReadProcessMemoryApiCall`` event involving ``lsass.exe`` during the investigation window. The event was initiated by ``powershell.exe`` under the ``vmadminusername`` account, confirming activity beyond simple handle access.
+Analysis of DeviceFileEvents identified the creation of `PHTG HealthCloud.lnk`, a shortcut file placed within a Windows startup location. Because files stored in Startup folders execute automatically during user logon, the shortcut provided an additional method for launching the operator's tooling.
 
 ### 💡 Why it matters
-- ``OpenProcessApiCall`` only proves that a handle to LSASS was opened.
-- ``ReadProcessMemoryApiCall`` confirms the operator actually read memory from LSASS.
-- Reading LSASS memory is consistent with credential dumping activity.
+- Windows Startup folder shortcuts automatically execute when a user logs in.
+- Provides a second persistence mechanism if the Run key is discovered or removed.
+- Demonstrates the operator's use of redundant persistence techniques to maintain access.
 
 ### Conclusion
-The ActionType ``ReadProcessMemoryApiCall`` confirmed that the operator progressed beyond handle access and successfully read memory from ``lsass.exe``. Combined with the earlier ``OpenProcessApiCall`` activity, this provides strong evidence of credential-access behavior consistent with LSASS credential dumping techniques.
-
+The operator established a second persistence mechanism through the creation of PHTG HealthCloud.lnk. By placing a shortcut within a Windows startup location, the operator ensured their tooling would automatically execute at user logon even if the Run key persistence mechanism was removed.
 
 </details>
 
@@ -524,15 +522,19 @@ DeviceRegistryEvents
 <img width="1919" height="821" alt="Image" src="https://github.com/user-attachments/assets/04ba7dae-8d84-4326-a39e-e31ecbda0cdc" />
 
 ### 📌 Findings
-Analysis of DeviceEvents identified a ``ReadProcessMemoryApiCall`` event involving ``lsass.exe`` during the investigation window. The event was initiated by ``powershell.exe`` under the ``vmadminusername`` account, confirming activity beyond simple handle access.
+Analysis of HKLM registry modifications identified the creation of the registry path:
+`HKEY_LOCAL_MACHINE\SYSTEM\ControlSet001\Services\EventLog\Application\PHTGHealthCloud`
+This registry key registered PHTGHealthCloud as an Application Event Log source, enabling the operator's tooling to generate entries within a trusted Windows logging channel.
 
 ### 💡 Why it matters
-- ``OpenProcessApiCall`` only proves that a handle to LSASS was opened.
-- ``ReadProcessMemoryApiCall`` confirms the operator actually read memory from LSASS.
-- Reading LSASS memory is consistent with credential dumping activity.
+- Registers PHTGHealthCloud as a Windows Event Log source, allowing the tooling to write entries into the trusted Application log.
+- Helps attacker activity blend into normal operating system logging by appearing as a legitimate application source.
+- Demonstrates a system-level configuration change that extends the functionality and legitimacy of the operator's tooling.
 
 ### Conclusion
-The ActionType ``ReadProcessMemoryApiCall`` confirmed that the operator progressed beyond handle access and successfully read memory from ``lsass.exe``. Combined with the earlier ``OpenProcessApiCall`` activity, this provides strong evidence of credential-access behavior consistent with LSASS credential dumping techniques.
+The operator created the registry key:
+`HKEY_LOCAL_MACHINE\SYSTEM\ControlSet001\Services\EventLog\Application\PHTGHealthCloud`
+This modification allowed the HealthCloud tooling to write events to the Windows Application log, helping the activity blend with legitimate system and application logging while establishing additional operational capability.
 
 </details>
 
@@ -555,15 +557,15 @@ DeviceProcessEvents
 <img width="1919" height="821" alt="Image" src="https://github.com/user-attachments/assets/ef7997c1-9c9c-48df-8c71-72993e67f9c5" />
 
 ### 📌 Findings
-Analysis of DeviceEvents identified a ``ReadProcessMemoryApiCall`` event involving ``lsass.exe`` during the investigation window. The event was initiated by ``powershell.exe`` under the ``vmadminusername`` account, confirming activity beyond simple handle access.
+Analysis of DeviceProcessEvents identified repeated executions of `PHTGHealthCloudSvc.exe` with the /healthcheck argument after the post-access timestamp. The query returned 22 healthcheck executions, indicating the masqueraded binary was running repeatedly at short intervals.
 
 ### 💡 Why it matters
-- ``OpenProcessApiCall`` only proves that a handle to LSASS was opened.
-- ``ReadProcessMemoryApiCall`` confirms the operator actually read memory from LSASS.
-- Reading LSASS memory is consistent with credential dumping activity.
+- Shows the masqueraded binary was repeatedly executing in a loop.
+- Indicates beacon-like behavior through repeated /healthcheck activity.
+- Helps confirm the HealthCloud tooling remained active after initial access.
 
 ### Conclusion
-The ActionType ``ReadProcessMemoryApiCall`` confirmed that the operator progressed beyond handle access and successfully read memory from ``lsass.exe``. Combined with the earlier ``OpenProcessApiCall`` activity, this provides strong evidence of credential-access behavior consistent with LSASS credential dumping techniques.
+The masqueraded HealthCloud binary generated 22 /healthcheck executions during post-access activity. This repeated execution pattern suggests automated tooling behavior consistent with a healthcheck or beaconing loop.
 
 </details>
 
@@ -587,15 +589,18 @@ DeviceProcessEvents
 <img width="1919" height="821" alt="Image" src="https://github.com/user-attachments/assets/8a372449-2455-4d5e-a780-fb3fcaed0d2a" />
 
 ### 📌 Findings
-Analysis of DeviceEvents identified a ``ReadProcessMemoryApiCall`` event involving ``lsass.exe`` during the investigation window. The event was initiated by ``powershell.exe`` under the ``vmadminusername`` account, confirming activity beyond simple handle access.
+Analysis of encoded PowerShell executions identified two beaconing events initiated by vmadminusername. After decoding the Base64-encoded commands, the first request contacted the /api/checkin endpoint at `10:13:43.508 UTC`, followed by a request to the /api/status endpoint at `10:13:56.729 UTC`. Both requests were directed to the parent domain `status.health-cloud.cc`.
 
 ### 💡 Why it matters
-- ``OpenProcessApiCall`` only proves that a handle to LSASS was opened.
-- ``ReadProcessMemoryApiCall`` confirms the operator actually read memory from LSASS.
-- Reading LSASS memory is consistent with credential dumping activity.
+- Encoded PowerShell commands are commonly used to obscure network activity from casual inspection.
+- Decoding the commands reveals the exact infrastructure contacted by the operator.
+- The sequence of requests helps reconstruct post-compromise communications between the host and attacker-controlled services.
 
 ### Conclusion
-The ActionType ``ReadProcessMemoryApiCall`` confirmed that the operator progressed beyond handle access and successfully read memory from ``lsass.exe``. Combined with the earlier ``OpenProcessApiCall`` activity, this provides strong evidence of credential-access behavior consistent with LSASS credential dumping techniques.
+The operator's encoded PowerShell beacons contacted the following endpoints in chronological order:
+1. `https://status.health-cloud.cc/api/checkin?flag=FLAG-09&device=azwks-phtg-01`
+2. `https://status.health-cloud.cc/api/status?flag=FLAG-10&device=azwks-phtg-01`
+Both beacons communicated with the parent domain `status.health-cloud.cc`.
 
 </details>
 
@@ -607,16 +612,25 @@ The ActionType ``ReadProcessMemoryApiCall`` confirmed that the operator progress
 ### 🎯 Objective
 Determine the operational advantage gained by maintaining multiple command-and-control channels.
 
+### 🔍 Evidence
+Previous analysis identified two parallel communication mechanisms:
+
+1. **PHTGHealthCloudSvc.exe** executing recurring `/healthcheck` requests.
+2. **Encoded PowerShell beacons** communicating with `status.health-cloud.cc`.
+
 ### 📌 Findings
-Analysis of DeviceEvents identified a ``ReadProcessMemoryApiCall`` event involving ``lsass.exe`` during the investigation window. The event was initiated by ``powershell.exe`` under the ``vmadminusername`` account, confirming activity beyond simple handle access.
+Analysis revealed that the operator maintained both a recurring HealthCloud service beacon and separate encoded PowerShell beacons during the intrusion.
+
+- These channels operated in parallel.
+- These channels provided both communication redundancy and operational resilience.
 
 ### 💡 Why it matters
-- ``OpenProcessApiCall`` only proves that a handle to LSASS was opened.
-- ``ReadProcessMemoryApiCall`` confirms the operator actually read memory from LSASS.
-- Reading LSASS memory is consistent with credential dumping activity.
+- Multiple command-and-control channels increase operational resilience during an intrusion.
+- Alternate communication paths allow the operator to maintain access despite defensive actions.
+- Splitting communications across separate channels complicates detection and investigation efforts.
 
 ### Conclusion
-The ActionType ``ReadProcessMemoryApiCall`` confirmed that the operator progressed beyond handle access and successfully read memory from ``lsass.exe``. Combined with the earlier ``OpenProcessApiCall`` activity, this provides strong evidence of credential-access behavior consistent with LSASS credential dumping techniques.
+The operator maintained two beacon channels to provide redundancy so command-and-control survives if one channel is blocked, and to disperse traffic across multiple paths, making detection and correlation more difficult for defenders.
 
 </details>
 
@@ -638,15 +652,15 @@ DeviceNetworkEvents
 <img width="1919" height="821" alt="Image" src="https://github.com/user-attachments/assets/63610951-09db-4de1-b212-317593e65694" />
 
 ### 📌 Findings
-Analysis of DeviceEvents identified a ``ReadProcessMemoryApiCall`` event involving ``lsass.exe`` during the investigation window. The event was initiated by ``powershell.exe`` under the ``vmadminusername`` account, confirming activity beyond simple handle access.
+Analysis of network and process telemetry revealed a rapid deployment sequence. At `2025-12-13 10:12:16.279 UTC`, `powershell.exe` initiated outbound communication with updates.health-cloud.cc, indicating retrieval of attacker-controlled content. Less than one second later, at `2025-12-13 10:12:17.111 UTC`, `PHTGHealthCloudSvc.exe` was executed on the host.
 
 ### 💡 Why it matters
-- ``OpenProcessApiCall`` only proves that a handle to LSASS was opened.
-- ``ReadProcessMemoryApiCall`` confirms the operator actually read memory from LSASS.
-- Reading LSASS memory is consistent with credential dumping activity.
+- Demonstrates the complete delivery-to-execution workflow used by the operator.
+- Establishes a direct link between external infrastructure and local payload execution.
+- Provides a timeline that can be used to identify similar download-and-execute activity in future investigations.
 
 ### Conclusion
-The ActionType ``ReadProcessMemoryApiCall`` confirmed that the operator progressed beyond handle access and successfully read memory from ``lsass.exe``. Combined with the earlier ``OpenProcessApiCall`` activity, this provides strong evidence of credential-access behavior consistent with LSASS credential dumping techniques.
+The first step downloads or retrieves a payload from the C2 server, and the second step immediately executes the retrieved payload on the host.
 
 </details>
 
@@ -669,15 +683,17 @@ DeviceNetworkEvents
 <img width="1919" height="821" alt="Image" src="https://github.com/user-attachments/assets/7512d4c2-5d87-4ac3-aa77-33d3f346359e" />
 
 ### 📌 Findings
-Analysis of DeviceEvents identified a ``ReadProcessMemoryApiCall`` event involving ``lsass.exe`` during the investigation window. The event was initiated by ``powershell.exe`` under the ``vmadminusername`` account, confirming activity beyond simple handle access.
+Analysis of PowerShell-generated network activity on `azwks-phtg-01` identified communication with two HealthCloud-related domains during post-access operations. At `10:12:16.279 UTC`, PowerShell contacted updates.health-cloud.cc, followed by communication with status.health-cloud.cc at `10:13:44.894 UTC`.
 
 ### 💡 Why it matters
-- ``OpenProcessApiCall`` only proves that a handle to LSASS was opened.
-- ``ReadProcessMemoryApiCall`` confirms the operator actually read memory from LSASS.
-- Reading LSASS memory is consistent with credential dumping activity.
+- Identifies the external infrastructure contacted by attacker-controlled PowerShell activity.
+- Reveals the domains used for payload retrieval and command-and-control communications.
+- Provides network indicators that can be used for detection, blocking, and threat hunting.
 
 ### Conclusion
-The ActionType ``ReadProcessMemoryApiCall`` confirmed that the operator progressed beyond handle access and successfully read memory from ``lsass.exe``. Combined with the earlier ``OpenProcessApiCall`` activity, this provides strong evidence of credential-access behavior consistent with LSASS credential dumping techniques.
+The operator's PowerShell activity contacted the following domains in chronological order:
+1. `updates.health-cloud.cc`
+2. `status.health-cloud.cc`
 
 </details>
 
@@ -701,16 +717,15 @@ DeviceProcessEvents
 <img width="1919" height="821" alt="Image" src="https://github.com/user-attachments/assets/8f188fd5-04ef-41ad-8321-2f4d4ff69c8e" />
 
 ### 📌 Findings
-Analysis of DeviceEvents identified a ``ReadProcessMemoryApiCall`` event involving ``lsass.exe`` during the investigation window. The event was initiated by ``powershell.exe`` under the ``vmadminusername`` account, confirming activity beyond simple handle access.
+At `2025-12-13 10:14:10.495 UTC`, the operator executed `amsi_probe.ps1` from the HealthCloud staging directory using PowerShell with ExecutionPolicy Bypass. The script was used to determine whether PowerShell content was being inspected by AMSI before additional tooling was executed.
 
 ### 💡 Why it matters
-- ``OpenProcessApiCall`` only proves that a handle to LSASS was opened.
-- ``ReadProcessMemoryApiCall`` confirms the operator actually read memory from LSASS.
-- Reading LSASS memory is consistent with credential dumping activity.
+- AMSI (Antimalware Scan Interface) is used by security tools to inspect PowerShell content before execution.
+- Operators often test AMSI visibility before running more sensitive scripts or payloads.
+- Understanding defensive visibility helps attackers decide whether additional evasion techniques are necessary.
 
 ### Conclusion
-The ActionType ``ReadProcessMemoryApiCall`` confirmed that the operator progressed beyond handle access and successfully read memory from ``lsass.exe``. Combined with the earlier ``OpenProcessApiCall`` activity, this provides strong evidence of credential-access behavior consistent with LSASS credential dumping techniques.
-
+`amsi_probe.ps1` was an AMSI detection/probe script used to verify whether PowerShell content was being inspected by AMSI before further payload execution.
 
 </details>
 
@@ -727,21 +742,22 @@ DeviceProcessEvents
 | where DeviceName == "azwks-phtg-01"
 | where InitiatingProcessAccountName == "vmadminusername"
 | where TimeGenerated between (datetime(2025-12-13T09:48:40Z) .. datetime(2025-12-13T10:48:40Z))
-| where FileName =~ "cmd.exe" | project TimeGenerated, ProcessCommandLine, InitiatingProcessFileName
+| where FileName =~ "cmd.exe"
+| project TimeGenerated, ProcessCommandLine, InitiatingProcessFileName
 | order by TimeGenerated asc
 ```
 <img width="1919" height="821" alt="Image" src="https://github.com/user-attachments/assets/be0e75f2-bbea-46cc-aa1f-fd46f6c94a0c" />
 
 ### 📌 Findings
-Analysis of DeviceEvents identified a ``ReadProcessMemoryApiCall`` event involving ``lsass.exe`` during the investigation window. The event was initiated by ``powershell.exe`` under the ``vmadminusername`` account, confirming activity beyond simple handle access.
+Analysis of process execution activity on `azwks-phtg-01` identified two payloads launched through `cmd.exe` during the first hour following the operator's initial access. At `10:15:15.096 UTC`, `cmd.exe` launched `hc_lineage.ps1`, and at `10:16:09.642 UTC`, cmd.exe launched `phtg_health_diag_update_FLAG-22.bat`. Both payloads were executed indirectly rather than being launched directly from the operator's PowerShell session.
 
 ### 💡 Why it matters
-- ``OpenProcessApiCall`` only proves that a handle to LSASS was opened.
-- ``ReadProcessMemoryApiCall`` confirms the operator actually read memory from LSASS.
-- Reading LSASS memory is consistent with credential dumping activity.
+- Launching payloads through cmd.exe inserts an additional process into the execution chain.
+- This obscures the true parent-child relationship between the operator's PowerShell session and the final payload.
+- Process lineage manipulation makes forensic reconstruction and detection more difficult for defenders.
 
 ### Conclusion
-The ActionType ``ReadProcessMemoryApiCall`` confirmed that the operator progressed beyond handle access and successfully read memory from ``lsass.exe``. Combined with the earlier ``OpenProcessApiCall`` activity, this provides strong evidence of credential-access behavior consistent with LSASS credential dumping techniques.
+The operator used cmd.exe to launch `hc_lineage.ps1` and `phtg_health_diag_update_FLAG-22.bat`; chaining payloads through an intermediate process helps obscure parent-child process relationships and complicates process lineage analysis for defenders.
 
 </details>
 
@@ -764,15 +780,15 @@ DeviceRegistryEvents
 <img width="1919" height="821" alt="Image" src="https://github.com/user-attachments/assets/561966fb-048e-4525-b9fa-7e26a4877012" />
 
 ### 📌 Findings
-Analysis of DeviceEvents identified a ``ReadProcessMemoryApiCall`` event involving ``lsass.exe`` during the investigation window. The event was initiated by ``powershell.exe`` under the ``vmadminusername`` account, confirming activity beyond simple handle access.
+Analysis of Windows Defender exclusion activity identified two exclusions directly associated with the HealthCloud tooling. At `2025-12-13 10:12:18.681 UTC`, the operator excluded `C:\ProgramData\PHTG\HealthCloud\Cache` from Microsoft Defender scanning. At `2025-12-13 10:14:30.008 UTC`, the operator excluded `C:\ProgramData\PHTG\HealthCloud\PHTGHealthCloudSvc.exe`, reducing Defender visibility into the primary HealthCloud service process.
 
 ### 💡 Why it matters
-- ``OpenProcessApiCall`` only proves that a handle to LSASS was opened.
-- ``ReadProcessMemoryApiCall`` confirms the operator actually read memory from LSASS.
-- Reading LSASS memory is consistent with credential dumping activity.
+- Defender exclusions reduce security visibility into attacker-controlled files and processes.
+- Excluding the Cache directory helps conceal staged tools, scripts, and operational artifacts.
+- Excluding the HealthCloud service executable reduces the likelihood of Defender scanning or alerting on the operator's primary beacon process.
 
 ### Conclusion
-The ActionType ``ReadProcessMemoryApiCall`` confirmed that the operator progressed beyond handle access and successfully read memory from ``lsass.exe``. Combined with the earlier ``OpenProcessApiCall`` activity, this provides strong evidence of credential-access behavior consistent with LSASS credential dumping techniques.
+The operator excluded the path `C:\ProgramData\PHTG\HealthCloud\Cache` and the process `C:\ProgramData\PHTG\HealthCloud\PHTGHealthCloudSvc.exe` from Microsoft Defender scanning, helping conceal both stored tooling and active beacon activity.
 
 </details>
 
@@ -795,15 +811,15 @@ DeviceEvents
 <img width="1919" height="821" alt="Image" src="https://github.com/user-attachments/assets/b327ea57-7781-43f5-8a09-46004980bd0c" />
 
 ### 📌 Findings
-Analysis of DeviceEvents identified a ``ReadProcessMemoryApiCall`` event involving ``lsass.exe`` during the investigation window. The event was initiated by ``powershell.exe`` under the ``vmadminusername`` account, confirming activity beyond simple handle access.
+Analysis of Defender AntivirusReport events identified detections associated with `PHTG HealthCloud.lnk`, the startup shortcut used by the persistence mechanism. Although Defender generated detection events, the telemetry indicates WasExecutingWhileDetected = False, and there was no evidence that the persistence artifact was quarantined, removed, or remediated.
 
 ### 💡 Why it matters
-- ``OpenProcessApiCall`` only proves that a handle to LSASS was opened.
-- ``ReadProcessMemoryApiCall`` confirms the operator actually read memory from LSASS.
-- Reading LSASS memory is consistent with credential dumping activity.
+- Confirms Microsoft Defender identified suspicious activity associated with the persistence mechanism.
+- Detection events do not necessarily indicate prevention or remediation.
+- Understanding whether security controls merely detect or actively block threats is critical during incident response.
 
 ### Conclusion
-The ActionType ``ReadProcessMemoryApiCall`` confirmed that the operator progressed beyond handle access and successfully read memory from ``lsass.exe``. Combined with the earlier ``OpenProcessApiCall`` activity, this provides strong evidence of credential-access behavior consistent with LSASS credential dumping techniques.
+Microsoft Defender detected and generated AntivirusReport events associated with the malicious PowerShell activity launched by the persistence mechanism, but the persistence remained in place and there is no evidence that Defender blocked, removed, or remediated it.
 
 </details>
 
@@ -827,15 +843,15 @@ DeviceEvents
 <img width="1919" height="821" alt="Image" src="https://github.com/user-attachments/assets/6ef94e11-d19d-4f4b-adcd-adc602873226" />
 
 ### 📌 Findings
-Analysis of DeviceEvents identified a ``ReadProcessMemoryApiCall`` event involving ``lsass.exe`` during the investigation window. The event was initiated by ``powershell.exe`` under the ``vmadminusername`` account, confirming activity beyond simple handle access.
+Analysis of PowerShell command telemetry identified a temporary Defender exclusion applied to `C:\Users\vmAdminUsername\Documents\PHTG`, the directory containing the operator's staging script. The exclusion was added using `Add-MpPreference -ExclusionPath` and removed moments later using `Remove-MpPreference -ExclusionPath`, demonstrating an intentional add-then-remove pattern.
 
 ### 💡 Why it matters
-- ``OpenProcessApiCall`` only proves that a handle to LSASS was opened.
-- ``ReadProcessMemoryApiCall`` confirms the operator actually read memory from LSASS.
-- Reading LSASS memory is consistent with credential dumping activity.
+- Temporarily disabling Defender inspection creates a short execution window for attacker tooling.
+- Immediate removal of the exclusion reduces visible evidence of Defender tampering.
+- This technique balances payload execution success with operational stealth.
 
 ### Conclusion
-The ActionType ``ReadProcessMemoryApiCall`` confirmed that the operator progressed beyond handle access and successfully read memory from ``lsass.exe``. Combined with the earlier ``OpenProcessApiCall`` activity, this provides strong evidence of credential-access behavior consistent with LSASS credential dumping techniques.
+The operator temporarily excluded `C:\Users\vmAdminUsername\Documents\PHTG` from Microsoft Defender scanning, then removed the exclusion immediately afterward. This allowed the payload to run without Defender interference while minimizing evidence of a persistent Defender exclusion.
 
 </details>
 
@@ -858,15 +874,15 @@ DeviceProcessEvents
 <img width="1919" height="821" alt="Image" src="https://github.com/user-attachments/assets/371f28b0-6a04-4d90-8cfb-c7c7d8ec82d7" />
 
 ### 📌 Findings
-Analysis of DeviceEvents identified a ``ReadProcessMemoryApiCall`` event involving ``lsass.exe`` during the investigation window. The event was initiated by ``powershell.exe`` under the ``vmadminusername`` account, confirming activity beyond simple handle access.
+Analysis of DeviceProcessEvents identified two executions of `HealthCloudTray.ps1` after the persistence mechanisms were configured. Both executions launched PowerShell with hidden window execution and execution policy bypass parameters, confirming that the startup persistence mechanism was actively triggering.
 
 ### 💡 Why it matters
-- ``OpenProcessApiCall`` only proves that a handle to LSASS was opened.
-- ``ReadProcessMemoryApiCall`` confirms the operator actually read memory from LSASS.
-- Reading LSASS memory is consistent with credential dumping activity.
+- Persistence mechanisms are only valuable to an attacker if they successfully execute.
+- Observing actual execution validates that the Run key and Startup Folder persistence methods functioned as intended.
+- Execution events provide evidence that the operator's persistence survived long enough to trigger after system startup or user logon.
 
 ### Conclusion
-The ActionType ``ReadProcessMemoryApiCall`` confirmed that the operator progressed beyond handle access and successfully read memory from ``lsass.exe``. Combined with the earlier ``OpenProcessApiCall`` activity, this provides strong evidence of credential-access behavior consistent with LSASS credential dumping techniques.
+The `HealthCloudTray.ps1` startup command executed 2 times, confirming that the configured persistence mechanism successfully fired during the investigation period.
 
 </details>
 
@@ -878,16 +894,20 @@ The ActionType ``ReadProcessMemoryApiCall`` confirmed that the operator progress
 ### 🎯 Objective
 Determine the purpose and operational benefit of the custom Windows Event Log source registration.
 
+### 🔍 Evidence
+Previously identified registry key:
+`HKEY_LOCAL_MACHINE\SYSTEM\ControlSet001\Services\EventLog\Application\PHTGHealthCloud`
+
 ### 📌 Findings
-Analysis of DeviceEvents identified a ``ReadProcessMemoryApiCall`` event involving ``lsass.exe`` during the investigation window. The event was initiated by ``powershell.exe`` under the ``vmadminusername`` account, confirming activity beyond simple handle access.
+Analysis identified the registration of PHTGHealthCloud as a custom Windows Application Event Log source. This configuration enables the operator's tooling to generate entries in the Windows Application Log through the standard Event Log API.
 
 ### 💡 Why it matters
-- ``OpenProcessApiCall`` only proves that a handle to LSASS was opened.
-- ``ReadProcessMemoryApiCall`` confirms the operator actually read memory from LSASS.
-- Reading LSASS memory is consistent with credential dumping activity.
+- Allows tooling to write directly to the Windows Application Event Log.
+- Uses a trusted Windows logging mechanism.
+- Helps malicious telemetry blend in with legitimate application events.
 
 ### Conclusion
-The ActionType ``ReadProcessMemoryApiCall`` confirmed that the operator progressed beyond handle access and successfully read memory from ``lsass.exe``. Combined with the earlier ``OpenProcessApiCall`` activity, this provides strong evidence of credential-access behavior consistent with LSASS credential dumping techniques.
+Registering the PHTGHealthCloud event source allows the tooling to write entries to the Windows Application event log via the Event Log API, giving the operator a trusted-looking place to store telemetry and status information that blends in with legitimate application events and receives less scrutiny.
 
 </details>
 
@@ -910,15 +930,15 @@ DeviceEvents
 <img width="1919" height="821" alt="Image" src="https://github.com/user-attachments/assets/3071711a-cc19-46c7-ae62-bb9bd50a02b8" />
 
 ### 📌 Findings
-Analysis of DeviceEvents identified a ``ReadProcessMemoryApiCall`` event involving ``lsass.exe`` during the investigation window. The event was initiated by ``powershell.exe`` under the ``vmadminusername`` account, confirming activity beyond simple handle access.
+Analysis of OpenProcessApiCall events identified 139 attempts to access `lsass.exe` during the investigation window. Most activity originated from expected system and security-related processes, including Microsoft Defender and Windows management components. However, two events showed `powershell.exe` accessing `lsass.exe` under the vmadminusername account context, making it the only non-system access pattern observed.
 
 ### 💡 Why it matters
-- ``OpenProcessApiCall`` only proves that a handle to LSASS was opened.
-- ``ReadProcessMemoryApiCall`` confirms the operator actually read memory from LSASS.
-- Reading LSASS memory is consistent with credential dumping activity.
+- LSASS stores authentication material and is a common target for credential access activity.
+- Most LSASS access events originate from trusted security products or system processes.
+- PowerShell accessing LSASS under a user account stands out from the expected baseline and warrants investigation.
 
 ### Conclusion
-The ActionType ``ReadProcessMemoryApiCall`` confirmed that the operator progressed beyond handle access and successfully read memory from ``lsass.exe``. Combined with the earlier ``OpenProcessApiCall`` activity, this provides strong evidence of credential-access behavior consistent with LSASS credential dumping techniques.
+The anomalous LSASS access was performed by `powershell.exe` running under the `vmadminusername` account, distinguishing it from the baseline system and security-process activity observed throughout the investigation window.
 
 </details>
 
@@ -941,7 +961,7 @@ DeviceEvents
 <img width="1919" height="821" alt="Image" src="https://github.com/user-attachments/assets/32c5451d-fa8b-4a4d-89d5-38d4163ee536" />
 
 ### 📌 Findings 
-Analysis of LSASS access events identified two sequential DesiredAccess values requested by PowerShell. The first request used ``5136 (0x1410)``, while the second used ``2047999 (0x1F3FFF)``. The latter corresponds to PROCESS_ALL_ACCESS, granting full access to the LSASS process.
+Analysis of LSASS access events identified two sequential DesiredAccess values requested by PowerShell. The first request used `5136 (0x1410)`, while the second used `2047999 (0x1F3FFF)`. The latter corresponds to PROCESS_ALL_ACCESS, granting full access to the LSASS process.
 
 ### 💡 Why it matters
 -	LSASS stores authentication material and credentials.
@@ -972,15 +992,15 @@ DeviceEvents
 <img width="1919" height="821" alt="Image" src="https://github.com/user-attachments/assets/73007e2d-fdb1-4301-a486-85b8be06316e" />
 
 ### 📌 Findings
-Analysis of DeviceEvents identified a ``ReadProcessMemoryApiCall`` event involving ``lsass.exe`` during the investigation window. The event was initiated by ``powershell.exe`` under the ``vmadminusername`` account, confirming activity beyond simple handle access.
+Analysis of DeviceEvents identified a `ReadProcessMemoryApiCall` event involving `lsass.exe` during the investigation window. The event was initiated by `powershell.exe` under the `vmadminusername` account, confirming activity beyond simple handle access.
 
 ### 💡 Why it matters
-- ``OpenProcessApiCall`` only proves that a handle to LSASS was opened.
-- ``ReadProcessMemoryApiCall`` confirms the operator actually read memory from LSASS.
+- `OpenProcessApiCall` only proves that a handle to LSASS was opened.
+- `ReadProcessMemoryApiCall` confirms the operator actually read memory from LSASS.
 - Reading LSASS memory is consistent with credential dumping activity.
 
 ### Conclusion
-The ActionType ``ReadProcessMemoryApiCall`` confirmed that the operator progressed beyond handle access and successfully read memory from ``lsass.exe``. Combined with the earlier ``OpenProcessApiCall`` activity, this provides strong evidence of credential-access behavior consistent with LSASS credential dumping techniques.
+The ActionType that confirmed LSASS memory was read was `ReadProcessMemoryApiCall`. This event confirmed credential-access behavior because PowerShell moved from opening LSASS to actually reading its memory.
 
 </details>
 
