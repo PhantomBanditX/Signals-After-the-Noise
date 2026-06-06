@@ -239,13 +239,15 @@ The successful authentication was not consistent with a brute-force attack. The 
 
 ### 🎯 Objective
 ```kql
-SigninLogs
-| where TimeGenerated between (todatetime('2025-12-13 09:00') .. todatetime('2025-12-13 18:00'))
-| where ResultSignature == "FAILURE"
-| project TimeGenerated, ResultType, ResultSignature, ResultDescription, Location, LocationDetails, AuthenticationRequirement
-| order by TimeGenerated desc
+DeviceProcessEvents
+| where TimeGenerated >= datetime(2025-12-13T09:48:00Z)
+| where AccountName == "vmadminusername"
+| where FileName =~ "powershell.exe"
+| where ProcessCommandLine contains "-File"
+| project TimeGenerated, DeviceName, InitiatingProcessAccountName, ProcessCommandLine
+| order by TimeGenerated asc
 ```
-<img width="1919" height="821" alt="Image" src="https://github.com/user-attachments/assets/222db846-4d8c-415c-8e59-bbaad8a8801a" />
+<img width="1919" height="821" alt="Image" src="https://github.com/user-attachments/assets/985869c8-6145-4f68-b8ec-32fcd14ab7c2" />
 
 ### 💡 Why it matters
 - Azure AD already accepted the username/password.
@@ -264,13 +266,15 @@ The successful authentication was not consistent with a brute-force attack. The 
 
 ### 🎯 Objective
 ```kql
-SigninLogs
-| where TimeGenerated between (todatetime('2025-12-13 09:00') .. todatetime('2025-12-13 18:00'))
-| where ResultSignature == "FAILURE"
-| project TimeGenerated, ResultType, ResultSignature, ResultDescription, Location, LocationDetails, AuthenticationRequirement
-| order by TimeGenerated desc
+DeviceProcessEvents
+| where TimeGenerated >= datetime(2025-12-13T09:48:00Z)
+| where AccountName == "vmadminusername"
+| where FileName =~ "powershell.exe"
+| where ProcessCommandLine contains "-File"
+| project TimeGenerated, DeviceName, InitiatingProcessAccountName, ProcessCommandLine
+| order by TimeGenerated asc
 ```
-<img width="1919" height="821" alt="Image" src="https://github.com/user-attachments/assets/222db846-4d8c-415c-8e59-bbaad8a8801a" />
+<img width="1919" height="821" alt="Image" src="https://github.com/user-attachments/assets/ae3201d7-1bfb-4a79-8e84-cb6d4abb3997" />
 
 ### 💡 Why it matters
 - Azure AD already accepted the username/password.
@@ -289,13 +293,14 @@ The successful authentication was not consistent with a brute-force attack. The 
 
 ### 🎯 Objective
 ```kql
-SigninLogs
-| where TimeGenerated between (todatetime('2025-12-13 09:00') .. todatetime('2025-12-13 18:00'))
-| where ResultSignature == "FAILURE"
-| project TimeGenerated, ResultType, ResultSignature, ResultDescription, Location, LocationDetails, AuthenticationRequirement
-| order by TimeGenerated desc
+DeviceFileEvents
+| where DeviceName == "azwks-phtg-01"
+| where TimeGenerated >= datetime(2025-12-13T09:48:00Z)
+| where FolderPath startswith "C:\\ProgramData\\PHTG"
+| project TimeGenerated, ActionType, FolderPath, FileName
+| sort by TimeGenerated asc
 ```
-<img width="1919" height="821" alt="Image" src="https://github.com/user-attachments/assets/222db846-4d8c-415c-8e59-bbaad8a8801a" />
+<img width="1919" height="821" alt="Image" src="https://github.com/user-attachments/assets/ee6ed265-53dd-4bbb-8396-04a5caf00b35" />
 
 ### 💡 Why it matters
 - Azure AD already accepted the username/password.
@@ -315,13 +320,15 @@ The successful authentication was not consistent with a brute-force attack. The 
 
 ### 🎯 Objective
 ```kql
-SigninLogs
-| where TimeGenerated between (todatetime('2025-12-13 09:00') .. todatetime('2025-12-13 18:00'))
-| where ResultSignature == "FAILURE"
-| project TimeGenerated, ResultType, ResultSignature, ResultDescription, Location, LocationDetails, AuthenticationRequirement
-| order by TimeGenerated desc
+DeviceProcessEvents
+| where DeviceName == "azwks-phtg-01"
+| where TimeGenerated >= datetime(2025-12-13T09:48:00Z)
+| where FileName =~ "attrib.exe"
+| where ProcessCommandLine has_any ("+h", "+s")
+| project TimeGenerated, ProcessCommandLine
+| sort by TimeGenerated asc
 ```
-<img width="1919" height="821" alt="Image" src="https://github.com/user-attachments/assets/222db846-4d8c-415c-8e59-bbaad8a8801a" />
+<img width="1919" height="821" alt="Image" src="https://github.com/user-attachments/assets/4baa4832-e8bf-46ec-9609-6730a76e081d" />
 
 ### 💡 Why it matters
 - Azure AD already accepted the username/password.
@@ -339,13 +346,14 @@ The successful authentication was not consistent with a brute-force attack. The 
 
 ### 🎯 Objective
 ```kql
-SigninLogs
-| where TimeGenerated between (todatetime('2025-12-13 09:00') .. todatetime('2025-12-13 18:00'))
-| where ResultSignature == "FAILURE"
-| project TimeGenerated, ResultType, ResultSignature, ResultDescription, Location, LocationDetails, AuthenticationRequirement
-| order by TimeGenerated desc
+DeviceProcessEvents
+| where DeviceName == "azwks-phtg-01"
+| where TimeGenerated >= datetime(2025-12-13T09:48:00Z)
+| where FileName != ProcessVersionInfoOriginalFileName
+| project TimeGenerated, FileName, ProcessVersionInfoOriginalFileName, FolderPath
+| sort by TimeGenerated asc
 ```
-<img width="1919" height="821" alt="Image" src="https://github.com/user-attachments/assets/222db846-4d8c-415c-8e59-bbaad8a8801a" />
+<img width="1919" height="821" alt="Image" src="https://github.com/user-attachments/assets/f578a330-b7e0-41ab-b48c-0065a895c74a" />
 
 ### 💡 Why it matters
 - Azure AD already accepted the username/password.
@@ -364,13 +372,13 @@ The successful authentication was not consistent with a brute-force attack. The 
 
 ### 🎯 Objective
 ```kql
-SigninLogs
-| where TimeGenerated between (todatetime('2025-12-13 09:00') .. todatetime('2025-12-13 18:00'))
-| where ResultSignature == "FAILURE"
-| project TimeGenerated, ResultType, ResultSignature, ResultDescription, Location, LocationDetails, AuthenticationRequirement
-| order by TimeGenerated desc
+DeviceRegistryEvents
+| where DeviceName == "azwks-phtg-01"
+| where InitiatingProcessAccountName == "vmadminusername"
+| where TimeGenerated > datetime(2025-12-13T09:48:40Z)
+| summarize Count=count()
 ```
-<img width="1919" height="821" alt="Image" src="https://github.com/user-attachments/assets/222db846-4d8c-415c-8e59-bbaad8a8801a" />
+<img width="1919" height="821" alt="Image" src="https://github.com/user-attachments/assets/fee511f7-459d-4357-91b2-8acdf7f70f88" />
 
 ### 💡 Why it matters
 - Azure AD already accepted the username/password.
@@ -388,13 +396,14 @@ The successful authentication was not consistent with a brute-force attack. The 
 
 ### 🎯 Objective
 ```kql
-SigninLogs
-| where TimeGenerated between (todatetime('2025-12-13 09:00') .. todatetime('2025-12-13 18:00'))
-| where ResultSignature == "FAILURE"
-| project TimeGenerated, ResultType, ResultSignature, ResultDescription, Location, LocationDetails, AuthenticationRequirement
-| order by TimeGenerated desc
+DeviceRegistryEvents
+| where DeviceName == "azwks-phtg-01"
+| where InitiatingProcessAccountName == "vmadminusername"
+| where TimeGenerated > datetime(2025-12-13T09:48:40Z)
+| project TimeGenerated, RegistryKey, RegistryValueName, RegistryValueData, ActionType
+| order by TimeGenerated asc
 ```
-<img width="1919" height="821" alt="Image" src="https://github.com/user-attachments/assets/222db846-4d8c-415c-8e59-bbaad8a8801a" />
+<img width="1919" height="821" alt="Image" src="https://github.com/user-attachments/assets/7303e337-dd9d-47c8-b01f-589537a84752" />
 
 ### 💡 Why it matters
 - Azure AD already accepted the username/password.
@@ -413,13 +422,15 @@ The successful authentication was not consistent with a brute-force attack. The 
 
 ### 🎯 Objective
 ```kql
-SigninLogs
-| where TimeGenerated between (todatetime('2025-12-13 09:00') .. todatetime('2025-12-13 18:00'))
-| where ResultSignature == "FAILURE"
-| project TimeGenerated, ResultType, ResultSignature, ResultDescription, Location, LocationDetails, AuthenticationRequirement
-| order by TimeGenerated desc
+DeviceRegistryEvents
+| where DeviceName == "azwks-phtg-01"
+| where InitiatingProcessAccountName == "vmadminusername"
+| where TimeGenerated > datetime(2025-12-13T09:48:40Z)
+| where RegistryKey contains "CurrentVersion\\Run"
+| project TimeGenerated, RegistryKey, RegistryValueName, RegistryValueData
+| order by TimeGenerated asc
 ```
-<img width="1919" height="821" alt="Image" src="https://github.com/user-attachments/assets/222db846-4d8c-415c-8e59-bbaad8a8801a" />
+<img width="1919" height="821" alt="Image" src="https://github.com/user-attachments/assets/4b610653-c153-4174-a9c6-75da14c18f09" />
 
 ### 💡 Why it matters
 - Azure AD already accepted the username/password.
@@ -437,13 +448,16 @@ The successful authentication was not consistent with a brute-force attack. The 
 
 ### 🎯 Objective
 ```kql
-SigninLogs
-| where TimeGenerated between (todatetime('2025-12-13 09:00') .. todatetime('2025-12-13 18:00'))
-| where ResultSignature == "FAILURE"
-| project TimeGenerated, ResultType, ResultSignature, ResultDescription, Location, LocationDetails, AuthenticationRequirement
-| order by TimeGenerated desc
+DeviceRegistryEvents
+| where DeviceName == "azwks-phtg-01"
+| where InitiatingProcessAccountName == "vmadminusername"
+| where TimeGenerated > datetime(2025-12-13T09:48:40Z)
+| where RegistryKey contains "CurrentVersion\\Run"
+| where RegistryValueName == "PHTGHealthCloudTray"
+| project TimeGenerated, RegistryKey, RegistryValueName, RegistryValueData
+| order by TimeGenerated asc
 ```
-<img width="1919" height="821" alt="Image" src="https://github.com/user-attachments/assets/222db846-4d8c-415c-8e59-bbaad8a8801a" />
+<img width="1919" height="821" alt="Image" src="https://github.com/user-attachments/assets/d014cfc8-de7b-4d1a-9055-1e176e41853c" />
 
 ### 💡 Why it matters
 - Azure AD already accepted the username/password.
@@ -462,13 +476,14 @@ The successful authentication was not consistent with a brute-force attack. The 
 
 ### 🎯 Objective
 ```kql
-SigninLogs
-| where TimeGenerated between (todatetime('2025-12-13 09:00') .. todatetime('2025-12-13 18:00'))
-| where ResultSignature == "FAILURE"
-| project TimeGenerated, ResultType, ResultSignature, ResultDescription, Location, LocationDetails, AuthenticationRequirement
-| order by TimeGenerated desc
+DeviceFileEvents
+| where DeviceName == "azwks-phtg-01"
+| where TimeGenerated > datetime(2025-12-13T09:48:40Z)
+| where FileName endswith ".lnk"
+| project TimeGenerated, ActionType, FileName, FolderPath
+| order by TimeGenerated asc
 ```
-<img width="1919" height="821" alt="Image" src="https://github.com/user-attachments/assets/222db846-4d8c-415c-8e59-bbaad8a8801a" />
+<img width="1919" height="821" alt="Image" src="https://github.com/user-attachments/assets/a9bae179-0302-4bb7-860f-72f3ffefbe63" />
 
 ### 💡 Why it matters
 - Azure AD already accepted the username/password.
@@ -487,13 +502,14 @@ The successful authentication was not consistent with a brute-force attack. The 
 
 ### 🎯 Objective
 ```kql
-SigninLogs
-| where TimeGenerated between (todatetime('2025-12-13 09:00') .. todatetime('2025-12-13 18:00'))
-| where ResultSignature == "FAILURE"
-| project TimeGenerated, ResultType, ResultSignature, ResultDescription, Location, LocationDetails, AuthenticationRequirement
-| order by TimeGenerated desc
+DeviceRegistryEvents
+| where DeviceName == "azwks-phtg-01"
+| where TimeGenerated > datetime(2025-12-13T09:48:40Z)
+| where RegistryKey contains "EventLog\\Application"
+| project TimeGenerated, RegistryKey, RegistryValueName, RegistryValueData, ActionType
+| order by TimeGenerated asc
 ```
-<img width="1919" height="821" alt="Image" src="https://github.com/user-attachments/assets/222db846-4d8c-415c-8e59-bbaad8a8801a" />
+<img width="1919" height="821" alt="Image" src="https://github.com/user-attachments/assets/04ba7dae-8d84-4326-a39e-e31ecbda0cdc" />
 
 ### 💡 Why it matters
 - Azure AD already accepted the username/password.
@@ -512,13 +528,14 @@ The successful authentication was not consistent with a brute-force attack. The 
 
 ### 🎯 Objective
 ```kql
-SigninLogs
-| where TimeGenerated between (todatetime('2025-12-13 09:00') .. todatetime('2025-12-13 18:00'))
-| where ResultSignature == "FAILURE"
-| project TimeGenerated, ResultType, ResultSignature, ResultDescription, Location, LocationDetails, AuthenticationRequirement
-| order by TimeGenerated desc
+DeviceProcessEvents
+| where DeviceName == "azwks-phtg-01"
+| where TimeGenerated > datetime(2025-12-13T09:48:40Z)
+| where FileName == "PHTGHealthCloudSvc.exe"
+| where ProcessCommandLine contains "/healthcheck"
+| summarize Count=count()
 ```
-<img width="1919" height="821" alt="Image" src="https://github.com/user-attachments/assets/222db846-4d8c-415c-8e59-bbaad8a8801a" />
+<img width="1919" height="821" alt="Image" src="https://github.com/user-attachments/assets/ef7997c1-9c9c-48df-8c71-72993e67f9c5" />
 
 ### 💡 Why it matters
 - Azure AD already accepted the username/password.
@@ -536,13 +553,15 @@ The successful authentication was not consistent with a brute-force attack. The 
 
 ### 🎯 Objective
 ```kql
-SigninLogs
-| where TimeGenerated between (todatetime('2025-12-13 09:00') .. todatetime('2025-12-13 18:00'))
-| where ResultSignature == "FAILURE"
-| project TimeGenerated, ResultType, ResultSignature, ResultDescription, Location, LocationDetails, AuthenticationRequirement
-| order by TimeGenerated desc
+DeviceProcessEvents
+| where DeviceName == "azwks-phtg-01"
+| where TimeGenerated > datetime(2025-12-13T09:48:40Z)
+| where FileName =~ "powershell.exe"
+| where ProcessCommandLine has_any ("-EncodedCommand", "-enc", "-e")
+| project TimeGenerated, DeviceName, InitiatingProcessAccountName, ProcessCommandLine
+| order by TimeGenerated asc
 ```
-<img width="1919" height="821" alt="Image" src="https://github.com/user-attachments/assets/222db846-4d8c-415c-8e59-bbaad8a8801a" />
+<img width="1919" height="821" alt="Image" src="https://github.com/user-attachments/assets/8a372449-2455-4d5e-a780-fb3fcaed0d2a" />
 
 ### 💡 Why it matters
 - Azure AD already accepted the username/password.
@@ -584,13 +603,13 @@ The successful authentication was not consistent with a brute-force attack. The 
 
 ### 🎯 Objective
 ```kql
-SigninLogs
-| where TimeGenerated between (todatetime('2025-12-13 09:00') .. todatetime('2025-12-13 18:00'))
-| where ResultSignature == "FAILURE"
-| project TimeGenerated, ResultType, ResultSignature, ResultDescription, Location, LocationDetails, AuthenticationRequirement
-| order by TimeGenerated desc
+DeviceNetworkEvents
+| where DeviceName == "azwks-phtg-01"
+| where TimeGenerated > datetime(2025-12-13T09:48:40Z)
+| project TimeGenerated, InitiatingProcessFileName, RemoteUrl, RemoteIP
+| order by TimeGenerated asc
 ```
-<img width="1919" height="821" alt="Image" src="https://github.com/user-attachments/assets/222db846-4d8c-415c-8e59-bbaad8a8801a" />
+<img width="1919" height="821" alt="Image" src="https://github.com/user-attachments/assets/63610951-09db-4de1-b212-317593e65694" />
 
 ### 💡 Why it matters
 - Azure AD already accepted the username/password.
@@ -609,13 +628,14 @@ The successful authentication was not consistent with a brute-force attack. The 
 
 ### 🎯 Objective
 ```kql
-SigninLogs
-| where TimeGenerated between (todatetime('2025-12-13 09:00') .. todatetime('2025-12-13 18:00'))
-| where ResultSignature == "FAILURE"
-| project TimeGenerated, ResultType, ResultSignature, ResultDescription, Location, LocationDetails, AuthenticationRequirement
-| order by TimeGenerated desc
+DeviceNetworkEvents
+| where DeviceName == "azwks-phtg-01"
+| where TimeGenerated > datetime(2025-12-13T09:48:40Z)
+| where InitiatingProcessFileName =~ "powershell.exe"
+| project TimeGenerated, RemoteUrl, RemoteIP
+| order by TimeGenerated asc
 ```
-<img width="1919" height="821" alt="Image" src="https://github.com/user-attachments/assets/222db846-4d8c-415c-8e59-bbaad8a8801a" />
+<img width="1919" height="821" alt="Image" src="https://github.com/user-attachments/assets/7512d4c2-5d87-4ac3-aa77-33d3f346359e" />
 
 ### 💡 Why it matters
 - Azure AD already accepted the username/password.
@@ -634,13 +654,15 @@ The successful authentication was not consistent with a brute-force attack. The 
 
 ### 🎯 Objective
 ```kql
-SigninLogs
-| where TimeGenerated between (todatetime('2025-12-13 09:00') .. todatetime('2025-12-13 18:00'))
-| where ResultSignature == "FAILURE"
-| project TimeGenerated, ResultType, ResultSignature, ResultDescription, Location, LocationDetails, AuthenticationRequirement
-| order by TimeGenerated desc
+DeviceProcessEvents
+| where DeviceName == "azwks-phtg-01"
+| where TimeGenerated > datetime(2025-12-13T09:48:40Z)
+| where FileName =~ "powershell.exe"
+| where ProcessCommandLine contains "C:\\ProgramData\\PHTG\\HealthCloud\\Bin"
+| project TimeGenerated, FileName, ProcessCommandLine
+| order by TimeGenerated asc
 ```
-<img width="1919" height="821" alt="Image" src="https://github.com/user-attachments/assets/222db846-4d8c-415c-8e59-bbaad8a8801a" />
+<img width="1919" height="821" alt="Image" src="https://github.com/user-attachments/assets/8f188fd5-04ef-41ad-8321-2f4d4ff69c8e" />
 
 ### 💡 Why it matters
 - Azure AD already accepted the username/password.
@@ -659,13 +681,14 @@ The successful authentication was not consistent with a brute-force attack. The 
 
 ### 🎯 Objective
 ```kql
-SigninLogs
-| where TimeGenerated between (todatetime('2025-12-13 09:00') .. todatetime('2025-12-13 18:00'))
-| where ResultSignature == "FAILURE"
-| project TimeGenerated, ResultType, ResultSignature, ResultDescription, Location, LocationDetails, AuthenticationRequirement
-| order by TimeGenerated desc
+DeviceProcessEvents
+| where DeviceName == "azwks-phtg-01"
+| where InitiatingProcessAccountName == "vmadminusername"
+| where TimeGenerated between (datetime(2025-12-13T09:48:40Z) .. datetime(2025-12-13T10:48:40Z))
+| where FileName =~ "cmd.exe" | project TimeGenerated, ProcessCommandLine, InitiatingProcessFileName
+| order by TimeGenerated asc
 ```
-<img width="1919" height="821" alt="Image" src="https://github.com/user-attachments/assets/222db846-4d8c-415c-8e59-bbaad8a8801a" />
+<img width="1919" height="821" alt="Image" src="https://github.com/user-attachments/assets/be0e75f2-bbea-46cc-aa1f-fd46f6c94a0c" />
 
 ### 💡 Why it matters
 - Azure AD already accepted the username/password.
@@ -684,13 +707,14 @@ The successful authentication was not consistent with a brute-force attack. The 
 
 ### 🎯 Objective
 ```kql
-SigninLogs
-| where TimeGenerated between (todatetime('2025-12-13 09:00') .. todatetime('2025-12-13 18:00'))
-| where ResultSignature == "FAILURE"
-| project TimeGenerated, ResultType, ResultSignature, ResultDescription, Location, LocationDetails, AuthenticationRequirement
-| order by TimeGenerated desc
+DeviceRegistryEvents
+| where DeviceName == "azwks-phtg-01"
+| where TimeGenerated > datetime(2025-12-13T09:48:40Z)
+| where RegistryKey contains @"Microsoft\Windows Defender\Exclusions"
+| project TimeGenerated, RegistryKey, RegistryValueName, RegistryValueData
+| order by TimeGenerated asc
 ```
-<img width="1919" height="821" alt="Image" src="https://github.com/user-attachments/assets/222db846-4d8c-415c-8e59-bbaad8a8801a" />
+<img width="1919" height="821" alt="Image" src="https://github.com/user-attachments/assets/561966fb-048e-4525-b9fa-7e26a4877012" />
 
 ### 💡 Why it matters
 - Azure AD already accepted the username/password.
@@ -709,13 +733,14 @@ The successful authentication was not consistent with a brute-force attack. The 
 
 ### 🎯 Objective
 ```kql
-SigninLogs
-| where TimeGenerated between (todatetime('2025-12-13 09:00') .. todatetime('2025-12-13 18:00'))
-| where ResultSignature == "FAILURE"
-| project TimeGenerated, ResultType, ResultSignature, ResultDescription, Location, LocationDetails, AuthenticationRequirement
+DeviceEvents
+| where DeviceName == "azwks-phtg-01"
+| where TimeGenerated  between (datetime(2025-12-13T09:48:40Z) .. datetime(2025-12-13T10:48:40Z))
+| where ActionType has "AntivirusReport"
+| project TimeGenerated, DeviceName, ActionType, FileName, FolderPath, AdditionalFields
 | order by TimeGenerated desc
 ```
-<img width="1919" height="821" alt="Image" src="https://github.com/user-attachments/assets/222db846-4d8c-415c-8e59-bbaad8a8801a" />
+<img width="1919" height="821" alt="Image" src="https://github.com/user-attachments/assets/b327ea57-7781-43f5-8a09-46004980bd0c" />
 
 ### 💡 Why it matters
 - Azure AD already accepted the username/password.
@@ -733,13 +758,15 @@ The successful authentication was not consistent with a brute-force attack. The 
 
 ### 🎯 Objective
 ```kql
-SigninLogs
-| where TimeGenerated between (todatetime('2025-12-13 09:00') .. todatetime('2025-12-13 18:00'))
-| where ResultSignature == "FAILURE"
-| project TimeGenerated, ResultType, ResultSignature, ResultDescription, Location, LocationDetails, AuthenticationRequirement
-| order by TimeGenerated desc
+DeviceEvents
+| where DeviceName == "azwks-phtg-01"
+| where TimeGenerated between (datetime(2025-12-13T09:48:40Z) .. datetime(2025-12-13T10:48:40Z))
+| where ActionType == "PowerShellCommand"
+| where AdditionalFields has_any ("Add-MpPreference", "Remove-MpPreference")
+| project TimeGenerated, AdditionalFields
+| order by TimeGenerated asc
 ```
-<img width="1919" height="821" alt="Image" src="https://github.com/user-attachments/assets/222db846-4d8c-415c-8e59-bbaad8a8801a" />
+<img width="1919" height="821" alt="Image" src="https://github.com/user-attachments/assets/6ef94e11-d19d-4f4b-adcd-adc602873226" />
 
 ### 💡 Why it matters
 - Azure AD already accepted the username/password.
@@ -758,13 +785,14 @@ The successful authentication was not consistent with a brute-force attack. The 
 
 ### 🎯 Objective
 ```kql
-SigninLogs
-| where TimeGenerated between (todatetime('2025-12-13 09:00') .. todatetime('2025-12-13 18:00'))
-| where ResultSignature == "FAILURE"
-| project TimeGenerated, ResultType, ResultSignature, ResultDescription, Location, LocationDetails, AuthenticationRequirement
-| order by TimeGenerated desc
+DeviceProcessEvents
+| where DeviceName == "azwks-phtg-01"
+| where TimeGenerated > datetime(2025-12-13T10:12:59Z)
+| where ProcessCommandLine has "HealthCloudTray.ps1"
+| project TimeGenerated, ProcessCommandLine
+| order by TimeGenerated asc
 ```
-<img width="1919" height="821" alt="Image" src="https://github.com/user-attachments/assets/222db846-4d8c-415c-8e59-bbaad8a8801a" />
+<img width="1919" height="821" alt="Image" src="https://github.com/user-attachments/assets/371f28b0-6a04-4d90-8cfb-c7c7d8ec82d7" />
 
 ### 💡 Why it matters
 - Azure AD already accepted the username/password.
@@ -806,13 +834,14 @@ The successful authentication was not consistent with a brute-force attack. The 
 
 ### 🎯 Objective
 ```kql
-SigninLogs
-| where TimeGenerated between (todatetime('2025-12-13 09:00') .. todatetime('2025-12-13 18:00'))
-| where ResultSignature == "FAILURE"
-| project TimeGenerated, ResultType, ResultSignature, ResultDescription, Location, LocationDetails, AuthenticationRequirement
-| order by TimeGenerated desc
+DeviceEvents
+| where DeviceName == "azwks-phtg-01"
+| where TimeGenerated between (datetime(2025-12-13T09:48:40Z) .. datetime(2025-12-13T10:48:40Z))
+| where ActionType == "OpenProcessApiCall"
+| project TimeGenerated, InitiatingProcessAccountName, InitiatingProcessFileName, FileName, FolderPath, AdditionalFields
+| sort by TimeGenerated asc
 ```
-<img width="1919" height="821" alt="Image" src="https://github.com/user-attachments/assets/222db846-4d8c-415c-8e59-bbaad8a8801a" />
+<img width="1919" height="821" alt="Image" src="https://github.com/user-attachments/assets/3071711a-cc19-46c7-ae62-bb9bd50a02b8" />
 
 ### 💡 Why it matters
 - Azure AD already accepted the username/password.
@@ -829,22 +858,26 @@ The successful authentication was not consistent with a brute-force attack. The 
 <summary id="-flag-28">🚩 <strong>Flag 28: <Technique Name></strong></summary>
 
 ### 🎯 Objective
+
+**📌 Finding**  
+Analysis of LSASS access events identified two sequential DesiredAccess values requested by PowerShell. The first request used ``5136 (0x1410)``, while the second used ``2047999 (0x1F3FFF)``. The latter corresponds to PROCESS_ALL_ACCESS, granting full access to the LSASS process.
 ```kql
-SigninLogs
-| where TimeGenerated between (todatetime('2025-12-13 09:00') .. todatetime('2025-12-13 18:00'))
-| where ResultSignature == "FAILURE"
-| project TimeGenerated, ResultType, ResultSignature, ResultDescription, Location, LocationDetails, AuthenticationRequirement
-| order by TimeGenerated desc
+DeviceEvents
+| where DeviceName == "azwks-phtg-01"
+| where TimeGenerated between (datetime(2025-12-13T09:48:40Z) .. datetime(2025-12-13T10:48:40Z))
+| where ActionType == "OpenProcessApiCall"
+| project TimeGenerated, AdditionalFields
+| sort by TimeGenerated asc
 ```
-<img width="1919" height="821" alt="Image" src="https://github.com/user-attachments/assets/222db846-4d8c-415c-8e59-bbaad8a8801a" />
+<img width="1919" height="821" alt="Image" src="https://github.com/user-attachments/assets/32c5451d-fa8b-4a4d-89d5-38d4163ee536" />
 
 ### 💡 Why it matters
-- Azure AD already accepted the username/password.
-- MFA was the only thing preventing access.
-- This is not what you would expect from a password guessing attack.
+-	LSASS stores authentication material and credentials.
+-	Full process access enables memory inspection and credential theft techniques.
+-	Escalating access rights indicates increasing control over the target process.
 
 ### Conclusion
-The successful authentication was not consistent with a brute-force attack. The telemetry indicates the attacker possessed valid credentials and repeatedly attempted authentication before being challenged for MFA. Based on the evidence, the most likely access vector would be ``Password Reuse.``
+The DesiredAccess value ``2047999 (0x1F3FFF)`` grants full access to LSASS. The escalation from limited access to full process access is significant because it enables actions such as reading LSASS memory and accessing stored authentication material.
 
 </details>
 
@@ -854,19 +887,22 @@ The successful authentication was not consistent with a brute-force attack. The 
 <summary id="-flag-29">🚩 <strong>Flag 29: <Technique Name></strong></summary>
 
 ### 🎯 Objective
+**📌 Finding** 
+Analysis of DeviceEvents identified a ``ReadProcessMemoryApiCall`` event involving ``lsass.exe`` during the investigation window. The event was initiated by ``powershell.exe`` under the ``vmadminusername`` account, confirming activity beyond simple handle access.
 ```kql
-SigninLogs
-| where TimeGenerated between (todatetime('2025-12-13 09:00') .. todatetime('2025-12-13 18:00'))
-| where ResultSignature == "FAILURE"
-| project TimeGenerated, ResultType, ResultSignature, ResultDescription, Location, LocationDetails, AuthenticationRequirement
-| order by TimeGenerated desc
+DeviceEvents
+| where DeviceName == "azwks-phtg-01"
+| where TimeGenerated between (datetime(2025-12-13T09:48:40Z) .. datetime(2025-12-13T10:48:40Z))
+| where ActionType == "ReadProcessMemoryApiCall"
+| project TimeGenerated, ActionType, FileName, InitiatingProcessFileName, InitiatingProcessAccountName, AdditionalFields
+| order by TimeGenerated asc
 ```
-<img width="1919" height="821" alt="Image" src="https://github.com/user-attachments/assets/222db846-4d8c-415c-8e59-bbaad8a8801a" />
+<img width="1919" height="821" alt="Image" src="https://github.com/user-attachments/assets/73007e2d-fdb1-4301-a486-85b8be06316e" />
 
 ### 💡 Why it matters
-- Azure AD already accepted the username/password.
-- MFA was the only thing preventing access.
-- This is not what you would expect from a password guessing attack.
+- ``OpenProcessApiCall`` only proves that a handle to LSASS was opened.
+- ``ReadProcessMemoryApiCall`` confirms the operator actually read memory from LSASS.
+- Reading LSASS memory is consistent with credential dumping activity
 
 ### Conclusion
 The successful authentication was not consistent with a brute-force attack. The telemetry indicates the attacker possessed valid credentials and repeatedly attempted authentication before being challenged for MFA. Based on the evidence, the most likely access vector would be ``Password Reuse.``
@@ -876,30 +912,7 @@ The successful authentication was not consistent with a brute-force attack. The 
 ---
 
 <details>
-<summary id="-flag-30">🚩 <strong>Flag 30: <Technique Name></strong></summary>
 
-### 🎯 Objective
-```kql
-SigninLogs
-| where TimeGenerated between (todatetime('2025-12-13 09:00') .. todatetime('2025-12-13 18:00'))
-| where ResultSignature == "FAILURE"
-| project TimeGenerated, ResultType, ResultSignature, ResultDescription, Location, LocationDetails, AuthenticationRequirement
-| order by TimeGenerated desc
-```
-<img width="1919" height="821" alt="Image" src="https://github.com/user-attachments/assets/222db846-4d8c-415c-8e59-bbaad8a8801a" />
-
-### 💡 Why it matters
-- Azure AD already accepted the username/password.
-- MFA was the only thing preventing access.
-- This is not what you would expect from a password guessing attack.
-
-### Conclusion
-The successful authentication was not consistent with a brute-force attack. The telemetry indicates the attacker possessed valid credentials and repeatedly attempted authentication before being challenged for MFA. Based on the evidence, the most likely access vector would be ``Password Reuse.``
-</details>
-
----
-
-</details>
 
 ---
 
