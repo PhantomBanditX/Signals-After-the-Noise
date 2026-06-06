@@ -112,13 +112,17 @@ SigninLogs
 ```
 <img width="1919" height="821" alt="Image" src="https://github.com/user-attachments/assets/222db846-4d8c-415c-8e59-bbaad8a8801a" />
 
+### 📌 Findings
+Analysis of DeviceEvents identified a ``ReadProcessMemoryApiCall`` event involving ``lsass.exe`` during the investigation window. The event was initiated by ``powershell.exe`` under the ``vmadminusername`` account, confirming activity beyond simple handle access.
+
 ### 💡 Why it matters
-- Azure AD already accepted the username/password.
-- MFA was the only thing preventing access.
-- This is not what you would expect from a password guessing attack.
+- ``OpenProcessApiCall`` only proves that a handle to LSASS was opened.
+- ``ReadProcessMemoryApiCall`` confirms the operator actually read memory from LSASS.
+- Reading LSASS memory is consistent with credential dumping activity.
 
 ### Conclusion
-The successful authentication was not consistent with a brute-force attack. The telemetry indicates the attacker possessed valid credentials and repeatedly attempted authentication before being challenged for MFA. Based on the evidence, the most likely access vector would be ``Password Reuse.``
+The ActionType ``ReadProcessMemoryApiCall`` confirmed that the operator progressed beyond handle access and successfully read memory from ``lsass.exe``. Combined with the earlier ``OpenProcessApiCall`` activity, this provides strong evidence of credential-access behavior consistent with LSASS credential dumping techniques.
+
 
 ---
 
@@ -139,13 +143,16 @@ DeviceLogonEvents
 ```
 <img width="1919" height="821" alt="Image" src="https://github.com/user-attachments/assets/ee14285b-934b-4ce6-a747-67eea9018b8a" />
 
+### 📌 Findings
+Analysis of DeviceEvents identified a ``ReadProcessMemoryApiCall`` event involving ``lsass.exe`` during the investigation window. The event was initiated by ``powershell.exe`` under the ``vmadminusername`` account, confirming activity beyond simple handle access.
+
 ### 💡 Why it matters
-- Azure AD already accepted the username/password.
-- MFA was the only thing preventing access.
-- This is not what you would expect from a password guessing attack.
+- ``OpenProcessApiCall`` only proves that a handle to LSASS was opened.
+- ``ReadProcessMemoryApiCall`` confirms the operator actually read memory from LSASS.
+- Reading LSASS memory is consistent with credential dumping activity.
 
 ### Conclusion
-The successful authentication was not consistent with a brute-force attack. The telemetry indicates the attacker possessed valid credentials and repeatedly attempted authentication before being challenged for MFA. Based on the evidence, the most likely access vector would be ``Password Reuse.``
+The ActionType ``ReadProcessMemoryApiCall`` confirmed that the operator progressed beyond handle access and successfully read memory from ``lsass.exe``. Combined with the earlier ``OpenProcessApiCall`` activity, this provides strong evidence of credential-access behavior consistent with LSASS credential dumping techniques.
 
 ---
 
@@ -166,13 +173,17 @@ DeviceLogonEvents
 ```
 <img width="1919" height="821" alt="Image" src="https://github.com/user-attachments/assets/27f0a4aa-bd32-4592-b38f-854364f9544e" />
 
+### 📌 Findings
+Analysis of DeviceEvents identified a ``ReadProcessMemoryApiCall`` event involving ``lsass.exe`` during the investigation window. The event was initiated by ``powershell.exe`` under the ``vmadminusername`` account, confirming activity beyond simple handle access.
+
 ### 💡 Why it matters
-- Azure AD already accepted the username/password.
-- MFA was the only thing preventing access.
-- This is not what you would expect from a password guessing attack.
+- ``OpenProcessApiCall`` only proves that a handle to LSASS was opened.
+- ``ReadProcessMemoryApiCall`` confirms the operator actually read memory from LSASS.
+- Reading LSASS memory is consistent with credential dumping activity.
 
 ### Conclusion
-The successful authentication was not consistent with a brute-force attack. The telemetry indicates the attacker possessed valid credentials and repeatedly attempted authentication before being challenged for MFA. Based on the evidence, the most likely access vector would be ``Password Reuse.``
+The ActionType ``ReadProcessMemoryApiCall`` confirmed that the operator progressed beyond handle access and successfully read memory from ``lsass.exe``. Combined with the earlier ``OpenProcessApiCall`` activity, this provides strong evidence of credential-access behavior consistent with LSASS credential dumping techniques.
+
 
 </details>
 
@@ -194,13 +205,17 @@ DeviceProcessEvents
 ```
 <img width="1919" height="821" alt="Image" src="https://github.com/user-attachments/assets/985869c8-6145-4f68-b8ec-32fcd14ab7c2" />
 
+### 📌 Findings
+Analysis of DeviceEvents identified a ``ReadProcessMemoryApiCall`` event involving ``lsass.exe`` during the investigation window. The event was initiated by ``powershell.exe`` under the ``vmadminusername`` account, confirming activity beyond simple handle access.
+
 ### 💡 Why it matters
-- Azure AD already accepted the username/password.
-- MFA was the only thing preventing access.
-- This is not what you would expect from a password guessing attack.
+- ``OpenProcessApiCall`` only proves that a handle to LSASS was opened.
+- ``ReadProcessMemoryApiCall`` confirms the operator actually read memory from LSASS.
+- Reading LSASS memory is consistent with credential dumping activity.
 
 ### Conclusion
-The successful authentication was not consistent with a brute-force attack. The telemetry indicates the attacker possessed valid credentials and repeatedly attempted authentication before being challenged for MFA. Based on the evidence, the most likely access vector would be ``Password Reuse.``
+The ActionType ``ReadProcessMemoryApiCall`` confirmed that the operator progressed beyond handle access and successfully read memory from ``lsass.exe``. Combined with the earlier ``OpenProcessApiCall`` activity, this provides strong evidence of credential-access behavior consistent with LSASS credential dumping techniques.
+
 
 </details>
 
@@ -221,13 +236,17 @@ DeviceProcessEvents
 ```
 <img width="1919" height="821" alt="Image" src="https://github.com/user-attachments/assets/ae3201d7-1bfb-4a79-8e84-cb6d4abb3997" />
 
+### 📌 Findings
+Analysis of DeviceEvents identified a ``ReadProcessMemoryApiCall`` event involving ``lsass.exe`` during the investigation window. The event was initiated by ``powershell.exe`` under the ``vmadminusername`` account, confirming activity beyond simple handle access.
+
 ### 💡 Why it matters
-- Azure AD already accepted the username/password.
-- MFA was the only thing preventing access.
-- This is not what you would expect from a password guessing attack.
+- ``OpenProcessApiCall`` only proves that a handle to LSASS was opened.
+- ``ReadProcessMemoryApiCall`` confirms the operator actually read memory from LSASS.
+- Reading LSASS memory is consistent with credential dumping activity.
 
 ### Conclusion
-The successful authentication was not consistent with a brute-force attack. The telemetry indicates the attacker possessed valid credentials and repeatedly attempted authentication before being challenged for MFA. Based on the evidence, the most likely access vector would be ``Password Reuse.``
+The ActionType ``ReadProcessMemoryApiCall`` confirmed that the operator progressed beyond handle access and successfully read memory from ``lsass.exe``. Combined with the earlier ``OpenProcessApiCall`` activity, this provides strong evidence of credential-access behavior consistent with LSASS credential dumping techniques.
+
 
 </details>
 
@@ -247,13 +266,17 @@ DeviceFileEvents
 ```
 <img width="1919" height="821" alt="Image" src="https://github.com/user-attachments/assets/ee6ed265-53dd-4bbb-8396-04a5caf00b35" />
 
+### 📌 Findings
+Analysis of DeviceEvents identified a ``ReadProcessMemoryApiCall`` event involving ``lsass.exe`` during the investigation window. The event was initiated by ``powershell.exe`` under the ``vmadminusername`` account, confirming activity beyond simple handle access.
+
 ### 💡 Why it matters
-- Azure AD already accepted the username/password.
-- MFA was the only thing preventing access.
-- This is not what you would expect from a password guessing attack.
+- ``OpenProcessApiCall`` only proves that a handle to LSASS was opened.
+- ``ReadProcessMemoryApiCall`` confirms the operator actually read memory from LSASS.
+- Reading LSASS memory is consistent with credential dumping activity.
 
 ### Conclusion
-The successful authentication was not consistent with a brute-force attack. The telemetry indicates the attacker possessed valid credentials and repeatedly attempted authentication before being challenged for MFA. Based on the evidence, the most likely access vector would be ``Password Reuse.``
+The ActionType ``ReadProcessMemoryApiCall`` confirmed that the operator progressed beyond handle access and successfully read memory from ``lsass.exe``. Combined with the earlier ``OpenProcessApiCall`` activity, this provides strong evidence of credential-access behavior consistent with LSASS credential dumping techniques.
+
 
 
 </details>
@@ -275,13 +298,17 @@ DeviceProcessEvents
 ```
 <img width="1919" height="821" alt="Image" src="https://github.com/user-attachments/assets/4baa4832-e8bf-46ec-9609-6730a76e081d" />
 
+### 📌 Findings
+Analysis of DeviceEvents identified a ``ReadProcessMemoryApiCall`` event involving ``lsass.exe`` during the investigation window. The event was initiated by ``powershell.exe`` under the ``vmadminusername`` account, confirming activity beyond simple handle access.
+
 ### 💡 Why it matters
-- Azure AD already accepted the username/password.
-- MFA was the only thing preventing access.
-- This is not what you would expect from a password guessing attack.
+- ``OpenProcessApiCall`` only proves that a handle to LSASS was opened.
+- ``ReadProcessMemoryApiCall`` confirms the operator actually read memory from LSASS.
+- Reading LSASS memory is consistent with credential dumping activity.
 
 ### Conclusion
-The successful authentication was not consistent with a brute-force attack. The telemetry indicates the attacker possessed valid credentials and repeatedly attempted authentication before being challenged for MFA. Based on the evidence, the most likely access vector would be ``Password Reuse.``
+The ActionType ``ReadProcessMemoryApiCall`` confirmed that the operator progressed beyond handle access and successfully read memory from ``lsass.exe``. Combined with the earlier ``OpenProcessApiCall`` activity, this provides strong evidence of credential-access behavior consistent with LSASS credential dumping techniques.
+
 </details>
 
 ---
@@ -300,13 +327,17 @@ DeviceProcessEvents
 ```
 <img width="1919" height="821" alt="Image" src="https://github.com/user-attachments/assets/f578a330-b7e0-41ab-b48c-0065a895c74a" />
 
+### 📌 Findings
+Analysis of DeviceEvents identified a ``ReadProcessMemoryApiCall`` event involving ``lsass.exe`` during the investigation window. The event was initiated by ``powershell.exe`` under the ``vmadminusername`` account, confirming activity beyond simple handle access.
+
 ### 💡 Why it matters
-- Azure AD already accepted the username/password.
-- MFA was the only thing preventing access.
-- This is not what you would expect from a password guessing attack.
+- ``OpenProcessApiCall`` only proves that a handle to LSASS was opened.
+- ``ReadProcessMemoryApiCall`` confirms the operator actually read memory from LSASS.
+- Reading LSASS memory is consistent with credential dumping activity.
 
 ### Conclusion
-The successful authentication was not consistent with a brute-force attack. The telemetry indicates the attacker possessed valid credentials and repeatedly attempted authentication before being challenged for MFA. Based on the evidence, the most likely access vector would be ``Password Reuse.``
+The ActionType ``ReadProcessMemoryApiCall`` confirmed that the operator progressed beyond handle access and successfully read memory from ``lsass.exe``. Combined with the earlier ``OpenProcessApiCall`` activity, this provides strong evidence of credential-access behavior consistent with LSASS credential dumping techniques.
+
 
 </details>
 
@@ -325,14 +356,17 @@ DeviceRegistryEvents
 ```
 <img width="1919" height="821" alt="Image" src="https://github.com/user-attachments/assets/fee511f7-459d-4357-91b2-8acdf7f70f88" />
 
+### 📌 Findings
+Analysis of DeviceEvents identified a ``ReadProcessMemoryApiCall`` event involving ``lsass.exe`` during the investigation window. The event was initiated by ``powershell.exe`` under the ``vmadminusername`` account, confirming activity beyond simple handle access.
+
 ### 💡 Why it matters
-- Azure AD already accepted the username/password.
-- MFA was the only thing preventing access.
-- This is not what you would expect from a password guessing attack.
+- ``OpenProcessApiCall`` only proves that a handle to LSASS was opened.
+- ``ReadProcessMemoryApiCall`` confirms the operator actually read memory from LSASS.
+- Reading LSASS memory is consistent with credential dumping activity.
 
 ### Conclusion
-The successful authentication was not consistent with a brute-force attack. The telemetry indicates the attacker possessed valid credentials and repeatedly attempted authentication before being challenged for MFA. Based on the evidence, the most likely access vector would be ``Password Reuse.``
-</details>
+The ActionType ``ReadProcessMemoryApiCall`` confirmed that the operator progressed beyond handle access and successfully read memory from ``lsass.exe``. Combined with the earlier ``OpenProcessApiCall`` activity, this provides strong evidence of credential-access behavior consistent with LSASS credential dumping techniques.
+
 
 ---
 
@@ -350,13 +384,16 @@ DeviceRegistryEvents
 ```
 <img width="1919" height="821" alt="Image" src="https://github.com/user-attachments/assets/7303e337-dd9d-47c8-b01f-589537a84752" />
 
+### 📌 Findings
+Analysis of DeviceEvents identified a ``ReadProcessMemoryApiCall`` event involving ``lsass.exe`` during the investigation window. The event was initiated by ``powershell.exe`` under the ``vmadminusername`` account, confirming activity beyond simple handle access.
+
 ### 💡 Why it matters
-- Azure AD already accepted the username/password.
-- MFA was the only thing preventing access.
-- This is not what you would expect from a password guessing attack.
+- ``OpenProcessApiCall`` only proves that a handle to LSASS was opened.
+- ``ReadProcessMemoryApiCall`` confirms the operator actually read memory from LSASS.
+- Reading LSASS memory is consistent with credential dumping activity.
 
 ### Conclusion
-The successful authentication was not consistent with a brute-force attack. The telemetry indicates the attacker possessed valid credentials and repeatedly attempted authentication before being challenged for MFA. Based on the evidence, the most likely access vector would be ``Password Reuse.``
+The ActionType ``ReadProcessMemoryApiCall`` confirmed that the operator progressed beyond handle access and successfully read memory from ``lsass.exe``. Combined with the earlier ``OpenProcessApiCall`` activity, this provides strong evidence of credential-access behavior consistent with LSASS credential dumping techniques.
 
 </details>
 
@@ -377,13 +414,17 @@ DeviceRegistryEvents
 ```
 <img width="1919" height="821" alt="Image" src="https://github.com/user-attachments/assets/4b610653-c153-4174-a9c6-75da14c18f09" />
 
+### 📌 Findings
+Analysis of DeviceEvents identified a ``ReadProcessMemoryApiCall`` event involving ``lsass.exe`` during the investigation window. The event was initiated by ``powershell.exe`` under the ``vmadminusername`` account, confirming activity beyond simple handle access.
+
 ### 💡 Why it matters
-- Azure AD already accepted the username/password.
-- MFA was the only thing preventing access.
-- This is not what you would expect from a password guessing attack.
+- ``OpenProcessApiCall`` only proves that a handle to LSASS was opened.
+- ``ReadProcessMemoryApiCall`` confirms the operator actually read memory from LSASS.
+- Reading LSASS memory is consistent with credential dumping activity.
 
 ### Conclusion
-The successful authentication was not consistent with a brute-force attack. The telemetry indicates the attacker possessed valid credentials and repeatedly attempted authentication before being challenged for MFA. Based on the evidence, the most likely access vector would be ``Password Reuse.``
+The ActionType ``ReadProcessMemoryApiCall`` confirmed that the operator progressed beyond handle access and successfully read memory from ``lsass.exe``. Combined with the earlier ``OpenProcessApiCall`` activity, this provides strong evidence of credential-access behavior consistent with LSASS credential dumping techniques.
+
 </details>
 
 ---
@@ -404,13 +445,17 @@ DeviceRegistryEvents
 ```
 <img width="1919" height="821" alt="Image" src="https://github.com/user-attachments/assets/d014cfc8-de7b-4d1a-9055-1e176e41853c" />
 
+### 📌 Findings
+Analysis of DeviceEvents identified a ``ReadProcessMemoryApiCall`` event involving ``lsass.exe`` during the investigation window. The event was initiated by ``powershell.exe`` under the ``vmadminusername`` account, confirming activity beyond simple handle access.
+
 ### 💡 Why it matters
-- Azure AD already accepted the username/password.
-- MFA was the only thing preventing access.
-- This is not what you would expect from a password guessing attack.
+- ``OpenProcessApiCall`` only proves that a handle to LSASS was opened.
+- ``ReadProcessMemoryApiCall`` confirms the operator actually read memory from LSASS.
+- Reading LSASS memory is consistent with credential dumping activity.
 
 ### Conclusion
-The successful authentication was not consistent with a brute-force attack. The telemetry indicates the attacker possessed valid credentials and repeatedly attempted authentication before being challenged for MFA. Based on the evidence, the most likely access vector would be ``Password Reuse.``
+The ActionType ``ReadProcessMemoryApiCall`` confirmed that the operator progressed beyond handle access and successfully read memory from ``lsass.exe``. Combined with the earlier ``OpenProcessApiCall`` activity, this provides strong evidence of credential-access behavior consistent with LSASS credential dumping techniques.
+
 
 </details>
 
@@ -430,13 +475,17 @@ DeviceFileEvents
 ```
 <img width="1919" height="821" alt="Image" src="https://github.com/user-attachments/assets/a9bae179-0302-4bb7-860f-72f3ffefbe63" />
 
+### 📌 Findings
+Analysis of DeviceEvents identified a ``ReadProcessMemoryApiCall`` event involving ``lsass.exe`` during the investigation window. The event was initiated by ``powershell.exe`` under the ``vmadminusername`` account, confirming activity beyond simple handle access.
+
 ### 💡 Why it matters
-- Azure AD already accepted the username/password.
-- MFA was the only thing preventing access.
-- This is not what you would expect from a password guessing attack.
+- ``OpenProcessApiCall`` only proves that a handle to LSASS was opened.
+- ``ReadProcessMemoryApiCall`` confirms the operator actually read memory from LSASS.
+- Reading LSASS memory is consistent with credential dumping activity.
 
 ### Conclusion
-The successful authentication was not consistent with a brute-force attack. The telemetry indicates the attacker possessed valid credentials and repeatedly attempted authentication before being challenged for MFA. Based on the evidence, the most likely access vector would be ``Password Reuse.``
+The ActionType ``ReadProcessMemoryApiCall`` confirmed that the operator progressed beyond handle access and successfully read memory from ``lsass.exe``. Combined with the earlier ``OpenProcessApiCall`` activity, this provides strong evidence of credential-access behavior consistent with LSASS credential dumping techniques.
+
 
 </details>
 
@@ -456,13 +505,17 @@ DeviceRegistryEvents
 ```
 <img width="1919" height="821" alt="Image" src="https://github.com/user-attachments/assets/04ba7dae-8d84-4326-a39e-e31ecbda0cdc" />
 
+### 📌 Findings
+Analysis of DeviceEvents identified a ``ReadProcessMemoryApiCall`` event involving ``lsass.exe`` during the investigation window. The event was initiated by ``powershell.exe`` under the ``vmadminusername`` account, confirming activity beyond simple handle access.
+
 ### 💡 Why it matters
-- Azure AD already accepted the username/password.
-- MFA was the only thing preventing access.
-- This is not what you would expect from a password guessing attack.
+- ``OpenProcessApiCall`` only proves that a handle to LSASS was opened.
+- ``ReadProcessMemoryApiCall`` confirms the operator actually read memory from LSASS.
+- Reading LSASS memory is consistent with credential dumping activity.
 
 ### Conclusion
-The successful authentication was not consistent with a brute-force attack. The telemetry indicates the attacker possessed valid credentials and repeatedly attempted authentication before being challenged for MFA. Based on the evidence, the most likely access vector would be ``Password Reuse.``
+The ActionType ``ReadProcessMemoryApiCall`` confirmed that the operator progressed beyond handle access and successfully read memory from ``lsass.exe``. Combined with the earlier ``OpenProcessApiCall`` activity, this provides strong evidence of credential-access behavior consistent with LSASS credential dumping techniques.
+
 
 </details>
 
@@ -482,13 +535,17 @@ DeviceProcessEvents
 ```
 <img width="1919" height="821" alt="Image" src="https://github.com/user-attachments/assets/ef7997c1-9c9c-48df-8c71-72993e67f9c5" />
 
+### 📌 Findings
+Analysis of DeviceEvents identified a ``ReadProcessMemoryApiCall`` event involving ``lsass.exe`` during the investigation window. The event was initiated by ``powershell.exe`` under the ``vmadminusername`` account, confirming activity beyond simple handle access.
+
 ### 💡 Why it matters
-- Azure AD already accepted the username/password.
-- MFA was the only thing preventing access.
-- This is not what you would expect from a password guessing attack.
+- ``OpenProcessApiCall`` only proves that a handle to LSASS was opened.
+- ``ReadProcessMemoryApiCall`` confirms the operator actually read memory from LSASS.
+- Reading LSASS memory is consistent with credential dumping activity.
 
 ### Conclusion
-The successful authentication was not consistent with a brute-force attack. The telemetry indicates the attacker possessed valid credentials and repeatedly attempted authentication before being challenged for MFA. Based on the evidence, the most likely access vector would be ``Password Reuse.``
+The ActionType ``ReadProcessMemoryApiCall`` confirmed that the operator progressed beyond handle access and successfully read memory from ``lsass.exe``. Combined with the earlier ``OpenProcessApiCall`` activity, this provides strong evidence of credential-access behavior consistent with LSASS credential dumping techniques.
+
 </details>
 
 ---
@@ -508,13 +565,17 @@ DeviceProcessEvents
 ```
 <img width="1919" height="821" alt="Image" src="https://github.com/user-attachments/assets/8a372449-2455-4d5e-a780-fb3fcaed0d2a" />
 
+### 📌 Findings
+Analysis of DeviceEvents identified a ``ReadProcessMemoryApiCall`` event involving ``lsass.exe`` during the investigation window. The event was initiated by ``powershell.exe`` under the ``vmadminusername`` account, confirming activity beyond simple handle access.
+
 ### 💡 Why it matters
-- Azure AD already accepted the username/password.
-- MFA was the only thing preventing access.
-- This is not what you would expect from a password guessing attack.
+- ``OpenProcessApiCall`` only proves that a handle to LSASS was opened.
+- ``ReadProcessMemoryApiCall`` confirms the operator actually read memory from LSASS.
+- Reading LSASS memory is consistent with credential dumping activity.
 
 ### Conclusion
-The successful authentication was not consistent with a brute-force attack. The telemetry indicates the attacker possessed valid credentials and repeatedly attempted authentication before being challenged for MFA. Based on the evidence, the most likely access vector would be ``Password Reuse.``
+The ActionType ``ReadProcessMemoryApiCall`` confirmed that the operator progressed beyond handle access and successfully read memory from ``lsass.exe``. Combined with the earlier ``OpenProcessApiCall`` activity, this provides strong evidence of credential-access behavior consistent with LSASS credential dumping techniques.
+
 </details>
 
 ---
@@ -532,13 +593,17 @@ SigninLogs
 ```
 <img width="1919" height="821" alt="Image" src="https://github.com/user-attachments/assets/222db846-4d8c-415c-8e59-bbaad8a8801a" />
 
+### 📌 Findings
+Analysis of DeviceEvents identified a ``ReadProcessMemoryApiCall`` event involving ``lsass.exe`` during the investigation window. The event was initiated by ``powershell.exe`` under the ``vmadminusername`` account, confirming activity beyond simple handle access.
+
 ### 💡 Why it matters
-- Azure AD already accepted the username/password.
-- MFA was the only thing preventing access.
-- This is not what you would expect from a password guessing attack.
+- ``OpenProcessApiCall`` only proves that a handle to LSASS was opened.
+- ``ReadProcessMemoryApiCall`` confirms the operator actually read memory from LSASS.
+- Reading LSASS memory is consistent with credential dumping activity.
 
 ### Conclusion
-The successful authentication was not consistent with a brute-force attack. The telemetry indicates the attacker possessed valid credentials and repeatedly attempted authentication before being challenged for MFA. Based on the evidence, the most likely access vector would be ``Password Reuse.``
+The ActionType ``ReadProcessMemoryApiCall`` confirmed that the operator progressed beyond handle access and successfully read memory from ``lsass.exe``. Combined with the earlier ``OpenProcessApiCall`` activity, this provides strong evidence of credential-access behavior consistent with LSASS credential dumping techniques.
+
 </details>
 
 ---
@@ -556,13 +621,17 @@ DeviceNetworkEvents
 ```
 <img width="1919" height="821" alt="Image" src="https://github.com/user-attachments/assets/63610951-09db-4de1-b212-317593e65694" />
 
+### 📌 Findings
+Analysis of DeviceEvents identified a ``ReadProcessMemoryApiCall`` event involving ``lsass.exe`` during the investigation window. The event was initiated by ``powershell.exe`` under the ``vmadminusername`` account, confirming activity beyond simple handle access.
+
 ### 💡 Why it matters
-- Azure AD already accepted the username/password.
-- MFA was the only thing preventing access.
-- This is not what you would expect from a password guessing attack.
+- ``OpenProcessApiCall`` only proves that a handle to LSASS was opened.
+- ``ReadProcessMemoryApiCall`` confirms the operator actually read memory from LSASS.
+- Reading LSASS memory is consistent with credential dumping activity.
 
 ### Conclusion
-The successful authentication was not consistent with a brute-force attack. The telemetry indicates the attacker possessed valid credentials and repeatedly attempted authentication before being challenged for MFA. Based on the evidence, the most likely access vector would be ``Password Reuse.``
+The ActionType ``ReadProcessMemoryApiCall`` confirmed that the operator progressed beyond handle access and successfully read memory from ``lsass.exe``. Combined with the earlier ``OpenProcessApiCall`` activity, this provides strong evidence of credential-access behavior consistent with LSASS credential dumping techniques.
+
 
 </details>
 
@@ -582,13 +651,17 @@ DeviceNetworkEvents
 ```
 <img width="1919" height="821" alt="Image" src="https://github.com/user-attachments/assets/7512d4c2-5d87-4ac3-aa77-33d3f346359e" />
 
+### 📌 Findings
+Analysis of DeviceEvents identified a ``ReadProcessMemoryApiCall`` event involving ``lsass.exe`` during the investigation window. The event was initiated by ``powershell.exe`` under the ``vmadminusername`` account, confirming activity beyond simple handle access.
+
 ### 💡 Why it matters
-- Azure AD already accepted the username/password.
-- MFA was the only thing preventing access.
-- This is not what you would expect from a password guessing attack.
+- ``OpenProcessApiCall`` only proves that a handle to LSASS was opened.
+- ``ReadProcessMemoryApiCall`` confirms the operator actually read memory from LSASS.
+- Reading LSASS memory is consistent with credential dumping activity.
 
 ### Conclusion
-The successful authentication was not consistent with a brute-force attack. The telemetry indicates the attacker possessed valid credentials and repeatedly attempted authentication before being challenged for MFA. Based on the evidence, the most likely access vector would be ``Password Reuse.``
+The ActionType ``ReadProcessMemoryApiCall`` confirmed that the operator progressed beyond handle access and successfully read memory from ``lsass.exe``. Combined with the earlier ``OpenProcessApiCall`` activity, this provides strong evidence of credential-access behavior consistent with LSASS credential dumping techniques.
+
 
 </details>
 
@@ -609,13 +682,17 @@ DeviceProcessEvents
 ```
 <img width="1919" height="821" alt="Image" src="https://github.com/user-attachments/assets/8f188fd5-04ef-41ad-8321-2f4d4ff69c8e" />
 
+### 📌 Findings
+Analysis of DeviceEvents identified a ``ReadProcessMemoryApiCall`` event involving ``lsass.exe`` during the investigation window. The event was initiated by ``powershell.exe`` under the ``vmadminusername`` account, confirming activity beyond simple handle access.
+
 ### 💡 Why it matters
-- Azure AD already accepted the username/password.
-- MFA was the only thing preventing access.
-- This is not what you would expect from a password guessing attack.
+- ``OpenProcessApiCall`` only proves that a handle to LSASS was opened.
+- ``ReadProcessMemoryApiCall`` confirms the operator actually read memory from LSASS.
+- Reading LSASS memory is consistent with credential dumping activity.
 
 ### Conclusion
-The successful authentication was not consistent with a brute-force attack. The telemetry indicates the attacker possessed valid credentials and repeatedly attempted authentication before being challenged for MFA. Based on the evidence, the most likely access vector would be ``Password Reuse.``
+The ActionType ``ReadProcessMemoryApiCall`` confirmed that the operator progressed beyond handle access and successfully read memory from ``lsass.exe``. Combined with the earlier ``OpenProcessApiCall`` activity, this provides strong evidence of credential-access behavior consistent with LSASS credential dumping techniques.
+
 
 </details>
 
@@ -635,15 +712,17 @@ DeviceProcessEvents
 ```
 <img width="1919" height="821" alt="Image" src="https://github.com/user-attachments/assets/be0e75f2-bbea-46cc-aa1f-fd46f6c94a0c" />
 
+### 📌 Findings
+Analysis of DeviceEvents identified a ``ReadProcessMemoryApiCall`` event involving ``lsass.exe`` during the investigation window. The event was initiated by ``powershell.exe`` under the ``vmadminusername`` account, confirming activity beyond simple handle access.
+
 ### 💡 Why it matters
-- Azure AD already accepted the username/password.
-- MFA was the only thing preventing access.
-- This is not what you would expect from a password guessing attack.
+- ``OpenProcessApiCall`` only proves that a handle to LSASS was opened.
+- ``ReadProcessMemoryApiCall`` confirms the operator actually read memory from LSASS.
+- Reading LSASS memory is consistent with credential dumping activity.
 
 ### Conclusion
-The successful authentication was not consistent with a brute-force attack. The telemetry indicates the attacker possessed valid credentials and repeatedly attempted authentication before being challenged for MFA. Based on the evidence, the most likely access vector would be ``Password Reuse.``
+The ActionType ``ReadProcessMemoryApiCall`` confirmed that the operator progressed beyond handle access and successfully read memory from ``lsass.exe``. Combined with the earlier ``OpenProcessApiCall`` activity, this provides strong evidence of credential-access behavior consistent with LSASS credential dumping techniques.
 
-</details>
 
 ---
 
@@ -661,13 +740,17 @@ DeviceRegistryEvents
 ```
 <img width="1919" height="821" alt="Image" src="https://github.com/user-attachments/assets/561966fb-048e-4525-b9fa-7e26a4877012" />
 
+### 📌 Findings
+Analysis of DeviceEvents identified a ``ReadProcessMemoryApiCall`` event involving ``lsass.exe`` during the investigation window. The event was initiated by ``powershell.exe`` under the ``vmadminusername`` account, confirming activity beyond simple handle access.
+
 ### 💡 Why it matters
-- Azure AD already accepted the username/password.
-- MFA was the only thing preventing access.
-- This is not what you would expect from a password guessing attack.
+- ``OpenProcessApiCall`` only proves that a handle to LSASS was opened.
+- ``ReadProcessMemoryApiCall`` confirms the operator actually read memory from LSASS.
+- Reading LSASS memory is consistent with credential dumping activity.
 
 ### Conclusion
-The successful authentication was not consistent with a brute-force attack. The telemetry indicates the attacker possessed valid credentials and repeatedly attempted authentication before being challenged for MFA. Based on the evidence, the most likely access vector would be ``Password Reuse.``
+The ActionType ``ReadProcessMemoryApiCall`` confirmed that the operator progressed beyond handle access and successfully read memory from ``lsass.exe``. Combined with the earlier ``OpenProcessApiCall`` activity, this provides strong evidence of credential-access behavior consistent with LSASS credential dumping techniques.
+
 
 </details>
 
@@ -687,13 +770,17 @@ DeviceEvents
 ```
 <img width="1919" height="821" alt="Image" src="https://github.com/user-attachments/assets/b327ea57-7781-43f5-8a09-46004980bd0c" />
 
+### 📌 Findings
+Analysis of DeviceEvents identified a ``ReadProcessMemoryApiCall`` event involving ``lsass.exe`` during the investigation window. The event was initiated by ``powershell.exe`` under the ``vmadminusername`` account, confirming activity beyond simple handle access.
+
 ### 💡 Why it matters
-- Azure AD already accepted the username/password.
-- MFA was the only thing preventing access.
-- This is not what you would expect from a password guessing attack.
+- ``OpenProcessApiCall`` only proves that a handle to LSASS was opened.
+- ``ReadProcessMemoryApiCall`` confirms the operator actually read memory from LSASS.
+- Reading LSASS memory is consistent with credential dumping activity.
 
 ### Conclusion
-The successful authentication was not consistent with a brute-force attack. The telemetry indicates the attacker possessed valid credentials and repeatedly attempted authentication before being challenged for MFA. Based on the evidence, the most likely access vector would be ``Password Reuse.``
+The ActionType ``ReadProcessMemoryApiCall`` confirmed that the operator progressed beyond handle access and successfully read memory from ``lsass.exe``. Combined with the earlier ``OpenProcessApiCall`` activity, this provides strong evidence of credential-access behavior consistent with LSASS credential dumping techniques.
+
 </details>
 
 ---
@@ -713,13 +800,16 @@ DeviceEvents
 ```
 <img width="1919" height="821" alt="Image" src="https://github.com/user-attachments/assets/6ef94e11-d19d-4f4b-adcd-adc602873226" />
 
+### 📌 Findings
+Analysis of DeviceEvents identified a ``ReadProcessMemoryApiCall`` event involving ``lsass.exe`` during the investigation window. The event was initiated by ``powershell.exe`` under the ``vmadminusername`` account, confirming activity beyond simple handle access.
+
 ### 💡 Why it matters
-- Azure AD already accepted the username/password.
-- MFA was the only thing preventing access.
-- This is not what you would expect from a password guessing attack.
+- ``OpenProcessApiCall`` only proves that a handle to LSASS was opened.
+- ``ReadProcessMemoryApiCall`` confirms the operator actually read memory from LSASS.
+- Reading LSASS memory is consistent with credential dumping activity.
 
 ### Conclusion
-The successful authentication was not consistent with a brute-force attack. The telemetry indicates the attacker possessed valid credentials and repeatedly attempted authentication before being challenged for MFA. Based on the evidence, the most likely access vector would be ``Password Reuse.``
+The ActionType ``ReadProcessMemoryApiCall`` confirmed that the operator progressed beyond handle access and successfully read memory from ``lsass.exe``. Combined with the earlier ``OpenProcessApiCall`` activity, this provides strong evidence of credential-access behavior consistent with LSASS credential dumping techniques.
 
 </details>
 
@@ -739,13 +829,17 @@ DeviceProcessEvents
 ```
 <img width="1919" height="821" alt="Image" src="https://github.com/user-attachments/assets/371f28b0-6a04-4d90-8cfb-c7c7d8ec82d7" />
 
+### 📌 Findings
+Analysis of DeviceEvents identified a ``ReadProcessMemoryApiCall`` event involving ``lsass.exe`` during the investigation window. The event was initiated by ``powershell.exe`` under the ``vmadminusername`` account, confirming activity beyond simple handle access.
+
 ### 💡 Why it matters
-- Azure AD already accepted the username/password.
-- MFA was the only thing preventing access.
-- This is not what you would expect from a password guessing attack.
+- ``OpenProcessApiCall`` only proves that a handle to LSASS was opened.
+- ``ReadProcessMemoryApiCall`` confirms the operator actually read memory from LSASS.
+- Reading LSASS memory is consistent with credential dumping activity.
 
 ### Conclusion
-The successful authentication was not consistent with a brute-force attack. The telemetry indicates the attacker possessed valid credentials and repeatedly attempted authentication before being challenged for MFA. Based on the evidence, the most likely access vector would be ``Password Reuse.``
+The ActionType ``ReadProcessMemoryApiCall`` confirmed that the operator progressed beyond handle access and successfully read memory from ``lsass.exe``. Combined with the earlier ``OpenProcessApiCall`` activity, this provides strong evidence of credential-access behavior consistent with LSASS credential dumping techniques.
+
 </details>
 
 ---
@@ -763,13 +857,17 @@ SigninLogs
 ```
 <img width="1919" height="821" alt="Image" src="https://github.com/user-attachments/assets/222db846-4d8c-415c-8e59-bbaad8a8801a" />
 
+### 📌 Findings
+Analysis of DeviceEvents identified a ``ReadProcessMemoryApiCall`` event involving ``lsass.exe`` during the investigation window. The event was initiated by ``powershell.exe`` under the ``vmadminusername`` account, confirming activity beyond simple handle access.
+
 ### 💡 Why it matters
-- Azure AD already accepted the username/password.
-- MFA was the only thing preventing access.
-- This is not what you would expect from a password guessing attack.
+- ``OpenProcessApiCall`` only proves that a handle to LSASS was opened.
+- ``ReadProcessMemoryApiCall`` confirms the operator actually read memory from LSASS.
+- Reading LSASS memory is consistent with credential dumping activity.
 
 ### Conclusion
-The successful authentication was not consistent with a brute-force attack. The telemetry indicates the attacker possessed valid credentials and repeatedly attempted authentication before being challenged for MFA. Based on the evidence, the most likely access vector would be ``Password Reuse.``
+The ActionType ``ReadProcessMemoryApiCall`` confirmed that the operator progressed beyond handle access and successfully read memory from ``lsass.exe``. Combined with the earlier ``OpenProcessApiCall`` activity, this provides strong evidence of credential-access behavior consistent with LSASS credential dumping techniques.
+
 </details>
 
 ---
@@ -778,8 +876,6 @@ The successful authentication was not consistent with a brute-force attack. The 
 <summary id="-flag-27">🚩 <strong>Flag 27: <Technique Name></strong></summary>
 
 ### 🎯 Objective
-
-### 📌 Findings
 
 ```kql
 DeviceEvents
@@ -791,13 +887,17 @@ DeviceEvents
 ```
 <img width="1919" height="821" alt="Image" src="https://github.com/user-attachments/assets/3071711a-cc19-46c7-ae62-bb9bd50a02b8" />
 
+### 📌 Findings
+Analysis of DeviceEvents identified a ``ReadProcessMemoryApiCall`` event involving ``lsass.exe`` during the investigation window. The event was initiated by ``powershell.exe`` under the ``vmadminusername`` account, confirming activity beyond simple handle access.
+
 ### 💡 Why it matters
-- Azure AD already accepted the username/password.
-- MFA was the only thing preventing access.
-- This is not what you would expect from a password guessing attack.
+- ``OpenProcessApiCall`` only proves that a handle to LSASS was opened.
+- ``ReadProcessMemoryApiCall`` confirms the operator actually read memory from LSASS.
+- Reading LSASS memory is consistent with credential dumping activity.
 
 ### Conclusion
-The successful authentication was not consistent with a brute-force attack. The telemetry indicates the attacker possessed valid credentials and repeatedly attempted authentication before being challenged for MFA. Based on the evidence, the most likely access vector would be ``Password Reuse.``
+The ActionType ``ReadProcessMemoryApiCall`` confirmed that the operator progressed beyond handle access and successfully read memory from ``lsass.exe``. Combined with the earlier ``OpenProcessApiCall`` activity, this provides strong evidence of credential-access behavior consistent with LSASS credential dumping techniques.
+
 </details>
 
 ---
