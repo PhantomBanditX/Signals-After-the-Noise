@@ -78,15 +78,7 @@ A threat actor gained access to ``azwks-phtg-01`` using valid credentials obtain
   - [🚩 Flag 27](#-flag-27)
   - [🚩 Flag 28](#-flag-28)
   - [🚩 Flag 29](#-flag-29)
-  - [🚩 Flag 30](#-flag-30)
-  - [🚩 Flag 31](#-flag-31)
-  - [🚩 Flag 32](#-flag-32)
-  - [🚩 Flag 33](#-flag-33)
-  - [🚩 Flag 34](#-flag-34)
-  - [🚩 Flag 35](#-flag-35)
-  - [🚩 Flag 36](#-flag-36)
-  - [🚩 Flag 37](#-flag-37)
-  - [🚩 Flag 38](#-flag-38)
+  
 
 - [🚨 Detection Gaps & Recommendations](#-detection-gaps--recommendations)
 - [🧾 Final Assessment](#-final-assessment)
