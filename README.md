@@ -909,7 +909,7 @@ Analysis of DeviceEvents identified a ``ReadProcessMemoryApiCall`` event involvi
 ### 💡 Why it matters
 - ``OpenProcessApiCall`` only proves that a handle to LSASS was opened.
 - ``ReadProcessMemoryApiCall`` confirms the operator actually read memory from LSASS.
-- Reading LSASS memory is consistent with credential dumping activity
+- Reading LSASS memory is consistent with credential dumping activity.
 
 ### Conclusion
 The ActionType ``ReadProcessMemoryApiCall`` confirmed that the operator progressed beyond handle access and successfully read memory from ``lsass.exe``. Combined with the earlier ``OpenProcessApiCall`` activity, this provides strong evidence of credential-access behavior consistent with LSASS credential dumping techniques.
