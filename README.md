@@ -1046,7 +1046,7 @@ The ActionType ``ReadProcessMemoryApiCall`` confirmed that the operator progress
 
 ## 🧾 Final Assessment
 
-The investigation confirmed a successful compromise of azwks-phtg-01 through the use of valid credentials consistent with Password Reuse. Following initial access, the operator deployed HealthCloud-themed tooling, established multiple persistence mechanisms, implemented defense evasion techniques, and maintained command-and-control communications through redundant beacon channels. Analysis further confirmed credential-access activity through elevated LSASS access and successful LSASS memory reads consistent with credential dumping behavior. The findings demonstrate a multi-stage intrusion involving persistence, defense evasion, command-and-control, and credential-access techniques, providing high confidence that the operator achieved and maintained post-compromise control of the host.
+The investigation confirmed a successful compromise of `azwks-phtg-01` through the use of valid credentials consistent with Password Reuse. Following initial access, the operator deployed HealthCloud-themed tooling, established multiple persistence mechanisms, implemented defense evasion techniques, and maintained command-and-control communications through redundant beacon channels. Analysis further confirmed credential-access activity through elevated LSASS access and successful LSASS memory reads consistent with credential dumping behavior. The findings demonstrate a multi-stage intrusion involving persistence, defense evasion, command-and-control, and credential-access techniques, providing high confidence that the operator achieved and maintained post-compromise control of the host.
 
 ---
 
