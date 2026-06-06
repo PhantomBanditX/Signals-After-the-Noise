@@ -121,7 +121,7 @@ Initial review suggested a brute-force attack due to multiple failed authenticat
 ### Conclusion
 The successful authentication was not the result of a brute-force attack. The actual access vector was `Password Reuse`.
 
----
+
 
 </details>
 
@@ -150,8 +150,6 @@ Analysis of successful logon events after the compromise window revealed that th
 
 ### Conclusion
 The attacker successfully performed lateral movement using the `vmadminusername` account from `173.244.55.131` to `azwks-phtg-02`. This event established the attacker's movement path within the environment and identified the account, source system, and destination host involved in the activity.
-
----
 
 </details>
 
