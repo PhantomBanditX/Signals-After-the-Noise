@@ -101,7 +101,7 @@ _All flags below are collapsible for readability._
 <summary id="-flag-1">🚩 <strong>Flag 01: Password Reuse</strong></summary>
 
 ### 🎯 Objective
-The lead-up logged failed logons from several regions before the successful one. Easy to call it brute force and move on. Test that assumption. If the successful access was not brute force, what was the actual vector?
+Determine whether the successful authentication resulted from brute force or the use of previously compromised credentials.
 
 ```kql
 SigninLogs
@@ -113,15 +113,15 @@ SigninLogs
 <img width="1919" height="821" alt="Image" src="https://github.com/user-attachments/assets/222db846-4d8c-415c-8e59-bbaad8a8801a" />
 
 ### 📌 Findings
-Analysis of DeviceEvents identified a ``ReadProcessMemoryApiCall`` event involving ``lsass.exe`` during the investigation window. The event was initiated by ``powershell.exe`` under the ``vmadminusername`` account, confirming activity beyond simple handle access.
+Initial review suggested a brute-force attack due to multiple failed authentication attempts originating from different geographic regions. However, comparison of the authentication activity revealed that the successful login was associated with credential material that had already been used elsewhere, indicating that the attacker possessed valid credentials rather than successfully guessing them through repeated login attempts.
 
 ### 💡 Why it matters
-- ``OpenProcessApiCall`` only proves that a handle to LSASS was opened.
-- ``ReadProcessMemoryApiCall`` confirms the operator actually read memory from LSASS.
-- Reading LSASS memory is consistent with credential dumping activity.
+- Multiple failed logons can create the appearance of a brute-force attack.
+- Attribution should be based on authentication evidence rather than assumptions.
+- Correctly identifying the access vector improves incident response and remediation decisions.
 
 ### Conclusion
-The ActionType ``ReadProcessMemoryApiCall`` confirmed that the operator progressed beyond handle access and successfully read memory from ``lsass.exe``. Combined with the earlier ``OpenProcessApiCall`` activity, this provides strong evidence of credential-access behavior consistent with LSASS credential dumping techniques.
+The successful authentication was not the result of a brute-force attack. The actual access vector was `Password Reuse`.
 
 
 ---
@@ -131,7 +131,7 @@ The ActionType ``ReadProcessMemoryApiCall`` confirmed that the operator progress
 ---
 
 <details>
-<summary id="-flag-2">🚩 <strong>Flag 2: <Technique Name></strong></summary>
+<summary id="-flag-2">🚩 <strong>Flag 02: Initial Access Account</strong></summary>
 
 ### 🎯 Objective
 ```kql
@@ -161,7 +161,7 @@ The ActionType ``ReadProcessMemoryApiCall`` confirmed that the operator progress
 ---
 
 <details>
-<summary id="-flag-3">🚩 <strong>Flag 3: <Technique Name></strong></summary>
+<summary id="-flag-3">🚩 <strong>Flag 03: Successful Authentication</summary>
 
 ### 🎯 Objective
 ```kql
@@ -191,7 +191,7 @@ The ActionType ``ReadProcessMemoryApiCall`` confirmed that the operator progress
 ---
 
 <details>
-<summary id="-flag-4">🚩 <strong>Flag 4: <Technique Name></strong></summary>
+<summary id="-flag-4">🚩 <strong>Flag 04: Source Infrastructure</summary>
 
 ### 🎯 Objective
 ```kql
@@ -222,7 +222,7 @@ The ActionType ``ReadProcessMemoryApiCall`` confirmed that the operator progress
 ---
 
 <details>
-<summary id="-flag-5">🚩 <strong>Flag 5: <Technique Name></strong></summary>
+<summary id="-flag-5">🚩 <strong>Flag 05: Interactive Access</summary>
 
 ### 🎯 Objective
 ```kql
@@ -253,9 +253,11 @@ The ActionType ``ReadProcessMemoryApiCall`` confirmed that the operator progress
 ---
 
 <details>
-<summary id="-flag-6">🚩 <strong>Flag 6: <Technique Name></strong></summary>
+<summary id="-flag-6">🚩 <strong>Flag 06: Initial Tool Execution</summary>
 
 ### 🎯 Objective
+Identify the first malicious tooling executed following successful access.
+
 ```kql
 DeviceFileEvents
 | where DeviceName == "azwks-phtg-01"
@@ -284,9 +286,11 @@ The ActionType ``ReadProcessMemoryApiCall`` confirmed that the operator progress
 ---
 
 <details>
-<summary id="-flag-7">🚩 <strong>Flag 7: <Technique Name></strong></summary>
+<summary id="-flag-7">🚩 <strong>Flag 07: HealthCloud Deployment</summary>
 
 ### 🎯 Objective
+Determine how the operator established the HealthCloud workspace and supporting tooling.
+
 ```kql
 DeviceProcessEvents
 | where DeviceName == "azwks-phtg-01"
@@ -314,9 +318,11 @@ The ActionType ``ReadProcessMemoryApiCall`` confirmed that the operator progress
 ---
 
 <details>
-<summary id="-flag-8">🚩 <strong>Flag 8: <Technique Name></strong></summary>
+<summary id="-flag-8">🚩 <strong>Flag 08: Masqueraded Binary</summary>
 
 ### 🎯 Objective
+Identify the disguised executable used to blend malicious activity with legitimate software.
+
 ```kql
 DeviceProcessEvents
 | where DeviceName == "azwks-phtg-01"
@@ -344,9 +350,11 @@ The ActionType ``ReadProcessMemoryApiCall`` confirmed that the operator progress
 ---
 
 <details>
-<summary id="-flag-9">🚩 <strong>Flag 9: <Technique Name></strong></summary>
+<summary id="-flag-9">🚩 <strong>Flag 09: Registry Activity Volume</summary>
 
 ### 🎯 Objective
+Measure post-compromise registry modification activity performed by the operator.
+
 ```kql
 DeviceRegistryEvents
 | where DeviceName == "azwks-phtg-01"
@@ -367,13 +375,16 @@ Analysis of DeviceEvents identified a ``ReadProcessMemoryApiCall`` event involvi
 ### Conclusion
 The ActionType ``ReadProcessMemoryApiCall`` confirmed that the operator progressed beyond handle access and successfully read memory from ``lsass.exe``. Combined with the earlier ``OpenProcessApiCall`` activity, this provides strong evidence of credential-access behavior consistent with LSASS credential dumping techniques.
 
+</details>
 
 ---
 
 <details>
-<summary id="-flag-10">🚩 <strong>Flag 10: <Technique Name></strong></summary>
+<summary id="-flag-10">🚩 <strong>Flag 10: Persistence Signal Isolation</summary>
 
 ### 🎯 Objective
+Isolate registry modifications that contributed to persistence from routine system activity.
+
 ```kql
 DeviceRegistryEvents
 | where DeviceName == "azwks-phtg-01"
@@ -400,9 +411,11 @@ The ActionType ``ReadProcessMemoryApiCall`` confirmed that the operator progress
 ---
 
 <details>
-<summary id="-flag-11">🚩 <strong>Flag 11: <Technique Name></strong></summary>
+<summary id="-flag-11">🚩 <strong>Flag 11: Run Key Value Name</summary>
 
 ### 🎯 Objective
+Identify the Registry Run Key value used to automatically launch operator tooling.
+
 ```kql
 DeviceRegistryEvents
 | where DeviceName == "azwks-phtg-01"
@@ -430,9 +443,10 @@ The ActionType ``ReadProcessMemoryApiCall`` confirmed that the operator progress
 ---
 
 <details>
-<summary id="-flag-12">🚩 <strong>Flag 12: <Technique Name></strong></summary>
+<summary id="-flag-12">🚩 <strong>Flag 12: Run Key Persistence Command</summary>
 
 ### 🎯 Objective
+Determine the command configured to execute through the persistence mechanism.
 ```kql
 DeviceRegistryEvents
 | where DeviceName == "azwks-phtg-01"
@@ -462,9 +476,11 @@ The ActionType ``ReadProcessMemoryApiCall`` confirmed that the operator progress
 ---
 
 <details>
-<summary id="-flag-13">🚩 <strong>Flag 13: <Technique Name></strong></summary>
+<summary id="-flag-13">🚩 <strong>Flag 13: Second Persistence Mechanism</summary>
 
 ### 🎯 Objective
+Identify additional persistence mechanisms deployed beyond the Registry Run Key.
+
 ```kql
 DeviceFileEvents
 | where DeviceName == "azwks-phtg-01"
@@ -492,9 +508,11 @@ The ActionType ``ReadProcessMemoryApiCall`` confirmed that the operator progress
 ---
 
 <details>
-<summary id="-flag-14">🚩 <strong>Flag 14: <Technique Name></strong></summary>
+<summary id="-flag-14">🚩 <strong>Flag 14: Third Persistence Mechanism</summary>
 
 ### 🎯 Objective
+Identify system-level persistence established through Windows Event Log registration.
+
 ```kql
 DeviceRegistryEvents
 | where DeviceName == "azwks-phtg-01"
@@ -516,15 +534,16 @@ Analysis of DeviceEvents identified a ``ReadProcessMemoryApiCall`` event involvi
 ### Conclusion
 The ActionType ``ReadProcessMemoryApiCall`` confirmed that the operator progressed beyond handle access and successfully read memory from ``lsass.exe``. Combined with the earlier ``OpenProcessApiCall`` activity, this provides strong evidence of credential-access behavior consistent with LSASS credential dumping techniques.
 
-
 </details>
 
 ---
 
 <details>
-<summary id="-flag-15">🚩 <strong>Flag 15: <Technique Name></strong></summary>
+<summary id="-flag-15">🚩 <strong>Flag 15: Tooling HealthCheck Loop</summary>
 
 ### 🎯 Objective
+Measure recurring beacon activity generated by the operator's HealthCloud service.
+
 ```kql
 DeviceProcessEvents
 | where DeviceName == "azwks-phtg-01"
@@ -551,9 +570,11 @@ The ActionType ``ReadProcessMemoryApiCall`` confirmed that the operator progress
 ---
 
 <details>
-<summary id="-flag-16">🚩 <strong>Flag 16: <Technique Name></strong></summary>
+<summary id="-flag-16">🚩 <strong>Flag 16: Encoded Beacon Endpoints</summary>
 
 ### 🎯 Objective
+Identify external endpoints contacted by encoded PowerShell beacon activity.
+
 ```kql
 DeviceProcessEvents
 | where DeviceName == "azwks-phtg-01"
@@ -581,17 +602,10 @@ The ActionType ``ReadProcessMemoryApiCall`` confirmed that the operator progress
 ---
 
 <details>
-<summary id="-flag-17">🚩 <strong>Flag 17: <Technique Name></strong></summary>
+<summary id="-flag-17">🚩 <strong>Flag 17: Two Beacons, Why?</summary>
 
 ### 🎯 Objective
-```kql
-SigninLogs
-| where TimeGenerated between (todatetime('2025-12-13 09:00') .. todatetime('2025-12-13 18:00'))
-| where ResultSignature == "FAILURE"
-| project TimeGenerated, ResultType, ResultSignature, ResultDescription, Location, LocationDetails, AuthenticationRequirement
-| order by TimeGenerated desc
-```
-<img width="1919" height="821" alt="Image" src="https://github.com/user-attachments/assets/222db846-4d8c-415c-8e59-bbaad8a8801a" />
+Determine the operational advantage gained by maintaining multiple command-and-control channels.
 
 ### 📌 Findings
 Analysis of DeviceEvents identified a ``ReadProcessMemoryApiCall`` event involving ``lsass.exe`` during the investigation window. The event was initiated by ``powershell.exe`` under the ``vmadminusername`` account, confirming activity beyond simple handle access.
@@ -609,9 +623,11 @@ The ActionType ``ReadProcessMemoryApiCall`` confirmed that the operator progress
 ---
 
 <details>
-<summary id="-flag-18">🚩 <strong>Flag 18: <Technique Name></strong></summary>
+<summary id="-flag-18">🚩 <strong>Flag 18: Deployment Pattern Recognition</summary>
 
 ### 🎯 Objective
+Reconstruct the sequence used to retrieve and execute operator payloads.
+
 ```kql
 DeviceNetworkEvents
 | where DeviceName == "azwks-phtg-01"
@@ -632,15 +648,16 @@ Analysis of DeviceEvents identified a ``ReadProcessMemoryApiCall`` event involvi
 ### Conclusion
 The ActionType ``ReadProcessMemoryApiCall`` confirmed that the operator progressed beyond handle access and successfully read memory from ``lsass.exe``. Combined with the earlier ``OpenProcessApiCall`` activity, this provides strong evidence of credential-access behavior consistent with LSASS credential dumping techniques.
 
-
 </details>
 
 ---
 
 <details>
-<summary id="-flag-19">🚩 <strong>Flag 19: <Technique Name></strong></summary>
+<summary id="-flag-19">🚩 <strong>Flag 19: Operator Outbound Domains</summary>
 
 ### 🎯 Objective
+Identify domains contacted by the operator during post-access activity.
+
 ```kql
 DeviceNetworkEvents
 | where DeviceName == "azwks-phtg-01"
@@ -662,15 +679,16 @@ Analysis of DeviceEvents identified a ``ReadProcessMemoryApiCall`` event involvi
 ### Conclusion
 The ActionType ``ReadProcessMemoryApiCall`` confirmed that the operator progressed beyond handle access and successfully read memory from ``lsass.exe``. Combined with the earlier ``OpenProcessApiCall`` activity, this provides strong evidence of credential-access behavior consistent with LSASS credential dumping techniques.
 
-
 </details>
 
 ---
 
 <details>
-<summary id="-flag-20">🚩 <strong>Flag 20: <Technique Name></strong></summary>
+<summary id="-flag-20">🚩 <strong>Flag 20: AMSI Probe Identification</summary>
 
 ### 🎯 Objective
+Determine whether the operator validated AMSI visibility prior to executing additional tooling.
+
 ```kql
 DeviceProcessEvents
 | where DeviceName == "azwks-phtg-01"
@@ -699,9 +717,11 @@ The ActionType ``ReadProcessMemoryApiCall`` confirmed that the operator progress
 ---
 
 <details>
-<summary id="-flag-21">🚩 <strong>Flag 21: <Technique Name></strong></summary>
+<summary id="-flag-21">🚩 <strong>Flag 21: Lineage Break Pattern</summary>
 
 ### 🎯 Objective
+Identify process-launch techniques used to obscure execution lineage and parent-child relationships.
+
 ```kql
 DeviceProcessEvents
 | where DeviceName == "azwks-phtg-01"
@@ -723,13 +743,16 @@ Analysis of DeviceEvents identified a ``ReadProcessMemoryApiCall`` event involvi
 ### Conclusion
 The ActionType ``ReadProcessMemoryApiCall`` confirmed that the operator progressed beyond handle access and successfully read memory from ``lsass.exe``. Combined with the earlier ``OpenProcessApiCall`` activity, this provides strong evidence of credential-access behavior consistent with LSASS credential dumping techniques.
 
+</details>
 
 ---
 
 <details>
-<summary id="-flag-22">🚩 <strong>Flag 22: <Technique Name></strong></summary>
+<summary id="-flag-22">🚩 <strong>Flag 22: Defender Tampering</summary>
 
 ### 🎯 Objective
+Identify Microsoft Defender exclusions configured to reduce detection of operator tooling.
+
 ```kql
 DeviceRegistryEvents
 | where DeviceName == "azwks-phtg-01"
@@ -751,15 +774,16 @@ Analysis of DeviceEvents identified a ``ReadProcessMemoryApiCall`` event involvi
 ### Conclusion
 The ActionType ``ReadProcessMemoryApiCall`` confirmed that the operator progressed beyond handle access and successfully read memory from ``lsass.exe``. Combined with the earlier ``OpenProcessApiCall`` activity, this provides strong evidence of credential-access behavior consistent with LSASS credential dumping techniques.
 
-
 </details>
 
 ---
 
 <details>
-<summary id="-flag-23">🚩 <strong>Flag 23: <Technique Name></strong></summary>
+<summary id="-flag-23">🚩 <strong>Flag 23: Defender Detection Outcome</summary>
 
 ### 🎯 Objective
+Determine whether Defender detections resulted in prevention, remediation, or only alert generation.
+
 ```kql
 DeviceEvents
 | where DeviceName == "azwks-phtg-01"
@@ -786,9 +810,11 @@ The ActionType ``ReadProcessMemoryApiCall`` confirmed that the operator progress
 ---
 
 <details>
-<summary id="-flag-24">🚩 <strong>Flag 24: <Technique Name></strong></summary>
+<summary id="-flag-24">🚩 <strong>Flag 24: Temporary Defender Exclusion</summary>
 
 ### 🎯 Objective
+Verify whether temporary Defender exclusions were used to facilitate payload execution.
+
 ```kql
 DeviceEvents
 | where DeviceName == "azwks-phtg-01"
@@ -816,9 +842,11 @@ The ActionType ``ReadProcessMemoryApiCall`` confirmed that the operator progress
 ---
 
 <details>
-<summary id="-flag-25">🚩 <strong>Flag 25: <Technique Name></strong></summary>
+<summary id="-flag-25">🚩 <strong>Flag 25: Startup Execution Validation</summary>
 
 ### 🎯 Objective
+Confirm that the deployed persistence mechanism successfully executed after configuration.
+
 ```kql
 DeviceProcessEvents
 | where DeviceName == "azwks-phtg-01"
@@ -845,17 +873,10 @@ The ActionType ``ReadProcessMemoryApiCall`` confirmed that the operator progress
 ---
 
 <details>
-<summary id="-flag-26">🚩 <strong>Flag 26: <Technique Name></strong></summary>
+<summary id="-flag-26">🚩 <strong>Flag 26: Custom Event Log Source Purpose</summary>
 
 ### 🎯 Objective
-```kql
-SigninLogs
-| where TimeGenerated between (todatetime('2025-12-13 09:00') .. todatetime('2025-12-13 18:00'))
-| where ResultSignature == "FAILURE"
-| project TimeGenerated, ResultType, ResultSignature, ResultDescription, Location, LocationDetails, AuthenticationRequirement
-| order by TimeGenerated desc
-```
-<img width="1919" height="821" alt="Image" src="https://github.com/user-attachments/assets/222db846-4d8c-415c-8e59-bbaad8a8801a" />
+Determine the purpose and operational benefit of the custom Windows Event Log source registration.
 
 ### 📌 Findings
 Analysis of DeviceEvents identified a ``ReadProcessMemoryApiCall`` event involving ``lsass.exe`` during the investigation window. The event was initiated by ``powershell.exe`` under the ``vmadminusername`` account, confirming activity beyond simple handle access.
@@ -873,9 +894,10 @@ The ActionType ``ReadProcessMemoryApiCall`` confirmed that the operator progress
 ---
 
 <details>
-<summary id="-flag-27">🚩 <strong>Flag 27: <Technique Name></strong></summary>
+<summary id="-flag-27">🚩 <strong>Flag 27: LSASS Access Anomaly</summary>
 
 ### 🎯 Objective
+Identify non-standard access to LSASS and determine the responsible process and account context.
 
 ```kql
 DeviceEvents
@@ -903,9 +925,10 @@ The ActionType ``ReadProcessMemoryApiCall`` confirmed that the operator progress
 ---
 
 <details>
-<summary id="-flag-28">🚩 <strong>Flag 28: <Technique Name></strong></summary>
+<summary id="-flag-28">🚩 <strong>Flag 28: Access Right Escalation</summary>
 
 ### 🎯 Objective
+Determine the level of access obtained to LSASS and identify evidence of privilege escalation toward full process access.
 
 ```kql
 DeviceEvents
@@ -933,10 +956,10 @@ The DesiredAccess value ``2047999 (0x1F3FFF)`` grants full access to LSASS. The 
 ---
 
 <details>
-<summary id="-flag-29">🚩 <strong>Flag 29: <Technique Name></strong></summary>
+<summary id="-flag-29">🚩 <strong>Flag 29: Credential Dump Confirmation</summary>
 
 ### 🎯 Objective
-Confirm whether the operator successfully read memory from ``lsass.exe`` after obtaining full process access.
+Confirm whether the operator progressed beyond handle access and successfully read memory from LSASS.
 
 ```kql
 DeviceEvents
@@ -963,6 +986,7 @@ The ActionType ``ReadProcessMemoryApiCall`` confirmed that the operator progress
 
 ---
 
+<details>
 
 ## 🧬 MITRE ATT&CK Summary
 
