@@ -82,8 +82,6 @@ A threat actor gained access to ``azwks-phtg-01`` using valid credentials obtain
 
 - [🚨 Detection Gaps & Recommendations](#-detection-gaps--recommendations)
 - [🧾 Final Assessment](#-final-assessment)
-- [📎 Analyst Notes](#-analyst-notes)
-
 ---
 
 ## 🧠 Hunt Overview
