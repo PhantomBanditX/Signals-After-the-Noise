@@ -833,6 +833,9 @@ The successful authentication was not consistent with a brute-force attack. The 
 <summary id="-flag-27">🚩 <strong>Flag 27: <Technique Name></strong></summary>
 
 ### 🎯 Objective
+
+### 📌 Finding
+
 ```kql
 DeviceEvents
 | where DeviceName == "azwks-phtg-01"
@@ -859,8 +862,9 @@ The successful authentication was not consistent with a brute-force attack. The 
 
 ### 🎯 Objective
 
-**📌 Finding**  
+### 📌 Finding 
 Analysis of LSASS access events identified two sequential DesiredAccess values requested by PowerShell. The first request used ``5136 (0x1410)``, while the second used ``2047999 (0x1F3FFF)``. The latter corresponds to PROCESS_ALL_ACCESS, granting full access to the LSASS process.
+
 ```kql
 DeviceEvents
 | where DeviceName == "azwks-phtg-01"
@@ -887,8 +891,11 @@ The DesiredAccess value ``2047999 (0x1F3FFF)`` grants full access to LSASS. The 
 <summary id="-flag-29">🚩 <strong>Flag 29: <Technique Name></strong></summary>
 
 ### 🎯 Objective
-**📌 Finding** 
+
+### 📌 Finding 
+
 Analysis of DeviceEvents identified a ``ReadProcessMemoryApiCall`` event involving ``lsass.exe`` during the investigation window. The event was initiated by ``powershell.exe`` under the ``vmadminusername`` account, confirming activity beyond simple handle access.
+
 ```kql
 DeviceEvents
 | where DeviceName == "azwks-phtg-01"
@@ -911,10 +918,6 @@ The successful authentication was not consistent with a brute-force attack. The 
 
 ---
 
-<details>
-
-
----
 
 ## 🧬 MITRE ATT&CK Summary
 
