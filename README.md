@@ -204,6 +204,10 @@ The successful authentication was not consistent with a brute-force attack. The 
 
 ---
 
+</details>
+
+---
+
 <details>
 <summary id="-flag-3">🚩 <strong>Flag 3: <Technique Name></strong></summary>
 
