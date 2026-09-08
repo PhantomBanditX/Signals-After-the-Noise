@@ -1067,5 +1067,5 @@ The investigation confirmed a successful compromise of `azwks-phtg-01` through t
 ---
 
 ## References
-- [NIST SP 800-61r3](https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-61r2.pdf)
+- [NIST SP 800-61r3](https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-61r3.pdf)
 
